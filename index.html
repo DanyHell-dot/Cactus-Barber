@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbería Cactus</title>
+    <style>
+        /* Definición de la paleta de colores */
+        :root {
+            --verde-cactus: #4E6E5D;
+            --verde-olivo: #708238;
+            --azul-acento: #4A90E2;
+            --fondo: #F4F6F4;
+            --texto-oscuro: #1A251E;
+            --texto-claro: #FFFFFF;
+        }
+
+        /* Configuraciones generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--fondo);
+            color: var(--texto-oscuro);
+            overflow-x: hidden;
+        }
+
+        /* Fondo animado de poste de barbero */
+        .fondo-barbero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.05; 
+            background: repeating-linear-gradient(
+                -45deg,
+                #d32f2f,
+                #d32f2f 40px,
+                transparent 40px,
+                transparent 80px,
+                #1976d2 80px,
+                #1976d2 120px,
+                transparent 120px,
+                transparent 160px
+            );
+            background-size: 226px 226px;
+        }
+
+        @keyframes deslizarAbajo {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        header {
+            background-color: var(--verde-cactus);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: deslizarAbajo 0.8s ease-out;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        nav {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--texto-claro);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: var(--azul-acento);
+        }
+
+        .btn-admin {
+            background-color: transparent;
+            color: var(--texto-claro);
+            border: 1px solid var(--azul-acento);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-admin:hover {
+            background-color: var(--azul-acento);
+        }
+
+        /* Clases para múltiples páginas (SPA) */
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pagina {
+            display: none;
+            animation: aparecer 0.4s ease-out;
+        }
+
+        .pagina.activa {
+            display: block;
+        }
+
+        .intro {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, var(--verde-cactus), var(--verde-olivo));
+            color: var(--texto-claro);
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .intro h1 { font-size: 36px; margin-bottom: 15px; }
+        .intro p { font-size: 16px; margin-bottom: 35px; opacity: 0.9; max-width: 600px; margin: 0 auto 35px auto; }
+
+        .btn-cita {
+            background-color: var(--azul-acento);
+            color: var(--texto-claro);
+            border: none;
+            padding: 16px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-cita:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
+        }
+
+        /* Galería */
+        .galeria-contenedor {
+            padding: 50px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .galeria-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
+        .galeria {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 20px;
+        }
+        .foto-galeria {
+            background-color: #ddd;
+            height: 200px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            cursor: pointer;
+        }
+        .foto-galeria:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        /* Servicios */
+        .servicios-contenedor {
+            padding: 50px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .servicios-contenedor h2 {
+            text-align: center;
+            color: var(--verde-cactus);
+            font-size: 32px;
+            margin-bottom: 40px;
+        }
+        .grid-servicios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .tarjeta-servicio {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--verde-olivo);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .tarjeta-servicio:hover {
+            transform: translateY(-5px);
+            border-left-color: var(--azul-acento);
+        }
+        .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
+        .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
+        
+        /* Nuevo estilo para la etiqueta de precios */
+        .precio-servicio {
+            display: inline-block;
+            background-color: rgba(74, 144, 226, 0.15);
+            color: var(--azul-acento);
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 15px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        /* Formulario de Citas */
+        .form-citas {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .grupo-form { margin-bottom: 20px; }
+        .grupo-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--verde-cactus);
+            font-weight: bold;
+            font-size: 14px;
+        }
+        .grupo-form input, .grupo-form select, .grupo-form textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+            background: var(--fondo);
+            outline: none;
+        }
+        .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus {
+            border-color: var(--azul-acento);
+        }
+
+        /* Notificaciones */
+        #notificacion {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--texto-oscuro);
+            color: var(--texto-claro);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: bottom 0.4s ease-out;
+            z-index: 1000;
+            font-size: 14px;
+            text-align: center;
+            min-width: 300px;
+        }
+        #notificacion.mostrar { bottom: 30px; }
+
+        /* Modal de Login */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            justify-content: center; align-items: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-login {
+            background: var(--texto-claro);
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%; max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
+        .btn-cerrar-modal {
+            background: #ccc; color: #333; border: none; padding: 10px 20px;
+            border-radius: 8px; margin-top: 10px; cursor: pointer;
+        }
+
+        /* Panel de Administrador */
+        .admin-layout {
+            display: flex;
+            min-height: 80vh;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin: 20px;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        .admin-sidebar {
+            background: var(--verde-cactus); color: white;
+            width: 250px; padding: 20px; flex-grow: 1;
+        }
+        .admin-sidebar h3 { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
+        .admin-menu a {
+            display: block; color: white; text-decoration: none;
+            padding: 12px; margin-bottom: 5px; border-radius: 8px;
+            cursor: pointer; transition: background 0.3s;
+        }
+        .admin-menu a:hover, .admin-menu a.activo { background: var(--verde-olivo); }
+        .admin-content { padding: 30px; flex: 3; min-width: 300px; overflow-x: auto; }
+
+        .tabla-admin { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .tabla-admin th, .tabla-admin td { border: 1px solid #eee; padding: 12px; text-align: left; }
+        .tabla-admin th { background: var(--fondo); color: var(--verde-cactus); }
+
+        /* Contenedor responsivo para evitar que la tabla se salga */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .btn-accion {
+            padding: 6px 12px; border: none; border-radius: 4px;
+            cursor: pointer; font-size: 12px; color: white; transition: opacity 0.3s;
+        }
+        .btn-accion:hover { opacity: 0.8; }
+        .btn-calendario { background: #ea4335; }
+        .btn-eliminar { background: #d32f2f; }
+        .btn-editar-web { background: var(--azul-acento); font-size: 16px; padding: 15px; }
+
+        .editando {
+            border: 2px dashed var(--azul-acento) !important;
+            padding: 5px; background: rgba(74, 144, 226, 0.1);
+        }
+
+        /* Nuevos estilos para cuando se editan imágenes */
+        .editando-img {
+            border: 3px dashed #ea4335 !important;
+            cursor: pointer !important;
+            position: relative;
+        }
+        
+        .editando-img::before {
+            content: "📷 Cambiar foto";
+            position: absolute;
+            top: 5px; right: 5px;
+            background: rgba(234, 67, 53, 0.9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 10;
+            pointer-events: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .admin-layout { flex-direction: column; margin: 10px; }
+            .admin-sidebar { width: 100%; padding: 15px; }
+            .admin-content { padding: 15px; min-width: 100%; }
+            .tabla-admin th, .tabla-admin td { padding: 8px; font-size: 13px; }
+        }
+        @media (max-width: 480px) {
+            nav { gap: 10px; }
+            nav a { font-size: 12px; }
+            .intro h1 { font-size: 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="fondo-barbero" id="fondoAnimado"></div>
+
+    <header>
+        <img src="ChatGPT Image 3 jul 2026, 10_46_12 a.m..png" alt="Logo Cactus Barbería" class="logo-img">
+        <nav>
+            <a onclick="navegar('inicio')">Inicio</a>
+            <a onclick="navegar('servicios')">Servicios</a>
+            <a onclick="navegar('citas')">Citas</a>
+            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin</button>
+        </nav>
+    </header>
+
+    <section id="inicio" class="pagina activa">
+        <div class="intro">
+            <h1>Tu estilo, nuestra pasión</h1>
+            <p>Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
+            <button class="btn-cita" onclick="navegar('citas')">Programar cita</button>
+        </div>
+
+        <div class="galeria-contenedor">
+            <h2>Nuestros Trabajos</h2>
+            <div class="galeria">
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80');" title="Corte moderno"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80');" title="Arreglo de barba"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=500&q=80');" title="Herramientas profesionales"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80');" title="Silla Cactus"></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="servicios-contenedor pagina">
+        <h2>Nuestros Servicios</h2>
+        <div class="grid-servicios">
+            <div class="tarjeta-servicio">
+                <h3>Corte Clásico</h3>
+                <p>Corte tradicional adaptado a la forma del rostro y estilo del cliente. Incluye perfilado y acabado profesional.</p>
+                <div class="precio-servicio">$200 MXN</div>
+            </div>
+            <div class="tarjeta-servicio">
+                <h3>Corte Premium</h3>
+                <p>Corte personalizado con asesoría de imagen, lavado, peinado y aplicación de productos profesionales.</p>
+                <div class="precio-servicio">$300 MXN</div>
+            </div>
+            <div class="tarjeta-servicio">
+                <h3>Fade (Degradado)</h3>
+                <p>Degradado de alta precisión con transiciones limpias y definidas.</p>
+                <div class="precio-servicio">$250 MXN</div>
+            </div>
+            <div class="tarjeta-servicio">
+                <h3>Perfilado de Barba</h3>
+                <p>Definición y simetría de la barba respetando la forma del rostro y el crecimiento natural del vello.</p>
+                <div class="precio-servicio">$150 MXN</div>
+            </div>
+            <div class="tarjeta-servicio">
+                <h3>Afeitado Tradicional</h3>
+                <p>Afeitado completo con toalla caliente, espuma de afeitar y navaja para un acabado suave y preciso.</p>
+                <div class="precio-servicio">$200 MXN</div>
+            </div>
+            <div class="tarjeta-servicio">
+                <h3>Paquete Corte + Barba</h3>
+                <p>Corte de cabello y arreglo completo de barba en una sola sesión con acabado profesional.</p>
+                <div class="precio-servicio">$350 MXN</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="citas" class="galeria-contenedor pagina">
+        <h2>Reserva tu Espacio</h2>
+        <p style="margin-bottom: 30px;">Completa el formulario para agendar tu próxima visita.</p>
+        
+        <div class="form-citas">
+            <form id="formCita" onsubmit="procesarCita(event)">
+                <div class="grupo-form">
+                    <label for="nombre">👤 Nombre Completo:</label>
+                    <input type="text" id="nombre" required placeholder="Ej. Juan Pérez">
+                </div>
+                <div class="grupo-form">
+                    <label for="telefono">📞 Teléfono:</label>
+                    <input type="tel" id="telefono" required placeholder="Tu número de contacto">
+                </div>
+                <div class="grupo-form">
+                    <label for="servicioSelect">💈 Servicio a realizar:</label>
+                    <select id="servicioSelect" required>
+                        <option value="" disabled selected>Selecciona un servicio</option>
+                        <option value="Corte Clásico">Corte Clásico</option>
+                        <option value="Corte Premium">Corte Premium</option>
+                        <option value="Fade (Degradado)">Fade (Degradado)</option>
+                        <option value="Corte con Tijera">Corte con Tijera</option>
+                        <option value="Diseño de Corte">Diseño de Corte (Hair Design)</option>
+                        <option value="Perfilado de Barba">Perfilado de Barba</option>
+                        <option value="Afeitado Tradicional">Afeitado Tradicional</option>
+                        <option value="Ritual de Barba Premium">Ritual de Barba Premium</option>
+                        <option value="Paquete Corte + Barba">Paquete Corte + Barba</option>
+                        <option value="Servicio VIP">Servicio VIP</option>
+                    </select>
+                </div>
+                <div class="grupo-form">
+                    <label for="barbero">👨‍🔧 Selecciona tu Barbero:</label>
+                    <select id="barbero" required onchange="cargarHorarios()">
+                        <!-- Se llena dinámicamente -->
+                    </select>
+                </div>
+                <div class="grupo-form">
+                    <label for="fecha">📆 Fecha:</label>
+                    <input type="date" id="fecha" required onchange="cargarHorarios()">
+                </div>
+                <div class="grupo-form">
+                    <label for="hora">🕒 Hora:</label>
+                    <select id="hora" required>
+                        <option value="" disabled selected>Primero selecciona Fecha y Barbero</option>
+                    </select>
+                </div>
+                <div class="grupo-form">
+                    <label for="comentarios">📝 Comentarios (Opcional):</label>
+                    <textarea id="comentarios" rows="3" placeholder="Ej. Quiero un diseño en especial..."></textarea>
+                </div>
+                <button type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;">Confirmar Reserva</button>
+            </form>
+        </div>
+    </section>
+
+    <section id="admin" class="pagina">
+        <div class="admin-layout">
+            <div class="admin-sidebar">
+                <h3>Panel de Control</h3>
+                <p id="admin-usuario-info" style="font-size: 14px; margin-bottom: 20px; color: #ddd;"></p>
+                <div class="admin-menu">
+                    <a onclick="cambiarTabAdmin('tab-citas')" id="menu-tab-citas" class="activo">📅 Ver Citas</a>
+                    <a onclick="cambiarTabAdmin('tab-barberos')" id="menu-tab-barberos">✂️ Gestionar Barberos</a>
+                    <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web">🌐 Editor Web</a>
+                    <a onclick="cerrarSesion()" style="margin-top: 30px; color: #ffcccc;">🚪 Cerrar Sesión</a>
+                </div>
+            </div>
+            <div class="admin-content">
+                <div id="tab-citas">
+                    <h2 style="color: var(--verde-cactus);">Citas Programadas</h2>
+                    <div class="table-container">
+                        <table class="tabla-admin" id="tabla-citas">
+                            <thead>
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>Cliente</th>
+                                    <th>Servicio</th>
+                                    <th>Barbero</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Se llena con JS --></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="tab-barberos" style="display: none;">
+                    <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
+                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                        <input type="text" id="nuevo-barbero" placeholder="Nombre del nuevo barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                        <button onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;">Añadir</button>
+                    </div>
+                    <ul id="lista-barberos" style="list-style: none;"></ul>
+                </div>
+                <div id="tab-web" style="display: none;">
+                    <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
+                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en cualquier texto del sitio web (títulos, descripciones, servicios) y cambiarlo en tiempo real.</p>
+                    <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Login y Toast -->
+    <div class="modal-overlay" id="modalLogin">
+        <div class="modal-login">
+            <h2>Iniciar Sesión</h2>
+            <form onsubmit="procesarLogin(event)">
+                <div class="grupo-form"><input type="text" id="login-user" placeholder="Usuario (dude, tonny, super)" required></div>
+                <div class="grupo-form"><input type="password" id="login-pass" placeholder="Contraseña (123)" required></div>
+                <button type="submit" class="btn-cita" style="width: 100%;">Entrar</button>
+                <button type="button" class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarLogin()">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Nuevo Modal para Editar Imágenes -->
+    <div class="modal-overlay" id="modalEdicionImagen">
+        <div class="modal-login">
+            <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Imagen</h2>
+            <p style="font-size: 14px; margin-bottom: 15px; color: #555;">Pega el enlace (URL) de la nueva imagen:</p>
+            <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;" placeholder="https://ejemplo.com/foto.jpg">
+            <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
+            <button class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarModalImagen()">Cancelar</button>
+        </div>
+    </div>
+
+    <div id="notificacion"></div>
+
+    <script>
+        // --- BASE DE DATOS EN MEMORIA ---
+        const estadoApp = {
+            usuarioActual: null,
+            barberos: ['TONNY', 'DUDE'],
+            citas: [],
+            modoEdicion: false
+        };
+
+        const USUARIOS_SISTEMA = {
+            'dude': { rol: 'barbero', pass: '123' },
+            'tonny': { rol: 'admin', pass: '123' },
+            'super': { rol: 'superadmin', pass: '123' }
+        };
+
+        let elementoImagenActual = null; // Variable para recordar qué imagen estamos cambiando
+
+        // --- FUNCIONES GLOBALES ---
+        function navegar(idPagina) {
+            // Ya NO apagamos la edición automáticamente, así puedes navegar y editar otras pestañas
+            document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
+            document.getElementById(idPagina).classList.add('activa');
+            window.scrollTo(0, 0);
+        }
+
+        let timeoutNotificacion;
+        function mostrarMensaje(texto) {
+            const noti = document.getElementById('notificacion');
+            noti.innerText = texto;
+            noti.classList.add('mostrar');
+            clearTimeout(timeoutNotificacion);
+            timeoutNotificacion = setTimeout(() => noti.classList.remove('mostrar'), 3000);
+        }
+
+        window.addEventListener('scroll', () => {
+            const fondo = document.getElementById('fondoAnimado');
+            fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
+        });
+
+        // --- LÓGICA DE CITAS ---
+        function establecerFechaMinima() {
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha').setAttribute('min', hoy);
+        }
+
+        function cargarHorarios() {
+            const fecha = document.getElementById('fecha').value;
+            const barbero = document.getElementById('barbero').value;
+            const selectHora = document.getElementById('hora');
+            
+            if (!fecha || !barbero) return;
+
+            selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
+            const numMagico = (fecha.charCodeAt(fecha.length - 1) + barbero.charCodeAt(0)) % 3;
+
+            for(let i = 10; i <= 19; i++) {
+                const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
+                const option = document.createElement('option');
+                if ((i + numMagico) % 4 === 0) {
+                    option.text = `${horaStr} (No disponible)`;
+                    option.disabled = true;
+                } else {
+                    option.value = horaStr;
+                    option.text = horaStr;
+                }
+                selectHora.appendChild(option);
+            }
+        }
+
+        function procesarCita(evento) {
+            evento.preventDefault();
+            const cita = {
+                id: Date.now(),
+                nombre: document.getElementById('nombre').value,
+                barbero: document.getElementById('barbero').value,
+                fecha: document.getElementById('fecha').value,
+                hora: document.getElementById('hora').value,
+                servicio: document.getElementById('servicioSelect').value,
+                comentarios: document.getElementById('comentarios').value
+            };
+            estadoApp.citas.push(cita);
+            mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
+            document.getElementById('formCita').reset();
+            document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
+        }
+
+        // --- LÓGICA DE ADMINISTRADOR ---
+        function abrirLogin() {
+            estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex';
+        }
+
+        function cerrarLogin() { document.getElementById('modalLogin').style.display = 'none'; }
+
+        function procesarLogin(evento) {
+            evento.preventDefault();
+            const user = document.getElementById('login-user').value.toLowerCase();
+            const pass = document.getElementById('login-pass').value;
+
+            if (USUARIOS_SISTEMA[user] && USUARIOS_SISTEMA[user].pass === pass) {
+                estadoApp.usuarioActual = { nombre: user.toUpperCase(), rol: USUARIOS_SISTEMA[user].rol };
+                cerrarLogin();
+                const btnNav = document.getElementById('btn-nav-admin');
+                btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`;
+                btnNav.style.backgroundColor = 'var(--azul-acento)';
+                configurarPanelAdmin();
+                navegar('admin');
+                mostrarMensaje(`¡Bienvenido, ${estadoApp.usuarioActual.nombre}!`);
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
+            } else {
+                mostrarMensaje('Usuario o contraseña incorrectos');
+            }
+        }
+
+        function cerrarSesion() {
+            estadoApp.usuarioActual = null;
+            const btnNav = document.getElementById('btn-nav-admin');
+            btnNav.innerText = 'Admin';
+            btnNav.style.backgroundColor = 'transparent';
+            if (estadoApp.modoEdicion) toggleEdicionVisual(true);
+            navegar('inicio');
+            mostrarMensaje('Sesión cerrada');
+        }
+
+        function configurarPanelAdmin() {
+            const rol = estadoApp.usuarioActual.rol;
+            document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
+            document.getElementById('menu-tab-barberos').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
+            cambiarTabAdmin('tab-citas');
+            renderizarTablaCitas();
+            renderizarListaBarberos();
+        }
+
+        function cambiarTabAdmin(idTab) {
+            ['tab-citas', 'tab-barberos', 'tab-web'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+                document.getElementById('menu-' + id).classList.remove('activo');
+            });
+            document.getElementById(idTab).style.display = 'block';
+            document.getElementById('menu-' + idTab).classList.add('activo');
+        }
+
+        function renderizarTablaCitas() {
+            const tbody = document.querySelector('#tabla-citas tbody');
+            tbody.innerHTML = '';
+            let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' 
+                ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) 
+                : estadoApp.citas;
+
+            if (citasAMostrar.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>';
+                return;
+            }
+
+            citasAMostrar.forEach(cita => {
+                const tr = document.createElement('tr');
+                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita Barbería: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent('Servicio: ' + cita.servicio + '\nCliente: ' + cita.nombre)}`;
+                tr.innerHTML = `
+                    <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
+                    <td>${cita.nombre} <br> <small>${cita.comentarios}</small></td>
+                    <td>${cita.servicio}</td>
+                    <td>${cita.barbero}</td>
+                    <td>${(estadoApp.usuarioActual.rol !== 'barbero') ? `<a href="${linkCalendar}" target="_blank" class="btn-accion btn-calendario" style="text-decoration:none;">+ G-Calendar</a>` : 'Solo lectura'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderizarListaBarberos() {
+            const ul = document.getElementById('lista-barberos');
+            const selectCitas = document.getElementById('barbero');
+            ul.innerHTML = '';
+            selectCitas.innerHTML = '<option value="" disabled selected>¿Con quién te atenderás?</option>';
+
+            estadoApp.barberos.forEach(b => {
+                const li = document.createElement('li');
+                li.style.cssText = 'padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;';
+                li.innerHTML = `<span>${b}</span> <button onclick="eliminarBarbero('${b}')" class="btn-accion btn-eliminar">Eliminar</button>`;
+                ul.appendChild(li);
+
+                const opt = document.createElement('option');
+                opt.value = b; opt.textContent = b;
+                selectCitas.appendChild(opt);
+            });
+        }
+
+        function agregarBarbero() {
+            const nombre = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
+            if (nombre && !estadoApp.barberos.includes(nombre)) {
+                estadoApp.barberos.push(nombre);
+                document.getElementById('nuevo-barbero').value = '';
+                renderizarListaBarberos();
+                mostrarMensaje('Barbero agregado exitosamente');
+            }
+        }
+
+        function eliminarBarbero(nombre) {
+            estadoApp.barberos = estadoApp.barberos.filter(b => b !== nombre);
+            renderizarListaBarberos();
+            mostrarMensaje('Barbero eliminado');
+        }
+
+        function toggleEdicionVisual(forzarApagado = false) {
+            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
+            const btn = document.getElementById('btn-toggle-edicion');
+            
+            // Expandimos los selectores para agarrar textos y tarjetas de todas las pestañas, INCLUYENDO LOS PRECIOS
+            const elementosTexto = document.querySelectorAll('h1, h2, h3, p, .tarjeta-servicio h3, .tarjeta-servicio p, label, .precio-servicio');
+            // Seleccionamos las imágenes para editarlas
+            const elementosImagen = document.querySelectorAll('.foto-galeria, .logo-img');
+
+            if (estadoApp.modoEdicion) {
+                btn.innerText = 'Deshabilitar Edición Visual';
+                btn.style.background = '#d32f2f';
+                mostrarMensaje('Edición ACTIVADA. Navega por las pestañas y haz clic en textos o fotos.');
+                
+                elementosTexto.forEach(el => { 
+                    el.contentEditable = "true"; 
+                    el.classList.add('editando'); 
+                });
+
+                elementosImagen.forEach(el => {
+                    el.classList.add('editando-img');
+                    el.addEventListener('click', manejadorEdicionImagen);
+                });
+            } else {
+                btn.innerText = 'Habilitar Edición Visual';
+                btn.style.background = 'var(--azul-acento)';
+                
+                elementosTexto.forEach(el => { 
+                    el.contentEditable = "false"; 
+                    el.classList.remove('editando'); 
+                });
+
+                elementosImagen.forEach(el => {
+                    el.classList.remove('editando-img');
+                    el.removeEventListener('click', manejadorEdicionImagen);
+                });
+            }
+        }
+
+        // --- FUNCIONES NUEVAS PARA EDITAR IMÁGENES ---
+        function manejadorEdicionImagen(evento) {
+            if (!estadoApp.modoEdicion) return;
+            evento.preventDefault();
+            evento.stopPropagation();
+
+            const elemento = evento.currentTarget;
+            elementoImagenActual = elemento;
+            const inputUrl = document.getElementById('input-url-imagen');
+            
+            // Verificamos si es una etiqueta <img> o un <div> con imagen de fondo
+            if (elemento.tagName === 'IMG') {
+                inputUrl.value = elemento.src;
+            } else {
+                let bgUrl = elemento.style.backgroundImage;
+                bgUrl = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, ''); // Limpiar el string
+                inputUrl.value = bgUrl !== 'none' ? bgUrl : '';
+            }
+            
+            document.getElementById('modalEdicionImagen').style.display = 'flex';
+        }
+
+        function cerrarModalImagen() {
+            document.getElementById('modalEdicionImagen').style.display = 'none';
+            elementoImagenActual = null;
+        }
+
+        function guardarNuevaImagen() {
+            const nuevaUrl = document.getElementById('input-url-imagen').value.trim();
+            if (nuevaUrl && elementoImagenActual) {
+                if (elementoImagenActual.tagName === 'IMG') {
+                    elementoImagenActual.src = nuevaUrl;
+                } else {
+                    elementoImagenActual.style.backgroundImage = `url('${nuevaUrl}')`;
+                }
+                mostrarMensaje('Imagen actualizada con éxito');
+                cerrarModalImagen();
+            }
+        }
+
+        // --- INICIALIZACIÓN ---
+        window.onload = () => {
+            establecerFechaMinima();
+            renderizarListaBarberos();
+        };
+    </script>
+</body>
+</html>
