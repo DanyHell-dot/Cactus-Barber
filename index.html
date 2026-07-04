@@ -605,8 +605,10 @@
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
+            console.log("Conexión a Firebase exitosa.");
         } catch(error) {
-            console.error("Firebase no cargó. ¿Pegaste bien tus llaves?", error);
+            console.error("Firebase no cargó:", error);
+            setTimeout(() => mostrarMensaje("Error crítico: No se pudo conectar a la base de datos"), 1500);
         }
 
         // --- ESTADO Y ROLES ---
@@ -650,7 +652,12 @@
         
         // Escuchar barberos en la base de datos (para llenarlos en el form)
         function iniciarEscuchaBarberos() {
-            if(!db) return;
+            const selectCitas = document.getElementById('barbero');
+            if(!db) {
+                selectCitas.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
+                return;
+            }
+            
             db.collection("barberos").onSnapshot((snapshot) => {
                 estadoApp.barberos = [];
                 snapshot.forEach(doc => {
@@ -667,6 +674,7 @@
                 cargarHorarios();
             }, (error) => {
                 console.error("Error de permisos en barberos: ", error);
+                selectCitas.innerHTML = '<option value="" disabled selected>Bloqueado por seguridad</option>';
                 mostrarMensaje("Error al cargar barberos: Revisa las reglas de Firestore");
             });
         }
