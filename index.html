@@ -389,7 +389,7 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <img src="ChatGPT Image 3 jul 2026, 10_46_12 a.m..png" alt="Logo Cactus Barbería" class="logo-img">
+        <img src="ChatGPT Image 3 jul 2026, 10_46_12 a.m..png" alt="Logo Cactus Barbería" class="logo-img" onerror="this.src='https://via.placeholder.com/150x50?text=Cactus+Logo'">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
@@ -580,12 +580,41 @@
 
     <div id="notificacion"></div>
 
+    <!-- 1. AGREGAMOS LAS LIBRERÍAS DE FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+
     <script>
-        // --- BASE DE DATOS EN MEMORIA ---
+        // 2. CONFIGURACIÓN DE FIREBASE (¡Reemplaza esto con TU código del Paso 1 en tu archivo local!)
+        const firebaseConfig = {
+            apiKey: "PEGA_TU_API_KEY_AQUI",
+            authDomain: "cactus-barberia-xxxx.firebaseapp.com",
+            projectId: "cactus-barberia-xxxx",
+            storageBucket: "cactus-barberia-xxxx.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
+
+        // En la vista previa local usamos un pequeño truco para que funcione sin Firebase configurado todavía.
+        // Simulamos la base de datos en memoria para probar el diseño.
+        let firebaseActivo = false;
+        let db = null;
+        
+        try {
+            if(firebaseConfig.apiKey !== "PEGA_TU_API_KEY_AQUI") {
+               firebase.initializeApp(firebaseConfig);
+               db = firebase.firestore();
+               firebaseActivo = true;
+            }
+        } catch(e) {
+            console.log("Firebase no inicializado para la vista previa.");
+        }
+
+        // --- BASE DE DATOS EN MEMORIA (Para la vista previa) ---
         const estadoApp = {
             usuarioActual: null,
             barberos: ['TONNY', 'DUDE'],
-            citas: [],
+            citas: [], 
             modoEdicion: false
         };
 
@@ -595,11 +624,10 @@
             'super': { rol: 'superadmin', pass: '123' }
         };
 
-        let elementoImagenActual = null; // Variable para recordar qué imagen estamos cambiando
+        let elementoImagenActual = null;
 
         // --- FUNCIONES GLOBALES ---
         function navegar(idPagina) {
-            // Ya NO apagamos la edición automáticamente, así puedes navegar y editar otras pestañas
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
             window.scrollTo(0, 0);
@@ -638,6 +666,7 @@
             for(let i = 10; i <= 19; i++) {
                 const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
                 const option = document.createElement('option');
+                
                 if ((i + numMagico) % 4 === 0) {
                     option.text = `${horaStr} (No disponible)`;
                     option.disabled = true;
@@ -652,18 +681,40 @@
         function procesarCita(evento) {
             evento.preventDefault();
             const cita = {
-                id: Date.now(),
+                id: Date.now().toString(),
                 nombre: document.getElementById('nombre').value,
                 barbero: document.getElementById('barbero').value,
                 fecha: document.getElementById('fecha').value,
                 hora: document.getElementById('hora').value,
                 servicio: document.getElementById('servicioSelect').value,
-                comentarios: document.getElementById('comentarios').value
+                comentarios: document.getElementById('comentarios').value,
+                fechaCreacion: new Date().toISOString()
             };
-            estadoApp.citas.push(cita);
-            mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
-            document.getElementById('formCita').reset();
-            document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
+            
+            if(firebaseActivo) {
+                 db.collection("citas").add(cita)
+                .then(() => {
+                    mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
+                    limpiarFormularioCita();
+                })
+                .catch((error) => {
+                    console.error("Error al guardar cita: ", error);
+                    mostrarMensaje("Hubo un error al agendar. Intenta de nuevo.");
+                });
+            } else {
+                // Simulación local
+                estadoApp.citas.push(cita);
+                mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
+                limpiarFormularioCita();
+                if (estadoApp.usuarioActual && document.getElementById('tab-citas').style.display === 'block') {
+                    renderizarTablaCitas();
+                }
+            }
+        }
+
+        function limpiarFormularioCita() {
+             document.getElementById('formCita').reset();
+             document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
         }
 
         // --- LÓGICA DE ADMINISTRADOR ---
@@ -787,9 +838,7 @@
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
             
-            // Expandimos los selectores para agarrar textos y tarjetas de todas las pestañas, INCLUYENDO LOS PRECIOS
             const elementosTexto = document.querySelectorAll('h1, h2, h3, p, .tarjeta-servicio h3, .tarjeta-servicio p, label, .precio-servicio');
-            // Seleccionamos las imágenes para editarlas
             const elementosImagen = document.querySelectorAll('.foto-galeria, .logo-img');
 
             if (estadoApp.modoEdicion) {
@@ -822,7 +871,6 @@
             }
         }
 
-        // --- FUNCIONES NUEVAS PARA EDITAR IMÁGENES ---
         function manejadorEdicionImagen(evento) {
             if (!estadoApp.modoEdicion) return;
             evento.preventDefault();
@@ -832,12 +880,11 @@
             elementoImagenActual = elemento;
             const inputUrl = document.getElementById('input-url-imagen');
             
-            // Verificamos si es una etiqueta <img> o un <div> con imagen de fondo
             if (elemento.tagName === 'IMG') {
                 inputUrl.value = elemento.src;
             } else {
                 let bgUrl = elemento.style.backgroundImage;
-                bgUrl = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, ''); // Limpiar el string
+                bgUrl = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
                 inputUrl.value = bgUrl !== 'none' ? bgUrl : '';
             }
             
