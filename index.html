@@ -368,6 +368,21 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
+        /* Estilo para el botón de recarga manual */
+        .btn-recargar {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        .btn-recargar:hover {
+            background-color: #e0e0e0;
+        }
+
         @media (max-width: 768px) {
             .admin-layout { flex-direction: column; margin: 10px; }
             .admin-sidebar { width: 100%; padding: 15px; }
@@ -386,8 +401,7 @@
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
             <a onclick="navegar('citas')">Citas</a>
-            <!-- El (v2) te ayudará a saber que Netlify ya actualizó tu página -->
-            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin (v2)</button>
+            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin (v3)</button>
         </nav>
     </header>
 
@@ -462,8 +476,10 @@
                 <div class="grupo-form">
                     <label for="barbero">👨‍🔧 Selecciona tu Barbero:</label>
                     <select id="barbero" required onchange="cargarHorarios()">
-                        <option value="" disabled selected>Cargando conexión...</option>
+                        <option value="" disabled selected>Iniciando conexión...</option>
                     </select>
+                    <!-- Botón de recarga manual -->
+                    <button type="button" class="btn-recargar" onclick="forzarCargaBarberos()">↻ Recargar lista</button>
                 </div>
                 <div class="grupo-form">
                     <label for="fecha">📆 Fecha:</label>
@@ -582,7 +598,7 @@
             auth = firebase.auth();
         } catch(error) {
             console.error("Error al inicializar:", error);
-            document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error interno al conectar</option>';
+            document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error de inicialización</option>';
         }
 
         const estadoApp = {
@@ -620,15 +636,18 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- SISTEMA DE DESCARGA ROBUSTA (NUEVO) ---
-        async function cargarDatosIniciales() {
+        // --- SISTEMA DE DESCARGA MANUAL Y ROBUSTA ---
+        async function forzarCargaBarberos() {
             const selectCitas = document.getElementById('barbero');
-            if(!db) return;
+            if(!db) {
+                mostrarMensaje("Error: Base de datos no conectada.");
+                return;
+            }
 
             try {
-                selectCitas.innerHTML = '<option value="" disabled selected>Descargando barberos...</option>';
+                selectCitas.innerHTML = '<option value="" disabled selected>Buscando en servidor...</option>';
                 
-                // 1. Usamos GET para asegurar que los traiga sí o sí sin atorarse
+                // Forzamos la lectura usando .get() en lugar de .onSnapshot()
                 const snapshot = await db.collection("barberos").get();
                 
                 estadoApp.barberos = [];
@@ -636,18 +655,27 @@
                     estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
                 });
                 
-                // Si está vacía, agregamos por defecto
                 if (estadoApp.barberos.length === 0) {
-                    await db.collection("barberos").add({ nombre: "TONNY" });
-                    await db.collection("barberos").add({ nombre: "DUDE" });
-                    estadoApp.barberos.push({ id: "1", nombre: "TONNY" });
-                    estadoApp.barberos.push({ id: "2", nombre: "DUDE" });
+                    selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos registrados</option>';
+                } else {
+                    renderizarListaBarberos();
+                    cargarHorarios();
+                    mostrarMensaje("Lista de barberos actualizada.");
                 }
 
-                renderizarListaBarberos();
-                cargarHorarios();
+            } catch(error) {
+                console.error("Fallo al descargar:", error);
+                selectCitas.innerHTML = `<option value="" disabled selected>Error: ${error.message}</option>`;
+                mostrarMensaje("Problema al conectar con Firebase.");
+            }
+        }
 
-                // 2. Ahora sí activamos la escucha silenciosa para el futuro
+        // Esta función arranca sola al cargar la página
+        async function cargarDatosIniciales() {
+            await forzarCargaBarberos();
+
+            if(db) {
+                // Dejamos la escucha silenciosa encendida para el panel de admin
                 db.collection("barberos").onSnapshot((snap) => {
                     estadoApp.barberos = [];
                     snap.forEach(doc => {
@@ -655,26 +683,18 @@
                     });
                     renderizarListaBarberos();
                 });
-
-            } catch(error) {
-                console.error("Fallo la descarga:", error);
-                // ESTO mostrará el error exacto en el menú si algo lo bloquea
-                selectCitas.innerHTML = `<option value="" disabled selected>Error: ${error.message}</option>`;
-                mostrarMensaje("Problema de red al conectar con Google.");
             }
         }
 
         function iniciarEscuchaCitas() {
             if(!db) return;
             try {
-                // Eliminamos cualquier ordenamiento complejo que pueda bloquear la base de datos
                 db.collection("citas").onSnapshot((snap) => {
                     estadoApp.citas = [];
                     snap.forEach(doc => {
                         estadoApp.citas.push({ id: doc.id, ...doc.data() });
                     });
                     
-                    // Ordenamos manualmente con JavaScript para que sea a prueba de fallos
                     estadoApp.citas.sort((a, b) => {
                         let timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
                         let timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
@@ -759,7 +779,7 @@
                     configurarPanelAdmin();
                 } else {
                     estadoApp.usuarioActual = null;
-                    btnNav.innerText = 'Admin (v2)';
+                    btnNav.innerText = 'Admin (v3)';
                     btnNav.style.backgroundColor = 'transparent';
                     if (estadoApp.modoEdicion) toggleEdicionVisual(true);
                 }
@@ -888,6 +908,8 @@
                 db.collection("barberos").add({ nombre: nombre }).then(() => {
                     document.getElementById('nuevo-barbero').value = '';
                     mostrarMensaje('Barbero agregado exitosamente');
+                    // Forzar recarga de la lista
+                    forzarCargaBarberos();
                 }).finally(() => {
                     btn.innerText = "Añadir";
                 });
@@ -899,6 +921,8 @@
             if(confirm("¿Estás seguro de eliminar este barbero?")) {
                 db.collection("barberos").doc(idDocumento).delete().then(() => {
                     mostrarMensaje('Barbero eliminado');
+                    // Forzar recarga de la lista
+                    forzarCargaBarberos();
                 });
             }
         }
@@ -962,7 +986,6 @@
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
             
-            // Disparamos la nueva función robusta
             cargarDatosIniciales();
             iniciarEscuchaCitas();
         };
