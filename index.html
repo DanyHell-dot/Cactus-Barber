@@ -598,6 +598,7 @@
         };
 
         let elementoImagenActual = null;
+        let datosYaCargados = false; // Control de seguridad para la conexión
 
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
@@ -620,7 +621,6 @@
         });
 
         // --- SISTEMA DE DESCARGA CONFIABLE ---
-        // Ahora esta función se llamará automáticamente solo cuando Firebase esté listo
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -632,7 +632,6 @@
                 });
                 
                 if (estadoApp.barberos.length === 0) {
-                    // Si no hay barberos, inyectamos los de prueba la primera vez
                     db.collection("barberos").add({ nombre: "TONNY" });
                     db.collection("barberos").add({ nombre: "DUDE" });
                 } else {
@@ -702,7 +701,7 @@
             btn.disabled = true;
 
             const cita = {
-                nombre: document.getElementById('nombre').value,
+                nombre: document.getElementById('nombre').value.trim(),
                 telefono: document.getElementById('telefono').value,
                 barbero: document.getElementById('barbero').value,
                 fecha: document.getElementById('fecha').value,
@@ -724,16 +723,16 @@
             });
         }
 
-        // --- SISTEMA DE AUTENTICACIÓN Y DISPARADOR ---
+        // --- SISTEMA DE AUTENTICACIÓN ---
         if(auth) {
-            // Este es el "reloj interno" de Firebase. Se dispara automáticamente
-            // en cuanto Firebase confirma que tiene internet y está listo para trabajar.
             auth.onAuthStateChanged((user) => {
                 
-                // ¡Aquí está la magia! Ya no pedimos los datos al cargar la página, 
-                // sino hasta que Firebase nos da luz verde.
-                iniciarEscuchaBarberos();
-                iniciarEscuchaCitas();
+                // Solo cargamos los datos la primera vez para no causar choques al iniciar sesión
+                if(!datosYaCargados) {
+                    iniciarEscuchaBarberos();
+                    iniciarEscuchaCitas();
+                    datosYaCargados = true;
+                }
 
                 const btnNav = document.getElementById('btn-nav-admin');
                 if (user) {
@@ -761,9 +760,13 @@
 
         function procesarLogin(evento) {
             evento.preventDefault();
-            if(!auth) return;
+            if(!auth) {
+                mostrarMensaje("Error de conexión con Firebase.");
+                return;
+            }
 
-            const email = document.getElementById('login-user').value.toLowerCase();
+            // Agregamos trim() para borrar espacios invisibles al final del correo
+            const email = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value;
             const btnLogin = document.getElementById('btn-login');
 
@@ -776,8 +779,19 @@
                 mostrarMensaje(`¡Bienvenido!`);
                 document.getElementById('login-user').value = '';
                 document.getElementById('login-pass').value = '';
-            }).catch(() => {
-                mostrarMensaje('Correo o contraseña incorrectos');
+            }).catch((error) => {
+                console.error("Detalle del error:", error.code);
+                
+                // Explicamos el error específico para no dejarte a ciegas
+                if(error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    mostrarMensaje('Correo o contraseña incorrectos.');
+                } else if(error.code === 'auth/too-many-requests') {
+                    mostrarMensaje('Demasiados intentos. Espera unos minutos.');
+                } else if(error.code === 'auth/invalid-email') {
+                    mostrarMensaje('El formato del correo es inválido.');
+                } else {
+                    mostrarMensaje('Error de conexión: ' + error.message);
+                }
             }).finally(() => {
                 btnLogin.innerText = "Entrar";
                 btnLogin.disabled = false;
@@ -948,8 +962,6 @@
         window.onload = () => {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
-            
-            // Ya no forzamos la descarga aquí, Firebase lo hará solito cuando esté listo.
         };
     </script>
 </body>
