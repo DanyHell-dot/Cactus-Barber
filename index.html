@@ -541,7 +541,7 @@
                     <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
                     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
                         <input type="text" id="nuevo-barbero" placeholder="Nombre del nuevo barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-                        <button onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;">Añadir</button>
+                        <button id="btn-add-barbero" onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;">Añadir</button>
                     </div>
                     <ul id="lista-barberos" style="list-style: none;"></ul>
                 </div>
@@ -656,8 +656,18 @@
                 snapshot.forEach(doc => {
                     estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
                 });
+                
+                // Si la colección está vacía por ser nueva, inyectamos los defaults automáticamente
+                if (estadoApp.barberos.length === 0) {
+                    db.collection("barberos").add({ nombre: "TONNY" });
+                    db.collection("barberos").add({ nombre: "DUDE" });
+                }
+
                 renderizarListaBarberos();
                 cargarHorarios();
+            }, (error) => {
+                console.error("Error de permisos en barberos: ", error);
+                mostrarMensaje("Error al cargar barberos: Revisa las reglas de Firestore");
             });
         }
 
@@ -671,6 +681,9 @@
                 });
                 // Actualizar tabla si el panel está abierto
                 if(estadoApp.usuarioActual) renderizarTablaCitas();
+            }, (error) => {
+                console.error("Error de permisos en citas: ", error);
+                // No mostrar mensaje aquí para no saturar al usuario, pero se registra en consola
             });
         }
 
@@ -729,7 +742,7 @@
                 document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
             }).catch((error) => {
                 console.error("Error al guardar cita: ", error);
-                mostrarMensaje("Hubo un error al agendar. Intenta de nuevo.");
+                mostrarMensaje("Error al agendar: Revisa las reglas de seguridad.");
             }).finally(() => {
                 btn.innerText = "Confirmar Reserva";
                 btn.disabled = false;
@@ -889,9 +902,17 @@
             if(!db) return;
             const nombre = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
             if (nombre) {
+                const btn = document.getElementById('btn-add-barbero');
+                btn.innerText = "Guardando...";
+                
                 db.collection("barberos").add({ nombre: nombre }).then(() => {
                     document.getElementById('nuevo-barbero').value = '';
                     mostrarMensaje('Barbero agregado exitosamente');
+                }).catch((error) => {
+                    console.error("Error al guardar barbero: ", error);
+                    mostrarMensaje('Error de permisos en Firestore');
+                }).finally(() => {
+                    btn.innerText = "Añadir";
                 });
             }
         }
@@ -901,6 +922,9 @@
             if(confirm("¿Estás seguro de eliminar este barbero?")) {
                 db.collection("barberos").doc(idDocumento).delete().then(() => {
                     mostrarMensaje('Barbero eliminado');
+                }).catch((error) => {
+                    console.error("Error al eliminar barbero: ", error);
+                    mostrarMensaje('Error de permisos al eliminar');
                 });
             }
         }
