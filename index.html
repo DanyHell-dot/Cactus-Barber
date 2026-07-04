@@ -485,7 +485,7 @@
                 <div class="grupo-form">
                     <label for="barbero">👨‍🔧 Selecciona tu Barbero:</label>
                     <select id="barbero" required onchange="cargarHorarios()">
-                        <!-- Se llena dinámicamente -->
+                        <option value="" disabled selected>Cargando barberos...</option>
                     </select>
                 </div>
                 <div class="grupo-form">
@@ -502,7 +502,7 @@
                     <label for="comentarios">📝 Comentarios (Opcional):</label>
                     <textarea id="comentarios" rows="3" placeholder="Ej. Quiero un diseño en especial..."></textarea>
                 </div>
-                <button type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;">Confirmar Reserva</button>
+                <button id="btn-submit-cita" type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;">Confirmar Reserva</button>
             </form>
         </div>
     </section>
@@ -533,7 +533,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody><!-- Se llena con JS --></tbody>
+                            <tbody><!-- Se llena en tiempo real --></tbody>
                         </table>
                     </div>
                 </div>
@@ -554,20 +554,20 @@
         </div>
     </section>
 
-    <!-- Modal Login y Toast -->
+    <!-- Modal Login -->
     <div class="modal-overlay" id="modalLogin">
         <div class="modal-login">
             <h2>Iniciar Sesión</h2>
             <form onsubmit="procesarLogin(event)">
-                <div class="grupo-form"><input type="text" id="login-user" placeholder="Usuario (dude, tonny, super)" required></div>
-                <div class="grupo-form"><input type="password" id="login-pass" placeholder="Contraseña (123)" required></div>
-                <button type="submit" class="btn-cita" style="width: 100%;">Entrar</button>
+                <div class="grupo-form"><input type="email" id="login-user" placeholder="Correo electrónico (ej. tonny@cactus.com)" required></div>
+                <div class="grupo-form"><input type="password" id="login-pass" placeholder="Contraseña" required></div>
+                <button type="submit" id="btn-login" class="btn-cita" style="width: 100%;">Entrar</button>
                 <button type="button" class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarLogin()">Cancelar</button>
             </form>
         </div>
     </div>
 
-    <!-- Nuevo Modal para Editar Imágenes -->
+    <!-- Modal para Editar Imágenes -->
     <div class="modal-overlay" id="modalEdicionImagen">
         <div class="modal-login">
             <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Imagen</h2>
@@ -580,53 +580,52 @@
 
     <div id="notificacion"></div>
 
-    <!-- 1. AGREGAMOS LAS LIBRERÍAS DE FIREBASE -->
+    <!-- 1. LIBRERÍAS DE FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
 
     <script>
-        // 2. CONFIGURACIÓN DE FIREBASE (¡Reemplaza esto con TU código del Paso 1 en tu archivo local!)
+        // ¡Listo! Llaves reales conectadas a tu proyecto Cactus Barbería.
         const firebaseConfig = {
-            apiKey: "PEGA_TU_API_KEY_AQUI",
-            authDomain: "cactus-barberia-xxxx.firebaseapp.com",
-            projectId: "cactus-barberia-xxxx",
-            storageBucket: "cactus-barberia-xxxx.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
+            apiKey: "AIzaSyBBVbW-DrxmA1xr-SVivwJseD1u0VKUqSk",
+            authDomain: "cactus-barberia.firebaseapp.com",
+            projectId: "cactus-barberia",
+            storageBucket: "cactus-barberia.firebasestorage.app",
+            messagingSenderId: "502779012185",
+            appId: "1:502779012185:web:483b1375f0e6a8291f7d48"
         };
 
-        // En la vista previa local usamos un pequeño truco para que funcione sin Firebase configurado todavía.
-        // Simulamos la base de datos en memoria para probar el diseño.
-        let firebaseActivo = false;
+        // Inicializar Firebase
+        let app = null;
         let db = null;
-        
+        let auth = null;
+
         try {
-            if(firebaseConfig.apiKey !== "PEGA_TU_API_KEY_AQUI") {
-               firebase.initializeApp(firebaseConfig);
-               db = firebase.firestore();
-               firebaseActivo = true;
-            }
-        } catch(e) {
-            console.log("Firebase no inicializado para la vista previa.");
+            app = firebase.initializeApp(firebaseConfig);
+            db = firebase.firestore();
+            auth = firebase.auth();
+        } catch(error) {
+            console.error("Firebase no cargó. ¿Pegaste bien tus llaves?", error);
         }
 
-        // --- BASE DE DATOS EN MEMORIA (Para la vista previa) ---
+        // --- ESTADO Y ROLES ---
         const estadoApp = {
             usuarioActual: null,
-            barberos: ['TONNY', 'DUDE'],
+            barberos: [],
             citas: [], 
             modoEdicion: false
         };
 
-        const USUARIOS_SISTEMA = {
-            'dude': { rol: 'barbero', pass: '123' },
-            'tonny': { rol: 'admin', pass: '123' },
-            'super': { rol: 'superadmin', pass: '123' }
+        const USUARIOS_ROLES = {
+            'dude@cactus.com': { nombre: 'DUDE', rol: 'barbero' },
+            'tonny@cactus.com': { nombre: 'TONNY', rol: 'admin' },
+            'super@cactus.com': { nombre: 'SUPER', rol: 'superadmin' }
         };
 
         let elementoImagenActual = null;
 
-        // --- FUNCIONES GLOBALES ---
+        // --- FUNCIONES VISUALES BÁSICAS ---
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
@@ -647,26 +646,50 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- LÓGICA DE CITAS ---
-        function establecerFechaMinima() {
-            const hoy = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha').setAttribute('min', hoy);
+        // --- LÓGICA DE FIREBASE (REAL-TIME) ---
+        
+        // Escuchar barberos en la base de datos (para llenarlos en el form)
+        function iniciarEscuchaBarberos() {
+            if(!db) return;
+            db.collection("barberos").onSnapshot((snapshot) => {
+                estadoApp.barberos = [];
+                snapshot.forEach(doc => {
+                    estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
+                });
+                renderizarListaBarberos();
+                cargarHorarios();
+            });
         }
 
+        // Escuchar citas en tiempo real (para el panel de admin)
+        function iniciarEscuchaCitas() {
+            if(!db) return;
+            db.collection("citas").orderBy("fechaCreacion", "desc").onSnapshot((snapshot) => {
+                estadoApp.citas = [];
+                snapshot.forEach(doc => {
+                    estadoApp.citas.push({ id: doc.id, ...doc.data() });
+                });
+                // Actualizar tabla si el panel está abierto
+                if(estadoApp.usuarioActual) renderizarTablaCitas();
+            });
+        }
+
+        // --- MANEJO DE CITAS ---
         function cargarHorarios() {
             const fecha = document.getElementById('fecha').value;
             const barbero = document.getElementById('barbero').value;
             const selectHora = document.getElementById('hora');
             
             if (!fecha || !barbero) return;
-
             selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
+
             const numMagico = (fecha.charCodeAt(fecha.length - 1) + barbero.charCodeAt(0)) % 3;
 
             for(let i = 10; i <= 19; i++) {
                 const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
                 const option = document.createElement('option');
                 
+                // Simulación visual de horarios ocupados
                 if ((i + numMagico) % 4 === 0) {
                     option.text = `${horaStr} (No disponible)`;
                     option.disabled = true;
@@ -680,44 +703,65 @@
 
         function procesarCita(evento) {
             evento.preventDefault();
+            if(!db) {
+                mostrarMensaje("Por favor configura Firebase primero.");
+                return;
+            }
+
+            const btn = document.getElementById('btn-submit-cita');
+            btn.innerText = "Agendando...";
+            btn.disabled = true;
+
             const cita = {
-                id: Date.now().toString(),
                 nombre: document.getElementById('nombre').value,
+                telefono: document.getElementById('telefono').value,
                 barbero: document.getElementById('barbero').value,
                 fecha: document.getElementById('fecha').value,
                 hora: document.getElementById('hora').value,
                 servicio: document.getElementById('servicioSelect').value,
                 comentarios: document.getElementById('comentarios').value,
-                fechaCreacion: new Date().toISOString()
+                fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
             };
             
-            if(firebaseActivo) {
-                 db.collection("citas").add(cita)
-                .then(() => {
-                    mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
-                    limpiarFormularioCita();
-                })
-                .catch((error) => {
-                    console.error("Error al guardar cita: ", error);
-                    mostrarMensaje("Hubo un error al agendar. Intenta de nuevo.");
-                });
-            } else {
-                // Simulación local
-                estadoApp.citas.push(cita);
+            db.collection("citas").add(cita).then(() => {
                 mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
-                limpiarFormularioCita();
-                if (estadoApp.usuarioActual && document.getElementById('tab-citas').style.display === 'block') {
-                    renderizarTablaCitas();
+                document.getElementById('formCita').reset();
+                document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
+            }).catch((error) => {
+                console.error("Error al guardar cita: ", error);
+                mostrarMensaje("Hubo un error al agendar. Intenta de nuevo.");
+            }).finally(() => {
+                btn.innerText = "Confirmar Reserva";
+                btn.disabled = false;
+            });
+        }
+
+        // --- SISTEMA DE AUTENTICACIÓN FIREBASE AUTH ---
+        
+        // Listener de estado global de sesión
+        if(auth) {
+            auth.onAuthStateChanged((user) => {
+                const btnNav = document.getElementById('btn-nav-admin');
+                if (user) {
+                    // Usuario entró
+                    const email = user.email.toLowerCase();
+                    const infoUsuario = USUARIOS_ROLES[email] || { nombre: 'Colaborador', rol: 'barbero' };
+                    estadoApp.usuarioActual = infoUsuario;
+                    
+                    btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`;
+                    btnNav.style.backgroundColor = 'var(--azul-acento)';
+                    
+                    configurarPanelAdmin();
+                } else {
+                    // Usuario salió
+                    estadoApp.usuarioActual = null;
+                    btnNav.innerText = 'Admin';
+                    btnNav.style.backgroundColor = 'transparent';
+                    if (estadoApp.modoEdicion) toggleEdicionVisual(true);
                 }
-            }
+            });
         }
 
-        function limpiarFormularioCita() {
-             document.getElementById('formCita').reset();
-             document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
-        }
-
-        // --- LÓGICA DE ADMINISTRADOR ---
         function abrirLogin() {
             estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex';
         }
@@ -726,35 +770,46 @@
 
         function procesarLogin(evento) {
             evento.preventDefault();
-            const user = document.getElementById('login-user').value.toLowerCase();
-            const pass = document.getElementById('login-pass').value;
-
-            if (USUARIOS_SISTEMA[user] && USUARIOS_SISTEMA[user].pass === pass) {
-                estadoApp.usuarioActual = { nombre: user.toUpperCase(), rol: USUARIOS_SISTEMA[user].rol };
-                cerrarLogin();
-                const btnNav = document.getElementById('btn-nav-admin');
-                btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`;
-                btnNav.style.backgroundColor = 'var(--azul-acento)';
-                configurarPanelAdmin();
-                navegar('admin');
-                mostrarMensaje(`¡Bienvenido, ${estadoApp.usuarioActual.nombre}!`);
-                document.getElementById('login-user').value = '';
-                document.getElementById('login-pass').value = '';
-            } else {
-                mostrarMensaje('Usuario o contraseña incorrectos');
+            if(!auth) {
+                mostrarMensaje("Configura las llaves de Firebase primero.");
+                return;
             }
+
+            const email = document.getElementById('login-user').value.toLowerCase();
+            const pass = document.getElementById('login-pass').value;
+            const btnLogin = document.getElementById('btn-login');
+
+            btnLogin.innerText = "Validando...";
+            btnLogin.disabled = true;
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => {
+                    cerrarLogin();
+                    navegar('admin');
+                    mostrarMensaje(`¡Bienvenido!`);
+                    document.getElementById('login-user').value = '';
+                    document.getElementById('login-pass').value = '';
+                })
+                .catch((error) => {
+                    console.error("Error Auth:", error);
+                    mostrarMensaje('Correo o contraseña incorrectos');
+                })
+                .finally(() => {
+                    btnLogin.innerText = "Entrar";
+                    btnLogin.disabled = false;
+                });
         }
 
         function cerrarSesion() {
-            estadoApp.usuarioActual = null;
-            const btnNav = document.getElementById('btn-nav-admin');
-            btnNav.innerText = 'Admin';
-            btnNav.style.backgroundColor = 'transparent';
-            if (estadoApp.modoEdicion) toggleEdicionVisual(true);
-            navegar('inicio');
-            mostrarMensaje('Sesión cerrada');
+            if(auth) {
+                auth.signOut().then(() => {
+                    navegar('inicio');
+                    mostrarMensaje('Sesión cerrada de forma segura');
+                });
+            }
         }
 
+        // --- LÓGICA DEL PANEL ADMIN ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -762,7 +817,6 @@
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             cambiarTabAdmin('tab-citas');
             renderizarTablaCitas();
-            renderizarListaBarberos();
         }
 
         function cambiarTabAdmin(idTab) {
@@ -777,6 +831,9 @@
         function renderizarTablaCitas() {
             const tbody = document.querySelector('#tabla-citas tbody');
             tbody.innerHTML = '';
+            
+            if(!estadoApp.usuarioActual) return;
+
             let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' 
                 ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) 
                 : estadoApp.citas;
@@ -788,7 +845,8 @@
 
             citasAMostrar.forEach(cita => {
                 const tr = document.createElement('tr');
-                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita Barbería: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent('Servicio: ' + cita.servicio + '\nCliente: ' + cita.nombre)}`;
+                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita Barbería: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent('Servicio: ' + cita.servicio + '\nCliente: ' + cita.nombre + '\nTel: ' + cita.telefono)}`;
+                
                 tr.innerHTML = `
                     <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
                     <td>${cita.nombre} <br> <small>${cita.comentarios}</small></td>
@@ -804,36 +862,50 @@
             const ul = document.getElementById('lista-barberos');
             const selectCitas = document.getElementById('barbero');
             ul.innerHTML = '';
+            
+            if(estadoApp.barberos.length === 0) {
+                selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos</option>';
+                return;
+            }
+
             selectCitas.innerHTML = '<option value="" disabled selected>¿Con quién te atenderás?</option>';
 
             estadoApp.barberos.forEach(b => {
+                // Agregar al panel admin
                 const li = document.createElement('li');
                 li.style.cssText = 'padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;';
-                li.innerHTML = `<span>${b}</span> <button onclick="eliminarBarbero('${b}')" class="btn-accion btn-eliminar">Eliminar</button>`;
+                li.innerHTML = `<span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button>`;
                 ul.appendChild(li);
 
+                // Agregar al select público de citas
                 const opt = document.createElement('option');
-                opt.value = b; opt.textContent = b;
+                opt.value = b.nombre; 
+                opt.textContent = b.nombre;
                 selectCitas.appendChild(opt);
             });
         }
 
         function agregarBarbero() {
+            if(!db) return;
             const nombre = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
-            if (nombre && !estadoApp.barberos.includes(nombre)) {
-                estadoApp.barberos.push(nombre);
-                document.getElementById('nuevo-barbero').value = '';
-                renderizarListaBarberos();
-                mostrarMensaje('Barbero agregado exitosamente');
+            if (nombre) {
+                db.collection("barberos").add({ nombre: nombre }).then(() => {
+                    document.getElementById('nuevo-barbero').value = '';
+                    mostrarMensaje('Barbero agregado exitosamente');
+                });
             }
         }
 
-        function eliminarBarbero(nombre) {
-            estadoApp.barberos = estadoApp.barberos.filter(b => b !== nombre);
-            renderizarListaBarberos();
-            mostrarMensaje('Barbero eliminado');
+        function eliminarBarbero(idDocumento) {
+            if(!db) return;
+            if(confirm("¿Estás seguro de eliminar este barbero?")) {
+                db.collection("barberos").doc(idDocumento).delete().then(() => {
+                    mostrarMensaje('Barbero eliminado');
+                });
+            }
         }
 
+        // --- SISTEMA DE EDICIÓN VISUAL (SUPER ADMIN) ---
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
@@ -909,10 +981,14 @@
             }
         }
 
-        // --- INICIALIZACIÓN ---
+        // --- INICIALIZACIÓN DE LA PÁGINA ---
         window.onload = () => {
-            establecerFechaMinima();
-            renderizarListaBarberos();
+            const hoy = new Date().toISOString().split('T')[0];
+            document.getElementById('fecha').setAttribute('min', hoy);
+            
+            // Encendemos los escuchadores de Firebase
+            iniciarEscuchaBarberos();
+            iniciarEscuchaCitas();
         };
     </script>
 </body>
