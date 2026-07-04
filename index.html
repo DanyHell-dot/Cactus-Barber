@@ -386,7 +386,7 @@
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
             <a onclick="navegar('citas')">Citas</a>
-            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin (v3)</button>
+            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin (Final)</button>
         </nav>
     </header>
 
@@ -461,7 +461,7 @@
                 <div class="grupo-form">
                     <label for="barbero">👨‍🔧 Selecciona tu Barbero:</label>
                     <select id="barbero" required onchange="cargarHorarios()">
-                        <option value="" disabled selected>Cargando barberos...</option>
+                        <option value="" disabled selected>Conectando con la barbería...</option>
                     </select>
                 </div>
                 <div class="grupo-form">
@@ -619,66 +619,30 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- SISTEMA DE DESCARGA CON PILOTO AUTOMÁTICO ---
-        async function cargarBarberosSeguro(intentos = 0) {
+        // --- SISTEMA DE DESCARGA CONFIABLE ---
+        // Ahora esta función se llamará automáticamente solo cuando Firebase esté listo
+        function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
-            
-            // Si la base de datos aún no "despierta", intentamos de nuevo en medio segundo.
-            if(!db) {
-                if (intentos < 3) {
-                    setTimeout(() => cargarBarberosSeguro(intentos + 1), 500);
-                    return;
-                }
-                mostrarMensaje("Error: Base de datos no conectada.");
-                selectCitas.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
-                return;
-            }
+            if(!db) return;
 
-            try {
-                selectCitas.innerHTML = '<option value="" disabled selected>Cargando barberos...</option>';
-                
-                // Forzamos la lectura de los barberos
-                const snapshot = await db.collection("barberos").get();
-                
+            db.collection("barberos").onSnapshot((snapshot) => {
                 estadoApp.barberos = [];
                 snapshot.forEach(doc => {
                     estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
                 });
                 
                 if (estadoApp.barberos.length === 0) {
-                    selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos registrados</option>';
+                    // Si no hay barberos, inyectamos los de prueba la primera vez
+                    db.collection("barberos").add({ nombre: "TONNY" });
+                    db.collection("barberos").add({ nombre: "DUDE" });
                 } else {
                     renderizarListaBarberos();
                     cargarHorarios();
                 }
-
-            } catch(error) {
-                console.error("Fallo al descargar:", error);
-                
-                // Si la red parpadea, le damos una segunda oportunidad automática
-                if(intentos < 2) {
-                     setTimeout(() => cargarBarberosSeguro(intentos + 1), 1000);
-                } else {
-                     selectCitas.innerHTML = `<option value="" disabled selected>Error: Revisa tu conexión</option>`;
-                     mostrarMensaje("Problema al conectar con Firebase.");
-                }
-            }
-        }
-
-        // Esta función arranca sola al cargar la página
-        async function cargarDatosIniciales() {
-            await cargarBarberosSeguro();
-
-            if(db) {
-                // Dejamos la escucha silenciosa encendida para que si agregas uno desde el panel, aparezca al momento
-                db.collection("barberos").onSnapshot((snap) => {
-                    estadoApp.barberos = [];
-                    snap.forEach(doc => {
-                        estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
-                    });
-                    renderizarListaBarberos();
-                });
-            }
+            }, (error) => {
+                console.error("Fallo al descargar barberos:", error);
+                selectCitas.innerHTML = `<option value="" disabled selected>Error al cargar barberos</option>`;
+            });
         }
 
         function iniciarEscuchaCitas() {
@@ -760,9 +724,17 @@
             });
         }
 
-        // --- SISTEMA DE AUTENTICACIÓN ---
+        // --- SISTEMA DE AUTENTICACIÓN Y DISPARADOR ---
         if(auth) {
+            // Este es el "reloj interno" de Firebase. Se dispara automáticamente
+            // en cuanto Firebase confirma que tiene internet y está listo para trabajar.
             auth.onAuthStateChanged((user) => {
+                
+                // ¡Aquí está la magia! Ya no pedimos los datos al cargar la página, 
+                // sino hasta que Firebase nos da luz verde.
+                iniciarEscuchaBarberos();
+                iniciarEscuchaCitas();
+
                 const btnNav = document.getElementById('btn-nav-admin');
                 if (user) {
                     const email = user.email.toLowerCase();
@@ -774,7 +746,7 @@
                     configurarPanelAdmin();
                 } else {
                     estadoApp.usuarioActual = null;
-                    btnNav.innerText = 'Admin (v3)';
+                    btnNav.innerText = 'Admin (Final)';
                     btnNav.style.backgroundColor = 'transparent';
                     if (estadoApp.modoEdicion) toggleEdicionVisual(true);
                 }
@@ -903,7 +875,6 @@
                 db.collection("barberos").add({ nombre: nombre }).then(() => {
                     document.getElementById('nuevo-barbero').value = '';
                     mostrarMensaje('Barbero agregado exitosamente');
-                    cargarBarberosSeguro(); // Piloto automático tras agregar
                 }).finally(() => {
                     btn.innerText = "Añadir";
                 });
@@ -915,7 +886,6 @@
             if(confirm("¿Estás seguro de eliminar este barbero?")) {
                 db.collection("barberos").doc(idDocumento).delete().then(() => {
                     mostrarMensaje('Barbero eliminado');
-                    cargarBarberosSeguro(); // Piloto automático tras eliminar
                 });
             }
         }
@@ -979,8 +949,7 @@
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
             
-            cargarDatosIniciales();
-            iniciarEscuchaCitas();
+            // Ya no forzamos la descarga aquí, Firebase lo hará solito cuando esté listo.
         };
     </script>
 </body>
