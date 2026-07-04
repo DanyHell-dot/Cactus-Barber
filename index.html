@@ -214,7 +214,6 @@
         .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
         .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
         
-        /* Nuevo estilo para la etiqueta de precios */
         .precio-servicio {
             display: inline-block;
             background-color: rgba(74, 144, 226, 0.15);
@@ -329,7 +328,6 @@
         .tabla-admin th, .tabla-admin td { border: 1px solid #eee; padding: 12px; text-align: left; }
         .tabla-admin th { background: var(--fondo); color: var(--verde-cactus); }
 
-        /* Contenedor responsivo para evitar que la tabla se salga */
         .table-container {
             width: 100%;
             overflow-x: auto;
@@ -350,7 +348,6 @@
             padding: 5px; background: rgba(74, 144, 226, 0.1);
         }
 
-        /* Nuevos estilos para cuando se editan imágenes */
         .editando-img {
             border: 3px dashed #ea4335 !important;
             cursor: pointer !important;
@@ -377,11 +374,6 @@
             .admin-content { padding: 15px; min-width: 100%; }
             .tabla-admin th, .tabla-admin td { padding: 8px; font-size: 13px; }
         }
-        @media (max-width: 480px) {
-            nav { gap: 10px; }
-            nav a { font-size: 12px; }
-            .intro h1 { font-size: 28px; }
-        }
     </style>
 </head>
 <body>
@@ -394,7 +386,8 @@
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
             <a onclick="navegar('citas')">Citas</a>
-            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin</button>
+            <!-- El (v2) te ayudará a saber que Netlify ya actualizó tu página -->
+            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin (v2)</button>
         </nav>
     </header>
 
@@ -408,10 +401,10 @@
         <div class="galeria-contenedor">
             <h2>Nuestros Trabajos</h2>
             <div class="galeria">
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80');" title="Corte moderno"></div>
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80');" title="Arreglo de barba"></div>
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=500&q=80');" title="Herramientas profesionales"></div>
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80');" title="Silla Cactus"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=500&q=80');"></div>
+                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80');"></div>
             </div>
         </div>
     </section>
@@ -421,12 +414,12 @@
         <div class="grid-servicios">
             <div class="tarjeta-servicio">
                 <h3>Corte Clásico</h3>
-                <p>Corte tradicional adaptado a la forma del rostro y estilo del cliente. Incluye perfilado y acabado profesional.</p>
+                <p>Corte tradicional adaptado a la forma del rostro y estilo del cliente.</p>
                 <div class="precio-servicio">$200 MXN</div>
             </div>
             <div class="tarjeta-servicio">
                 <h3>Corte Premium</h3>
-                <p>Corte personalizado con asesoría de imagen, lavado, peinado y aplicación de productos profesionales.</p>
+                <p>Corte personalizado con asesoría de imagen, lavado, peinado y aplicación de productos.</p>
                 <div class="precio-servicio">$300 MXN</div>
             </div>
             <div class="tarjeta-servicio">
@@ -436,18 +429,8 @@
             </div>
             <div class="tarjeta-servicio">
                 <h3>Perfilado de Barba</h3>
-                <p>Definición y simetría de la barba respetando la forma del rostro y el crecimiento natural del vello.</p>
+                <p>Definición y simetría de la barba respetando la forma del rostro.</p>
                 <div class="precio-servicio">$150 MXN</div>
-            </div>
-            <div class="tarjeta-servicio">
-                <h3>Afeitado Tradicional</h3>
-                <p>Afeitado completo con toalla caliente, espuma de afeitar y navaja para un acabado suave y preciso.</p>
-                <div class="precio-servicio">$200 MXN</div>
-            </div>
-            <div class="tarjeta-servicio">
-                <h3>Paquete Corte + Barba</h3>
-                <p>Corte de cabello y arreglo completo de barba en una sola sesión con acabado profesional.</p>
-                <div class="precio-servicio">$350 MXN</div>
             </div>
         </div>
     </section>
@@ -473,19 +456,13 @@
                         <option value="Corte Clásico">Corte Clásico</option>
                         <option value="Corte Premium">Corte Premium</option>
                         <option value="Fade (Degradado)">Fade (Degradado)</option>
-                        <option value="Corte con Tijera">Corte con Tijera</option>
-                        <option value="Diseño de Corte">Diseño de Corte (Hair Design)</option>
                         <option value="Perfilado de Barba">Perfilado de Barba</option>
-                        <option value="Afeitado Tradicional">Afeitado Tradicional</option>
-                        <option value="Ritual de Barba Premium">Ritual de Barba Premium</option>
-                        <option value="Paquete Corte + Barba">Paquete Corte + Barba</option>
-                        <option value="Servicio VIP">Servicio VIP</option>
                     </select>
                 </div>
                 <div class="grupo-form">
                     <label for="barbero">👨‍🔧 Selecciona tu Barbero:</label>
                     <select id="barbero" required onchange="cargarHorarios()">
-                        <option value="" disabled selected>Cargando barberos...</option>
+                        <option value="" disabled selected>Cargando conexión...</option>
                     </select>
                 </div>
                 <div class="grupo-form">
@@ -533,7 +510,7 @@
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody><!-- Se llena en tiempo real --></tbody>
+                            <tbody><!-- Se llena dinámicamente --></tbody>
                         </table>
                     </div>
                 </div>
@@ -547,7 +524,7 @@
                 </div>
                 <div id="tab-web" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
-                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en cualquier texto del sitio web (títulos, descripciones, servicios) y cambiarlo en tiempo real.</p>
+                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en cualquier texto del sitio web y cambiarlo en tiempo real.</p>
                     <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual</button>
                 </div>
             </div>
@@ -559,7 +536,7 @@
         <div class="modal-login">
             <h2>Iniciar Sesión</h2>
             <form onsubmit="procesarLogin(event)">
-                <div class="grupo-form"><input type="email" id="login-user" placeholder="Correo electrónico (ej. tonny@cactus.com)" required></div>
+                <div class="grupo-form"><input type="email" id="login-user" placeholder="Correo electrónico" required></div>
                 <div class="grupo-form"><input type="password" id="login-pass" placeholder="Contraseña" required></div>
                 <button type="submit" id="btn-login" class="btn-cita" style="width: 100%;">Entrar</button>
                 <button type="button" class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarLogin()">Cancelar</button>
@@ -571,8 +548,7 @@
     <div class="modal-overlay" id="modalEdicionImagen">
         <div class="modal-login">
             <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Imagen</h2>
-            <p style="font-size: 14px; margin-bottom: 15px; color: #555;">Pega el enlace (URL) de la nueva imagen:</p>
-            <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc; font-size: 14px;" placeholder="https://ejemplo.com/foto.jpg">
+            <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;" placeholder="https://ejemplo.com/foto.jpg">
             <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
             <button class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarModalImagen()">Cancelar</button>
         </div>
@@ -580,13 +556,13 @@
 
     <div id="notificacion"></div>
 
-    <!-- 1. LIBRERÍAS DE FIREBASE -->
+    <!-- LIBRERÍAS DE FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
 
     <script>
-        // ¡Listo! Llaves reales conectadas a tu proyecto Cactus Barbería.
+        // Llaves de tu proyecto
         const firebaseConfig = {
             apiKey: "AIzaSyBBVbW-DrxmA1xr-SVivwJseD1u0VKUqSk",
             authDomain: "cactus-barberia.firebaseapp.com",
@@ -596,7 +572,6 @@
             appId: "1:502779012185:web:483b1375f0e6a8291f7d48"
         };
 
-        // Inicializar Firebase
         let app = null;
         let db = null;
         let auth = null;
@@ -605,15 +580,11 @@
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
-            console.log("Conexión a Firebase exitosa.");
         } catch(error) {
-            console.error("Firebase no cargó:", error);
-            // PRUEBA DE FUEGO: Forzamos que cambie el texto del select si esto falla
-            document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Fallo Crítico: Firebase muerto</option>';
-            setTimeout(() => mostrarMensaje("Error crítico: No se pudo conectar a la base de datos"), 1500);
+            console.error("Error al inicializar:", error);
+            document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error interno al conectar</option>';
         }
 
-        // --- ESTADO Y ROLES ---
         const estadoApp = {
             usuarioActual: null,
             barberos: [],
@@ -629,7 +600,6 @@
 
         let elementoImagenActual = null;
 
-        // --- FUNCIONES VISUALES BÁSICAS ---
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
@@ -650,51 +620,72 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- LÓGICA DE FIREBASE (REAL-TIME) ---
-        
-        // Escuchar barberos en la base de datos (para llenarlos en el form)
-        function iniciarEscuchaBarberos() {
+        // --- SISTEMA DE DESCARGA ROBUSTA (NUEVO) ---
+        async function cargarDatosIniciales() {
             const selectCitas = document.getElementById('barbero');
-            if(!db) {
-                selectCitas.innerHTML = '<option value="" disabled selected>Error de conexión</option>';
-                return;
-            }
-            
-            db.collection("barberos").onSnapshot((snapshot) => {
+            if(!db) return;
+
+            try {
+                selectCitas.innerHTML = '<option value="" disabled selected>Descargando barberos...</option>';
+                
+                // 1. Usamos GET para asegurar que los traiga sí o sí sin atorarse
+                const snapshot = await db.collection("barberos").get();
+                
                 estadoApp.barberos = [];
                 snapshot.forEach(doc => {
                     estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
                 });
                 
-                // Si la colección está vacía por ser nueva, inyectamos los defaults automáticamente
+                // Si está vacía, agregamos por defecto
                 if (estadoApp.barberos.length === 0) {
-                    db.collection("barberos").add({ nombre: "TONNY" });
-                    db.collection("barberos").add({ nombre: "DUDE" });
+                    await db.collection("barberos").add({ nombre: "TONNY" });
+                    await db.collection("barberos").add({ nombre: "DUDE" });
+                    estadoApp.barberos.push({ id: "1", nombre: "TONNY" });
+                    estadoApp.barberos.push({ id: "2", nombre: "DUDE" });
                 }
 
                 renderizarListaBarberos();
                 cargarHorarios();
-            }, (error) => {
-                console.error("Error de permisos en barberos: ", error);
-                selectCitas.innerHTML = '<option value="" disabled selected>Bloqueado por seguridad</option>';
-                mostrarMensaje("Error al cargar barberos: Revisa las reglas de Firestore");
-            });
+
+                // 2. Ahora sí activamos la escucha silenciosa para el futuro
+                db.collection("barberos").onSnapshot((snap) => {
+                    estadoApp.barberos = [];
+                    snap.forEach(doc => {
+                        estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
+                    });
+                    renderizarListaBarberos();
+                });
+
+            } catch(error) {
+                console.error("Fallo la descarga:", error);
+                // ESTO mostrará el error exacto en el menú si algo lo bloquea
+                selectCitas.innerHTML = `<option value="" disabled selected>Error: ${error.message}</option>`;
+                mostrarMensaje("Problema de red al conectar con Google.");
+            }
         }
 
-        // Escuchar citas en tiempo real (para el panel de admin)
         function iniciarEscuchaCitas() {
             if(!db) return;
-            db.collection("citas").orderBy("fechaCreacion", "desc").onSnapshot((snapshot) => {
-                estadoApp.citas = [];
-                snapshot.forEach(doc => {
-                    estadoApp.citas.push({ id: doc.id, ...doc.data() });
+            try {
+                // Eliminamos cualquier ordenamiento complejo que pueda bloquear la base de datos
+                db.collection("citas").onSnapshot((snap) => {
+                    estadoApp.citas = [];
+                    snap.forEach(doc => {
+                        estadoApp.citas.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    // Ordenamos manualmente con JavaScript para que sea a prueba de fallos
+                    estadoApp.citas.sort((a, b) => {
+                        let timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
+                        let timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
+                        return timeB - timeA;
+                    });
+
+                    if(estadoApp.usuarioActual) renderizarTablaCitas();
                 });
-                // Actualizar tabla si el panel está abierto
-                if(estadoApp.usuarioActual) renderizarTablaCitas();
-            }, (error) => {
-                console.error("Error de permisos en citas: ", error);
-                // No mostrar mensaje aquí para no saturar al usuario, pero se registra en consola
-            });
+            } catch(error) {
+                console.error("Error en citas:", error);
+            }
         }
 
         // --- MANEJO DE CITAS ---
@@ -712,7 +703,6 @@
                 const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
                 const option = document.createElement('option');
                 
-                // Simulación visual de horarios ocupados
                 if ((i + numMagico) % 4 === 0) {
                     option.text = `${horaStr} (No disponible)`;
                     option.disabled = true;
@@ -726,10 +716,7 @@
 
         function procesarCita(evento) {
             evento.preventDefault();
-            if(!db) {
-                mostrarMensaje("Por favor configura Firebase primero.");
-                return;
-            }
+            if(!db) return;
 
             const btn = document.getElementById('btn-submit-cita');
             btn.innerText = "Agendando...";
@@ -751,34 +738,28 @@
                 document.getElementById('formCita').reset();
                 document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
             }).catch((error) => {
-                console.error("Error al guardar cita: ", error);
-                mostrarMensaje("Error al agendar: Revisa las reglas de seguridad.");
+                mostrarMensaje("Error al agendar. Intenta de nuevo.");
             }).finally(() => {
                 btn.innerText = "Confirmar Reserva";
                 btn.disabled = false;
             });
         }
 
-        // --- SISTEMA DE AUTENTICACIÓN FIREBASE AUTH ---
-        
-        // Listener de estado global de sesión
+        // --- SISTEMA DE AUTENTICACIÓN ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 const btnNav = document.getElementById('btn-nav-admin');
                 if (user) {
-                    // Usuario entró
                     const email = user.email.toLowerCase();
                     const infoUsuario = USUARIOS_ROLES[email] || { nombre: 'Colaborador', rol: 'barbero' };
                     estadoApp.usuarioActual = infoUsuario;
                     
                     btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`;
                     btnNav.style.backgroundColor = 'var(--azul-acento)';
-                    
                     configurarPanelAdmin();
                 } else {
-                    // Usuario salió
                     estadoApp.usuarioActual = null;
-                    btnNav.innerText = 'Admin';
+                    btnNav.innerText = 'Admin (v2)';
                     btnNav.style.backgroundColor = 'transparent';
                     if (estadoApp.modoEdicion) toggleEdicionVisual(true);
                 }
@@ -793,10 +774,7 @@
 
         function procesarLogin(evento) {
             evento.preventDefault();
-            if(!auth) {
-                mostrarMensaje("Configura las llaves de Firebase primero.");
-                return;
-            }
+            if(!auth) return;
 
             const email = document.getElementById('login-user').value.toLowerCase();
             const pass = document.getElementById('login-pass').value;
@@ -805,34 +783,28 @@
             btnLogin.innerText = "Validando...";
             btnLogin.disabled = true;
 
-            auth.signInWithEmailAndPassword(email, pass)
-                .then(() => {
-                    cerrarLogin();
-                    navegar('admin');
-                    mostrarMensaje(`¡Bienvenido!`);
-                    document.getElementById('login-user').value = '';
-                    document.getElementById('login-pass').value = '';
-                })
-                .catch((error) => {
-                    console.error("Error Auth:", error);
-                    mostrarMensaje('Correo o contraseña incorrectos');
-                })
-                .finally(() => {
-                    btnLogin.innerText = "Entrar";
-                    btnLogin.disabled = false;
-                });
+            auth.signInWithEmailAndPassword(email, pass).then(() => {
+                cerrarLogin();
+                navegar('admin');
+                mostrarMensaje(`¡Bienvenido!`);
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
+            }).catch(() => {
+                mostrarMensaje('Correo o contraseña incorrectos');
+            }).finally(() => {
+                btnLogin.innerText = "Entrar";
+                btnLogin.disabled = false;
+            });
         }
 
         function cerrarSesion() {
-            if(auth) {
-                auth.signOut().then(() => {
-                    navegar('inicio');
-                    mostrarMensaje('Sesión cerrada de forma segura');
-                });
-            }
+            if(auth) auth.signOut().then(() => {
+                navegar('inicio');
+                mostrarMensaje('Sesión cerrada');
+            });
         }
 
-        // --- LÓGICA DEL PANEL ADMIN ---
+        // --- PANEL DE ADMIN ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -840,6 +812,7 @@
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             cambiarTabAdmin('tab-citas');
             renderizarTablaCitas();
+            renderizarListaBarberos();
         }
 
         function cambiarTabAdmin(idTab) {
@@ -854,7 +827,6 @@
         function renderizarTablaCitas() {
             const tbody = document.querySelector('#tabla-citas tbody');
             tbody.innerHTML = '';
-            
             if(!estadoApp.usuarioActual) return;
 
             let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' 
@@ -868,14 +840,13 @@
 
             citasAMostrar.forEach(cita => {
                 const tr = document.createElement('tr');
-                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita Barbería: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent('Servicio: ' + cita.servicio + '\nCliente: ' + cita.nombre + '\nTel: ' + cita.telefono)}`;
-                
+                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z`;
                 tr.innerHTML = `
                     <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
                     <td>${cita.nombre} <br> <small>${cita.comentarios}</small></td>
                     <td>${cita.servicio}</td>
                     <td>${cita.barbero}</td>
-                    <td>${(estadoApp.usuarioActual.rol !== 'barbero') ? `<a href="${linkCalendar}" target="_blank" class="btn-accion btn-calendario" style="text-decoration:none;">+ G-Calendar</a>` : 'Solo lectura'}</td>
+                    <td>${(estadoApp.usuarioActual.rol !== 'barbero') ? `<a href="${linkCalendar}" target="_blank" class="btn-accion btn-calendario" style="text-decoration:none;">+ Calendario</a>` : 'Lectura'}</td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -884,7 +855,7 @@
         function renderizarListaBarberos() {
             const ul = document.getElementById('lista-barberos');
             const selectCitas = document.getElementById('barbero');
-            ul.innerHTML = '';
+            if(ul) ul.innerHTML = '';
             
             if(estadoApp.barberos.length === 0) {
                 selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos</option>';
@@ -894,13 +865,13 @@
             selectCitas.innerHTML = '<option value="" disabled selected>¿Con quién te atenderás?</option>';
 
             estadoApp.barberos.forEach(b => {
-                // Agregar al panel admin
-                const li = document.createElement('li');
-                li.style.cssText = 'padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;';
-                li.innerHTML = `<span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button>`;
-                ul.appendChild(li);
+                if(ul) {
+                    const li = document.createElement('li');
+                    li.style.cssText = 'padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;';
+                    li.innerHTML = `<span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button>`;
+                    ul.appendChild(li);
+                }
 
-                // Agregar al select público de citas
                 const opt = document.createElement('option');
                 opt.value = b.nombre; 
                 opt.textContent = b.nombre;
@@ -914,13 +885,9 @@
             if (nombre) {
                 const btn = document.getElementById('btn-add-barbero');
                 btn.innerText = "Guardando...";
-                
                 db.collection("barberos").add({ nombre: nombre }).then(() => {
                     document.getElementById('nuevo-barbero').value = '';
                     mostrarMensaje('Barbero agregado exitosamente');
-                }).catch((error) => {
-                    console.error("Error al guardar barbero: ", error);
-                    mostrarMensaje('Error de permisos en Firestore');
                 }).finally(() => {
                     btn.innerText = "Añadir";
                 });
@@ -932,48 +899,28 @@
             if(confirm("¿Estás seguro de eliminar este barbero?")) {
                 db.collection("barberos").doc(idDocumento).delete().then(() => {
                     mostrarMensaje('Barbero eliminado');
-                }).catch((error) => {
-                    console.error("Error al eliminar barbero: ", error);
-                    mostrarMensaje('Error de permisos al eliminar');
                 });
             }
         }
 
-        // --- SISTEMA DE EDICIÓN VISUAL (SUPER ADMIN) ---
+        // --- EDICIÓN VISUAL ---
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
-            
             const elementosTexto = document.querySelectorAll('h1, h2, h3, p, .tarjeta-servicio h3, .tarjeta-servicio p, label, .precio-servicio');
             const elementosImagen = document.querySelectorAll('.foto-galeria, .logo-img');
 
             if (estadoApp.modoEdicion) {
                 btn.innerText = 'Deshabilitar Edición Visual';
                 btn.style.background = '#d32f2f';
-                mostrarMensaje('Edición ACTIVADA. Navega por las pestañas y haz clic en textos o fotos.');
-                
-                elementosTexto.forEach(el => { 
-                    el.contentEditable = "true"; 
-                    el.classList.add('editando'); 
-                });
-
-                elementosImagen.forEach(el => {
-                    el.classList.add('editando-img');
-                    el.addEventListener('click', manejadorEdicionImagen);
-                });
+                mostrarMensaje('Edición ACTIVADA.');
+                elementosTexto.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
+                elementosImagen.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
             } else {
                 btn.innerText = 'Habilitar Edición Visual';
                 btn.style.background = 'var(--azul-acento)';
-                
-                elementosTexto.forEach(el => { 
-                    el.contentEditable = "false"; 
-                    el.classList.remove('editando'); 
-                });
-
-                elementosImagen.forEach(el => {
-                    el.classList.remove('editando-img');
-                    el.removeEventListener('click', manejadorEdicionImagen);
-                });
+                elementosTexto.forEach(el => { el.contentEditable = "false"; el.classList.remove('editando'); });
+                elementosImagen.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
             }
         }
 
@@ -981,19 +928,15 @@
             if (!estadoApp.modoEdicion) return;
             evento.preventDefault();
             evento.stopPropagation();
-
-            const elemento = evento.currentTarget;
-            elementoImagenActual = elemento;
+            elementoImagenActual = evento.currentTarget;
             const inputUrl = document.getElementById('input-url-imagen');
             
-            if (elemento.tagName === 'IMG') {
-                inputUrl.value = elemento.src;
+            if (elementoImagenActual.tagName === 'IMG') {
+                inputUrl.value = elementoImagenActual.src;
             } else {
-                let bgUrl = elemento.style.backgroundImage;
-                bgUrl = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-                inputUrl.value = bgUrl !== 'none' ? bgUrl : '';
+                let bgUrl = elementoImagenActual.style.backgroundImage;
+                inputUrl.value = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
             }
-            
             document.getElementById('modalEdicionImagen').style.display = 'flex';
         }
 
@@ -1010,18 +953,17 @@
                 } else {
                     elementoImagenActual.style.backgroundImage = `url('${nuevaUrl}')`;
                 }
-                mostrarMensaje('Imagen actualizada con éxito');
                 cerrarModalImagen();
             }
         }
 
-        // --- INICIALIZACIÓN DE LA PÁGINA ---
+        // --- ARRANQUE ---
         window.onload = () => {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
             
-            // Encendemos los escuchadores de Firebase
-            iniciarEscuchaBarberos();
+            // Disparamos la nueva función robusta
+            cargarDatosIniciales();
             iniciarEscuchaCitas();
         };
     </script>
