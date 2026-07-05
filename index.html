@@ -386,7 +386,7 @@
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
             <a onclick="navegar('citas')">Citas</a>
-            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Admin (Final)</button>
+            <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Panel (Admin)</button>
         </nav>
     </header>
 
@@ -408,8 +408,7 @@
     <section id="servicios" class="servicios-contenedor pagina">
         <h2>Nuestros Servicios</h2>
         <div class="grid-servicios" id="contenedor-servicios-publico">
-            <!-- Los servicios se cargarán dinámicamente desde Firebase aquí -->
-            <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando catálogo de servicios...</p>
+            <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando servicios...</p>
         </div>
     </section>
 
@@ -473,6 +472,7 @@
                 </div>
             </div>
             <div class="admin-content">
+                
                 <div id="tab-citas">
                     <h2 style="color: var(--verde-cactus);">Citas Programadas</h2>
                     <div class="table-container">
@@ -490,6 +490,7 @@
                         </table>
                     </div>
                 </div>
+
                 <div id="tab-barberos" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
                     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
@@ -498,22 +499,24 @@
                     </div>
                     <ul id="lista-barberos" style="list-style: none;"></ul>
                 </div>
-                
+
                 <div id="tab-servicios" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Catálogo de Servicios</h2>
+                    
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 id="titulo-form-servicio" style="margin-bottom: 15px; font-size: 16px;">Agregar Nuevo Servicio</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
                             <input type="hidden" id="editando-servicio-id" value="">
-                            <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Tinte de barba)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
-                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $150 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
-                            <textarea id="nuevo-servicio-desc" placeholder="Descripción del servicio" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;" rows="2"></textarea>
+                            <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Corte Premium)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            <textarea id="nuevo-servicio-desc" placeholder="Descripción breve del servicio..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
                         </div>
                         <div style="display: flex; gap: 10px;">
                             <button id="btn-add-servicio" onclick="guardarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Servicio</button>
-                            <button id="btn-cancelar-edicion-servicio" onclick="cancelarEdicionServicio()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
+                            <button id="btn-cancelar-edicion" onclick="cancelarEdicionServicio()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
                         </div>
                     </div>
+
                     <div class="table-container">
                         <table class="tabla-admin" id="tabla-servicios">
                             <thead>
@@ -531,6 +534,7 @@
 
                 <div id="tab-galeria" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Trabajos (Galería)</h2>
+                    
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 id="titulo-form-galeria" style="margin-bottom: 15px; font-size: 16px;">Agregar Nueva Imagen</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
@@ -542,7 +546,7 @@
                             <button id="btn-cancelar-edicion-galeria" onclick="cancelarEdicionGaleria()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
                         </div>
                     </div>
-                    <!-- Usamos la misma clase galeria para que se vean en cuadrícula -->
+
                     <div class="galeria" id="contenedor-galeria-admin" style="gap: 20px;">
                         <!-- Se llena dinámicamente -->
                     </div>
@@ -550,9 +554,10 @@
 
                 <div id="tab-web" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
-                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en cualquier texto del sitio web y cambiarlo en tiempo real.</p>
-                    <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual</button>
+                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en los textos generales (Títulos e introducción) de la página y cambiarlos.</p>
+                    <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual de Textos</button>
                 </div>
+
             </div>
         </div>
     </section>
@@ -567,16 +572,6 @@
                 <button type="submit" id="btn-login" class="btn-cita" style="width: 100%;">Entrar</button>
                 <button type="button" class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarLogin()">Cancelar</button>
             </form>
-        </div>
-    </div>
-
-    <!-- Modal para Editar Imágenes -->
-    <div class="modal-overlay" id="modalEdicionImagen">
-        <div class="modal-login">
-            <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Imagen</h2>
-            <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;" placeholder="https://ejemplo.com/foto.jpg">
-            <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
-            <button class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarModalImagen()">Cancelar</button>
         </div>
     </div>
 
@@ -614,9 +609,9 @@
         const estadoApp = {
             usuarioActual: null,
             barberos: [],
+            citas: [], 
             servicios: [],
             galeria: [],
-            citas: [], 
             modoEdicion: false
         };
 
@@ -626,7 +621,6 @@
             'super@cactus.com': { nombre: 'SUPER', rol: 'superadmin' }
         };
 
-        let elementoImagenActual = null;
         let datosYaCargados = false; // Control de seguridad para la conexión
 
         function navegar(idPagina) {
@@ -650,6 +644,29 @@
         });
 
         // --- SISTEMA DE DESCARGA CONFIABLE ---
+        function iniciarEscuchaBarberos() {
+            const selectCitas = document.getElementById('barbero');
+            if(!db) return;
+
+            db.collection("barberos").onSnapshot((snapshot) => {
+                estadoApp.barberos = [];
+                snapshot.forEach(doc => {
+                    estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
+                });
+                
+                if (estadoApp.barberos.length === 0) {
+                    db.collection("barberos").add({ nombre: "TONNY" });
+                    db.collection("barberos").add({ nombre: "DUDE" });
+                } else {
+                    renderizarListaBarberos();
+                    cargarHorarios();
+                }
+            }, (error) => {
+                console.error("Fallo al descargar barberos:", error);
+                selectCitas.innerHTML = `<option value="" disabled selected>Error al cargar barberos</option>`;
+            });
+        }
+
         function iniciarEscuchaServicios() {
             if(!db) return;
             
@@ -660,7 +677,6 @@
                 });
                 
                 if (estadoApp.servicios.length === 0) {
-                    // Si la base está vacía, creamos los servicios iniciales
                     const serviciosBase = [
                         { nombre: "Corte Clásico", precio: "$200 MXN", desc: "Corte tradicional adaptado a la forma del rostro y estilo del cliente." },
                         { nombre: "Corte Premium", precio: "$300 MXN", desc: "Corte personalizado con asesoría de imagen, lavado, peinado y aplicación de productos." },
@@ -670,7 +686,7 @@
                     serviciosBase.forEach(s => db.collection("servicios").add(s));
                 } else {
                     renderizarServiciosPublicos();
-                    renderizarTablaServiciosAdmin();
+                    if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
                 }
             }, (error) => {
                 console.error("Fallo al descargar servicios:", error);
@@ -687,7 +703,6 @@
             selectCitas.innerHTML = '<option value="" disabled selected>Selecciona un servicio</option>';
             
             estadoApp.servicios.forEach(s => {
-                // Tarjeta visual
                 grid.innerHTML += `
                     <div class="tarjeta-servicio">
                         <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${s.nombre}</h3>
@@ -695,8 +710,6 @@
                         <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
                     </div>
                 `;
-                
-                // Opción para agendar cita
                 const opt = document.createElement('option');
                 opt.value = s.nombre;
                 opt.textContent = `${s.nombre} - ${s.precio}`;
@@ -719,7 +732,6 @@
                 });
                 
                 if (estadoApp.galeria.length === 0) {
-                    // Fotos por defecto si la base está vacía
                     const galeriaBase = [
                         { url: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80" },
                         { url: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80" },
@@ -739,34 +751,9 @@
         function renderizarGaleriaPublica() {
             const grid = document.getElementById('contenedor-galeria-publico');
             if(!grid) return;
-            
             grid.innerHTML = '';
             estadoApp.galeria.forEach(img => {
-                // Si el modo edición visual está activo, les ponemos los atributos para que se puedan clickear
-                grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" ${estadoApp.modoEdicion ? 'onclick="manejadorEdicionImagen(event)"' : ''}></div>`;
-            });
-        }
-
-        function iniciarEscuchaBarberos() {
-            const selectCitas = document.getElementById('barbero');
-            if(!db) return;
-
-            db.collection("barberos").onSnapshot((snapshot) => {
-                estadoApp.barberos = [];
-                snapshot.forEach(doc => {
-                    estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
-                });
-                
-                if (estadoApp.barberos.length === 0) {
-                    db.collection("barberos").add({ nombre: "TONNY" });
-                    db.collection("barberos").add({ nombre: "DUDE" });
-                } else {
-                    renderizarListaBarberos();
-                    cargarHorarios();
-                }
-            }, (error) => {
-                console.error("Fallo al descargar barberos:", error);
-                selectCitas.innerHTML = `<option value="" disabled selected>Error al cargar barberos</option>`;
+                grid.innerHTML += `<div class="foto-galeria" style="background-image: url('${img.url}');"></div>`;
             });
         }
 
@@ -852,8 +839,6 @@
         // --- SISTEMA DE AUTENTICACIÓN ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
-                
-                // Solo cargamos los datos la primera vez para no causar choques al iniciar sesión
                 if(!datosYaCargados) {
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
@@ -873,7 +858,7 @@
                     configurarPanelAdmin();
                 } else {
                     estadoApp.usuarioActual = null;
-                    btnNav.innerText = 'Admin (Final)';
+                    btnNav.innerText = 'Panel (Admin)';
                     btnNav.style.backgroundColor = 'transparent';
                     if (estadoApp.modoEdicion) toggleEdicionVisual(true);
                 }
@@ -893,7 +878,6 @@
                 return;
             }
 
-            // Agregamos trim() para borrar espacios invisibles al final del correo
             const email = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value;
             const btnLogin = document.getElementById('btn-login');
@@ -909,8 +893,6 @@
                 document.getElementById('login-pass').value = '';
             }).catch((error) => {
                 console.error("Detalle del error:", error.code);
-                
-                // Explicamos el error específico para no dejarte a ciegas
                 if(error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
                     mostrarMensaje('Correo o contraseña incorrectos.');
                 } else if(error.code === 'auth/too-many-requests') {
@@ -1049,20 +1031,17 @@
 
             estadoApp.servicios.forEach(s => {
                 const tr = document.createElement('tr');
-                // Escapamos comillas simples para evitar errores en onclick
                 const nombreEscapado = s.nombre.replace(/'/g, "\\'");
                 const precioEscapado = s.precio.replace(/'/g, "\\'");
                 const descEscapada = s.desc.replace(/'/g, "\\'");
-                
+
                 tr.innerHTML = `
                     <td><strong>${s.nombre}</strong></td>
                     <td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td>
-                    <td><small>${s.desc}</small></td>
-                    <td>
-                        <div style="display: flex; gap: 5px; flex-direction: column;">
-                            <button onclick="prepararEdicionServicio('${s.id}', '${nombreEscapado}', '${precioEscapado}', '${descEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button>
-                            <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button>
-                        </div>
+                    <td style="font-size: 13px;">${s.desc}</td>
+                    <td style="display: flex; gap: 5px;">
+                        <button onclick="prepararEdicionServicio('${s.id}', '${nombreEscapado}', '${precioEscapado}', '${descEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button>
+                        <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -1081,19 +1060,19 @@
                 const btn = document.getElementById('btn-add-servicio');
                 btn.innerText = "Guardando...";
                 
+                const datos = { nombre, precio, desc };
+
                 if (idEdicion) {
-                    // Modo Edición
-                    db.collection("servicios").doc(idEdicion).update({ nombre, precio, desc }).then(() => {
+                    db.collection("servicios").doc(idEdicion).update(datos).then(() => {
                         mostrarMensaje('Servicio actualizado exitosamente');
-                        cancelarEdicionServicio(); // Limpiar form y resetear botones
+                        cancelarEdicionServicio();
                     }).catch(() => {
                         mostrarMensaje('Error al actualizar servicio');
                     }).finally(() => {
                         btn.innerText = "Guardar Servicio";
                     });
                 } else {
-                    // Modo Nuevo
-                    db.collection("servicios").add({ nombre, precio, desc }).then(() => {
+                    db.collection("servicios").add(datos).then(() => {
                         document.getElementById('nuevo-servicio-nombre').value = '';
                         document.getElementById('nuevo-servicio-precio').value = '';
                         document.getElementById('nuevo-servicio-desc').value = '';
@@ -1105,21 +1084,20 @@
                     });
                 }
             } else {
-                mostrarMensaje('Completa todos los campos del servicio');
+                mostrarMensaje('Por favor completa todos los campos del servicio');
             }
         }
-        
+
         function prepararEdicionServicio(id, nombre, precio, desc) {
-            document.getElementById('titulo-form-servicio').innerText = 'Modificar Servicio';
+            document.getElementById('titulo-form-servicio').innerText = 'Modificar Servicio Existente';
             document.getElementById('editando-servicio-id').value = id;
             document.getElementById('nuevo-servicio-nombre').value = nombre;
             document.getElementById('nuevo-servicio-precio').value = precio;
             document.getElementById('nuevo-servicio-desc').value = desc;
             
             document.getElementById('btn-add-servicio').innerText = 'Actualizar Servicio';
-            document.getElementById('btn-cancelar-edicion-servicio').style.display = 'block';
+            document.getElementById('btn-cancelar-edicion').style.display = 'block';
             
-            // Hacer un scroll suave hacia el formulario
             document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
         }
 
@@ -1131,7 +1109,7 @@
             document.getElementById('nuevo-servicio-desc').value = '';
             
             document.getElementById('btn-add-servicio').innerText = 'Guardar Servicio';
-            document.getElementById('btn-cancelar-edicion-servicio').style.display = 'none';
+            document.getElementById('btn-cancelar-edicion').style.display = 'none';
         }
 
         function eliminarServicio(idDocumento) {
@@ -1231,57 +1209,23 @@
             }
         }
 
-        // --- EDICIÓN VISUAL ---
+        // --- EDICIÓN VISUAL (SOLO TEXTOS) ---
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
-            const elementosTexto = document.querySelectorAll('h1, h2, h3, p, .tarjeta-servicio h3, .tarjeta-servicio p, label, .precio-servicio');
-            const elementosImagen = document.querySelectorAll('.foto-galeria, .logo-img');
+            
+            // Limitado solo a textos, las imágenes ya se gestionan desde sus pestañas
+            const elementosTexto = document.querySelectorAll('h1, p.intro-p');
 
             if (estadoApp.modoEdicion) {
                 btn.innerText = 'Deshabilitar Edición Visual';
                 btn.style.background = '#d32f2f';
                 mostrarMensaje('Edición ACTIVADA.');
                 elementosTexto.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
-                elementosImagen.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
             } else {
-                btn.innerText = 'Habilitar Edición Visual';
+                btn.innerText = 'Habilitar Edición Visual de Textos';
                 btn.style.background = 'var(--azul-acento)';
                 elementosTexto.forEach(el => { el.contentEditable = "false"; el.classList.remove('editando'); });
-                elementosImagen.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
-            }
-        }
-
-        function manejadorEdicionImagen(evento) {
-            if (!estadoApp.modoEdicion) return;
-            evento.preventDefault();
-            evento.stopPropagation();
-            elementoImagenActual = evento.currentTarget;
-            const inputUrl = document.getElementById('input-url-imagen');
-            
-            if (elementoImagenActual.tagName === 'IMG') {
-                inputUrl.value = elementoImagenActual.src;
-            } else {
-                let bgUrl = elementoImagenActual.style.backgroundImage;
-                inputUrl.value = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-            }
-            document.getElementById('modalEdicionImagen').style.display = 'flex';
-        }
-
-        function cerrarModalImagen() {
-            document.getElementById('modalEdicionImagen').style.display = 'none';
-            elementoImagenActual = null;
-        }
-
-        function guardarNuevaImagen() {
-            const nuevaUrl = document.getElementById('input-url-imagen').value.trim();
-            if (nuevaUrl && elementoImagenActual) {
-                if (elementoImagenActual.tagName === 'IMG') {
-                    elementoImagenActual.src = nuevaUrl;
-                } else {
-                    elementoImagenActual.style.backgroundImage = `url('${nuevaUrl}')`;
-                }
-                cerrarModalImagen();
             }
         }
 
