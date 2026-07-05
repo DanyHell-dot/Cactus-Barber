@@ -371,7 +371,7 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <img src="ChatGPT Image 3 jul 2026, 10_46_12 a.m..png" alt="Logo Cactus Barbería" class="logo-img" onerror="this.src='https://via.placeholder.com/150x50?text=Cactus+Logo'">
+        <img src="https://via.placeholder.com/150x50?text=Cactus+Logo" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
@@ -530,6 +530,12 @@
                         <h3 id="titulo-form-galeria" style="margin-bottom: 15px; font-size: 16px;">Agregar Nueva Imagen</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
                             <input type="hidden" id="editando-galeria-id" value="">
+                            
+                            <label style="font-size: 14px; font-weight: bold; color: var(--texto-oscuro);">Sube una foto de tu equipo:</label>
+                            <input type="file" id="nueva-galeria-archivo" accept="image/*" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background: #fff;">
+                            
+                            <p style="font-size: 12px; color: #666; text-align: center; margin: 5px 0;">— O pega un enlace de internet —</p>
+                            
                             <input type="text" id="nueva-galeria-url" placeholder="URL de la imagen (Ej. https://ejemplo.com/foto.jpg)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
                         </div>
                         <div style="display: flex; gap: 10px;">
@@ -545,8 +551,8 @@
 
                 <div id="tab-web" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
-                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en los textos generales (Títulos e introducción) de la página y cambiarlos.</p>
-                    <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual de Textos</button>
+                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en los textos generales o el logotipo de la página y cambiarlos.</p>
+                    <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual</button>
                 </div>
 
             </div>
@@ -565,12 +571,21 @@
         </div>
     </div>
 
-    <!-- Modal para Editar Imágenes Visualmente (Solo logo por ahora, la galería tiene su pestaña) -->
+    <!-- Modal para Editar Imágenes Visualmente -->
     <div class="modal-overlay" id="modalEdicionImagen">
         <div class="modal-login">
-            <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Logo</h2>
-            <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;" placeholder="https://ejemplo.com/logo.png">
-            <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
+            <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Imagen</h2>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: left;">
+                <label style="font-size: 14px; font-weight: bold; color: var(--texto-oscuro);">Sube una foto de tu equipo:</label>
+                <input type="file" id="input-archivo-imagen" accept="image/*" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff;">
+                
+                <p style="font-size: 12px; color: #666; text-align: center; margin: 5px 0;">— O usa un enlace de internet —</p>
+                
+                <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc;" placeholder="https://ejemplo.com/logo.png">
+            </div>
+
+            <button class="btn-cita" id="btn-guardar-imagen-visual" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
             <button class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarModalImagen()">Cancelar</button>
         </div>
     </div>
@@ -580,6 +595,8 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+    <!-- Agregamos el módulo de Storage para subir archivos -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
 
     <script>
         // Llaves de tu proyecto
@@ -595,11 +612,13 @@
         let app = null;
         let db = null;
         let auth = null;
+        let storage = null; // Variable para manejar los archivos
 
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
+            storage = firebase.storage(); // Inicializamos Storage
         } catch(error) {
             console.error("Error al inicializar:", error);
             document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error de inicialización</option>';
@@ -643,7 +662,15 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- STREAMING_CHUNK:Lógica para descargar Barberos ---
+        // --- FUNCION AUXILIAR PARA SUBIR ARCHIVOS A FIREBASE STORAGE ---
+        async function subirArchivoFirebase(archivo, carpeta) {
+            if (!storage) throw new Error("Storage no inicializado");
+            const nombreUnico = Date.now() + '_' + archivo.name;
+            const ref = storage.ref().child(carpeta + '/' + nombreUnico);
+            const snapshot = await ref.put(archivo);
+            return await snapshot.ref.getDownloadURL();
+        }
+
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -667,7 +694,6 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Lógica para descargar Servicios ---
         function iniciarEscuchaServicios() {
             if(!db) return;
             
@@ -722,7 +748,6 @@
             }
         }
 
-        // --- STREAMING_CHUNK:Lógica para descargar la Galería ---
         function iniciarEscuchaGaleria() {
             if(!db) return;
             
@@ -754,11 +779,10 @@
             if(!grid) return;
             grid.innerHTML = '';
             estadoApp.galeria.forEach(img => {
-                grid.innerHTML += `<div class="foto-galeria" style="background-image: url('${img.url}');"></div>`;
+                grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" ${estadoApp.modoEdicion ? 'onclick="manejadorEdicionImagen(event)"' : ''}></div>`;
             });
         }
 
-        // --- STREAMING_CHUNK:Lógica para descargar y procesar Citas ---
         function iniciarEscuchaCitas() {
             if(!db) return;
             try {
@@ -837,7 +861,6 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Control de Sesión y Autenticación ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 if(!datosYaCargados) {
@@ -916,7 +939,6 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Lógica de control del Panel de Administrador ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -956,10 +978,15 @@
 
             citasAMostrar.forEach(cita => {
                 const tr = document.createElement('tr');
-                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z`;
+                
+                // Formateamos los detalles para que se vean bonitos en la descripción del calendario
+                const detalles = `💈 Servicio: ${cita.servicio}\n📞 Teléfono: ${cita.telefono || 'No proporcionado'}\n👨‍🔧 Barbero: ${cita.barbero}\n📝 Notas: ${cita.comentarios || 'Ninguna'}`;
+                
+                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita Barbería: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent(detalles)}`;
+                
                 tr.innerHTML = `
                     <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
-                    <td>${cita.nombre} <br> <small>${cita.comentarios}</small></td>
+                    <td>${cita.nombre} <br> <small>${cita.telefono || ''}</small></td>
                     <td>${cita.servicio}</td>
                     <td>${cita.barbero}</td>
                     <td>${(estadoApp.usuarioActual.rol !== 'barbero') ? `<a href="${linkCalendar}" target="_blank" class="btn-accion btn-calendario" style="text-decoration:none;">+ Calendario</a>` : 'Lectura'}</td>
@@ -968,7 +995,6 @@
             });
         }
 
-        // --- STREAMING_CHUNK:Funciones para Gestionar Barberos ---
         function renderizarListaBarberos() {
             const ul = document.getElementById('lista-barberos');
             const selectCitas = document.getElementById('barbero');
@@ -1020,7 +1046,6 @@
             }
         }
 
-        // --- STREAMING_CHUNK:Funciones para Gestionar Servicios en el Panel ---
         function renderizarTablaServiciosAdmin() {
             const tbody = document.querySelector('#tabla-servicios tbody');
             if(!tbody) return;
@@ -1123,7 +1148,6 @@
             }
         }
 
-        // --- STREAMING_CHUNK:Funciones para Gestionar la Galería en el Panel ---
         function renderizarGaleriaAdmin() {
             const container = document.getElementById('contenedor-galeria-admin');
             if(!container) return;
@@ -1140,7 +1164,7 @@
                     <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;">
                         <div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div>
                         <div style="padding: 15px; display: flex; gap: 8px; flex-direction: column; background: #fff;">
-                            <button onclick="prepararEdicionGaleria('${img.id}', '${urlEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar URL</button>
+                            <button onclick="prepararEdicionGaleria('${img.id}', '${urlEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button>
                             <button onclick="eliminarImagenGaleria('${img.id}')" class="btn-accion btn-eliminar">Eliminar</button>
                         </div>
                     </div>
@@ -1148,42 +1172,54 @@
             });
         }
 
-        function guardarImagenGaleria() {
-            if(!db) return;
+        // --- FUNCION ACTUALIZADA: GUARDAR IMAGEN EN GALERIA ---
+        async function guardarImagenGaleria() {
+            if(!db || !storage) {
+                mostrarMensaje('Error: La base de datos no está lista');
+                return;
+            }
             
             const idEdicion = document.getElementById('editando-galeria-id').value;
-            const url = document.getElementById('nueva-galeria-url').value.trim();
+            const inputArchivo = document.getElementById('nueva-galeria-archivo');
+            const urlTexto = document.getElementById('nueva-galeria-url').value.trim();
+            const btn = document.getElementById('btn-add-galeria');
             
-            if (url) {
-                const btn = document.getElementById('btn-add-galeria');
-                btn.innerText = "Guardando...";
-                
-                if (idEdicion) {
-                    db.collection("galeria").doc(idEdicion).update({ url }).then(() => {
-                        mostrarMensaje('Imagen actualizada exitosamente');
-                        cancelarEdicionGaleria();
-                    }).catch(() => {
-                        mostrarMensaje('Error al actualizar imagen');
-                    }).finally(() => {
-                        btn.innerText = "Guardar Imagen";
-                    });
-                } else {
-                    db.collection("galeria").add({ url }).then(() => {
-                        document.getElementById('nueva-galeria-url').value = '';
-                        mostrarMensaje('Imagen agregada a la galería');
-                    }).catch(() => {
-                        mostrarMensaje('Error al agregar imagen');
-                    }).finally(() => {
-                        btn.innerText = "Guardar Imagen";
-                    });
+            let urlFinal = urlTexto;
+
+            btn.innerText = "Procesando...";
+            btn.disabled = true;
+
+            try {
+                // Si el usuario seleccionó un archivo físico, lo subimos primero
+                if (inputArchivo.files.length > 0) {
+                    btn.innerText = "Subiendo archivo a la nube...";
+                    urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'galeria');
                 }
-            } else {
-                mostrarMensaje('Por favor, ingresa una URL válida');
+
+                if (urlFinal) {
+                    btn.innerText = "Guardando...";
+                    if (idEdicion) {
+                        await db.collection("galeria").doc(idEdicion).update({ url: urlFinal });
+                        mostrarMensaje('Imagen actualizada exitosamente');
+                    } else {
+                        await db.collection("galeria").add({ url: urlFinal });
+                        mostrarMensaje('Imagen agregada a la galería');
+                    }
+                    cancelarEdicionGaleria();
+                } else {
+                    mostrarMensaje('Por favor, selecciona una foto o ingresa un enlace');
+                }
+            } catch (error) {
+                console.error("Error al procesar la imagen:", error);
+                mostrarMensaje('Error al guardar. Revisa tus permisos de Storage.');
+            } finally {
+                btn.innerText = "Guardar Imagen";
+                btn.disabled = false;
             }
         }
 
         function prepararEdicionGaleria(id, url) {
-            document.getElementById('titulo-form-galeria').innerText = 'Modificar URL de Imagen';
+            document.getElementById('titulo-form-galeria').innerText = 'Modificar Imagen';
             document.getElementById('editando-galeria-id').value = id;
             document.getElementById('nueva-galeria-url').value = url;
             
@@ -1197,6 +1233,7 @@
             document.getElementById('titulo-form-galeria').innerText = 'Agregar Nueva Imagen';
             document.getElementById('editando-galeria-id').value = '';
             document.getElementById('nueva-galeria-url').value = '';
+            document.getElementById('nueva-galeria-archivo').value = ''; // Limpiar el input de archivo
             
             document.getElementById('btn-add-galeria').innerText = 'Guardar Imagen';
             document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none';
@@ -1211,12 +1248,10 @@
             }
         }
 
-        // --- STREAMING_CHUNK:Lógica para el Editor Web Visual (Textos y Logo) ---
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
             
-            // Limitado a textos principales y el logo superior
             const elementosTexto = document.querySelectorAll('h1, p.intro-p');
             const elementosImagen = document.querySelectorAll('.logo-img');
 
@@ -1252,22 +1287,47 @@
 
         function cerrarModalImagen() {
             document.getElementById('modalEdicionImagen').style.display = 'none';
+            document.getElementById('input-archivo-imagen').value = '';
+            document.getElementById('input-url-imagen').value = '';
             elementoImagenActual = null;
         }
 
-        function guardarNuevaImagen() {
-            const nuevaUrl = document.getElementById('input-url-imagen').value.trim();
-            if (nuevaUrl && elementoImagenActual) {
-                if (elementoImagenActual.tagName === 'IMG') {
-                    elementoImagenActual.src = nuevaUrl;
-                } else {
-                    elementoImagenActual.style.backgroundImage = `url('${nuevaUrl}')`;
+        // --- FUNCION ACTUALIZADA: GUARDAR IMAGEN EN EL EDITOR VISUAL (LOGO) ---
+        async function guardarNuevaImagen() {
+            const inputArchivo = document.getElementById('input-archivo-imagen');
+            const urlTexto = document.getElementById('input-url-imagen').value.trim();
+            const btn = document.getElementById('btn-guardar-imagen-visual');
+            
+            let urlFinal = urlTexto;
+
+            btn.innerText = "Procesando...";
+            btn.disabled = true;
+
+            try {
+                if (inputArchivo.files.length > 0) {
+                    btn.innerText = "Subiendo a la nube...";
+                    urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'web_assets');
                 }
-                cerrarModalImagen();
+
+                if (urlFinal && elementoImagenActual) {
+                    if (elementoImagenActual.tagName === 'IMG') {
+                        elementoImagenActual.src = urlFinal;
+                    } else {
+                        elementoImagenActual.style.backgroundImage = `url('${urlFinal}')`;
+                    }
+                    cerrarModalImagen();
+                } else {
+                    mostrarMensaje('Por favor, selecciona una foto o ingresa un enlace');
+                }
+            } catch (error) {
+                console.error("Error al guardar imagen visual:", error);
+                mostrarMensaje('Error al procesar la imagen.');
+            } finally {
+                btn.innerText = "Guardar Cambios";
+                btn.disabled = false;
             }
         }
 
-        // --- STREAMING_CHUNK:Arranque del sistema ---
         window.onload = () => {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
