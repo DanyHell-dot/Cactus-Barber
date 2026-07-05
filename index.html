@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbería Cactus</title>
     <style>
-        /* Definición de la paleta de colores */
         :root {
             --verde-cactus: #4E6E5D;
             --verde-olivo: #708238;
@@ -15,7 +14,6 @@
             --texto-claro: #FFFFFF;
         }
 
-        /* Configuraciones generales */
         * {
             margin: 0;
             padding: 0;
@@ -29,7 +27,6 @@
             overflow-x: hidden;
         }
 
-        /* Fondo animado de poste de barbero */
         .fondo-barbero {
             position: fixed;
             top: 0;
@@ -109,7 +106,6 @@
             background-color: var(--azul-acento);
         }
 
-        /* Clases para múltiples páginas (SPA) */
         @keyframes aparecer {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -154,7 +150,6 @@
             box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
         }
 
-        /* Galería */
         .galeria-contenedor {
             padding: 50px 20px;
             text-align: center;
@@ -182,7 +177,6 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        /* Servicios */
         .servicios-contenedor {
             padding: 50px 20px;
             max-width: 1200px;
@@ -226,7 +220,6 @@
             border: 1px solid rgba(74, 144, 226, 0.3);
         }
 
-        /* Formulario de Citas */
         .form-citas {
             background: #fff;
             padding: 30px;
@@ -257,7 +250,6 @@
             border-color: var(--azul-acento);
         }
 
-        /* Notificaciones */
         #notificacion {
             position: fixed;
             bottom: -100px;
@@ -276,7 +268,6 @@
         }
         #notificacion.mostrar { bottom: 30px; }
 
-        /* Modal de Login */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -300,7 +291,6 @@
             border-radius: 8px; margin-top: 10px; cursor: pointer;
         }
 
-        /* Panel de Administrador */
         .admin-layout {
             display: flex;
             min-height: 80vh;
@@ -473,6 +463,7 @@
             </div>
             <div class="admin-content">
                 
+                <!-- Pestaña: Citas -->
                 <div id="tab-citas">
                     <h2 style="color: var(--verde-cactus);">Citas Programadas</h2>
                     <div class="table-container">
@@ -562,7 +553,6 @@
         </div>
     </section>
 
-    <!-- Modal Login -->
     <div class="modal-overlay" id="modalLogin">
         <div class="modal-login">
             <h2>Iniciar Sesión</h2>
@@ -575,9 +565,18 @@
         </div>
     </div>
 
+    <!-- Modal para Editar Imágenes Visualmente (Solo logo por ahora, la galería tiene su pestaña) -->
+    <div class="modal-overlay" id="modalEdicionImagen">
+        <div class="modal-login">
+            <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Logo</h2>
+            <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 8px; border: 1px solid #ccc;" placeholder="https://ejemplo.com/logo.png">
+            <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
+            <button class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarModalImagen()">Cancelar</button>
+        </div>
+    </div>
+
     <div id="notificacion"></div>
 
-    <!-- LIBRERÍAS DE FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
@@ -609,9 +608,9 @@
         const estadoApp = {
             usuarioActual: null,
             barberos: [],
-            citas: [], 
             servicios: [],
             galeria: [],
+            citas: [], 
             modoEdicion: false
         };
 
@@ -621,7 +620,8 @@
             'super@cactus.com': { nombre: 'SUPER', rol: 'superadmin' }
         };
 
-        let datosYaCargados = false; // Control de seguridad para la conexión
+        let elementoImagenActual = null;
+        let datosYaCargados = false; 
 
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
@@ -643,7 +643,7 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- SISTEMA DE DESCARGA CONFIABLE ---
+        // --- STREAMING_CHUNK:Lógica para descargar Barberos ---
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -667,6 +667,7 @@
             });
         }
 
+        // --- STREAMING_CHUNK:Lógica para descargar Servicios ---
         function iniciarEscuchaServicios() {
             if(!db) return;
             
@@ -696,7 +697,6 @@
         function renderizarServiciosPublicos() {
             const grid = document.getElementById('contenedor-servicios-publico');
             const selectCitas = document.getElementById('servicioSelect');
-            
             if(!grid || !selectCitas) return;
             
             grid.innerHTML = '';
@@ -722,6 +722,7 @@
             }
         }
 
+        // --- STREAMING_CHUNK:Lógica para descargar la Galería ---
         function iniciarEscuchaGaleria() {
             if(!db) return;
             
@@ -757,6 +758,7 @@
             });
         }
 
+        // --- STREAMING_CHUNK:Lógica para descargar y procesar Citas ---
         function iniciarEscuchaCitas() {
             if(!db) return;
             try {
@@ -779,7 +781,6 @@
             }
         }
 
-        // --- MANEJO DE CITAS ---
         function cargarHorarios() {
             const fecha = document.getElementById('fecha').value;
             const barbero = document.getElementById('barbero').value;
@@ -836,7 +837,7 @@
             });
         }
 
-        // --- SISTEMA DE AUTENTICACIÓN ---
+        // --- STREAMING_CHUNK:Control de Sesión y Autenticación ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 if(!datosYaCargados) {
@@ -915,7 +916,7 @@
             });
         }
 
-        // --- PANEL DE ADMIN ---
+        // --- STREAMING_CHUNK:Lógica de control del Panel de Administrador ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -967,6 +968,7 @@
             });
         }
 
+        // --- STREAMING_CHUNK:Funciones para Gestionar Barberos ---
         function renderizarListaBarberos() {
             const ul = document.getElementById('lista-barberos');
             const selectCitas = document.getElementById('barbero');
@@ -1018,7 +1020,7 @@
             }
         }
 
-        // --- GESTIÓN DE SERVICIOS (ADMIN) ---
+        // --- STREAMING_CHUNK:Funciones para Gestionar Servicios en el Panel ---
         function renderizarTablaServiciosAdmin() {
             const tbody = document.querySelector('#tabla-servicios tbody');
             if(!tbody) return;
@@ -1121,7 +1123,7 @@
             }
         }
 
-        // --- GESTIÓN DE GALERÍA (ADMIN) ---
+        // --- STREAMING_CHUNK:Funciones para Gestionar la Galería en el Panel ---
         function renderizarGaleriaAdmin() {
             const container = document.getElementById('contenedor-galeria-admin');
             if(!container) return;
@@ -1209,27 +1211,63 @@
             }
         }
 
-        // --- EDICIÓN VISUAL (SOLO TEXTOS) ---
+        // --- STREAMING_CHUNK:Lógica para el Editor Web Visual (Textos y Logo) ---
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
             
-            // Limitado solo a textos, las imágenes ya se gestionan desde sus pestañas
+            // Limitado a textos principales y el logo superior
             const elementosTexto = document.querySelectorAll('h1, p.intro-p');
+            const elementosImagen = document.querySelectorAll('.logo-img');
 
             if (estadoApp.modoEdicion) {
                 btn.innerText = 'Deshabilitar Edición Visual';
                 btn.style.background = '#d32f2f';
                 mostrarMensaje('Edición ACTIVADA.');
                 elementosTexto.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
+                elementosImagen.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
             } else {
                 btn.innerText = 'Habilitar Edición Visual de Textos';
                 btn.style.background = 'var(--azul-acento)';
                 elementosTexto.forEach(el => { el.contentEditable = "false"; el.classList.remove('editando'); });
+                elementosImagen.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
             }
         }
 
-        // --- ARRANQUE ---
+        function manejadorEdicionImagen(evento) {
+            if (!estadoApp.modoEdicion) return;
+            evento.preventDefault();
+            evento.stopPropagation();
+            elementoImagenActual = evento.currentTarget;
+            const inputUrl = document.getElementById('input-url-imagen');
+            
+            if (elementoImagenActual.tagName === 'IMG') {
+                inputUrl.value = elementoImagenActual.src;
+            } else {
+                let bgUrl = elementoImagenActual.style.backgroundImage;
+                inputUrl.value = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
+            }
+            document.getElementById('modalEdicionImagen').style.display = 'flex';
+        }
+
+        function cerrarModalImagen() {
+            document.getElementById('modalEdicionImagen').style.display = 'none';
+            elementoImagenActual = null;
+        }
+
+        function guardarNuevaImagen() {
+            const nuevaUrl = document.getElementById('input-url-imagen').value.trim();
+            if (nuevaUrl && elementoImagenActual) {
+                if (elementoImagenActual.tagName === 'IMG') {
+                    elementoImagenActual.src = nuevaUrl;
+                } else {
+                    elementoImagenActual.style.backgroundImage = `url('${nuevaUrl}')`;
+                }
+                cerrarModalImagen();
+            }
+        }
+
+        // --- STREAMING_CHUNK:Arranque del sistema ---
         window.onload = () => {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
