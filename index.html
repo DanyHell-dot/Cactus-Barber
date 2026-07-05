@@ -410,27 +410,9 @@
 
     <section id="servicios" class="servicios-contenedor pagina">
         <h2>Nuestros Servicios</h2>
-        <div class="grid-servicios">
-            <div class="tarjeta-servicio">
-                <h3>Corte Clásico</h3>
-                <p>Corte tradicional adaptado a la forma del rostro y estilo del cliente.</p>
-                <div class="precio-servicio">$200 MXN</div>
-            </div>
-            <div class="tarjeta-servicio">
-                <h3>Corte Premium</h3>
-                <p>Corte personalizado con asesoría de imagen, lavado, peinado y aplicación de productos.</p>
-                <div class="precio-servicio">$300 MXN</div>
-            </div>
-            <div class="tarjeta-servicio">
-                <h3>Fade (Degradado)</h3>
-                <p>Degradado de alta precisión con transiciones limpias y definidas.</p>
-                <div class="precio-servicio">$250 MXN</div>
-            </div>
-            <div class="tarjeta-servicio">
-                <h3>Perfilado de Barba</h3>
-                <p>Definición y simetría de la barba respetando la forma del rostro.</p>
-                <div class="precio-servicio">$150 MXN</div>
-            </div>
+        <div class="grid-servicios" id="contenedor-servicios-publico">
+            <!-- Los servicios se cargarán dinámicamente desde Firebase aquí -->
+            <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando catálogo de servicios...</p>
         </div>
     </section>
 
@@ -451,11 +433,7 @@
                 <div class="grupo-form">
                     <label for="servicioSelect">💈 Servicio a realizar:</label>
                     <select id="servicioSelect" required>
-                        <option value="" disabled selected>Selecciona un servicio</option>
-                        <option value="Corte Clásico">Corte Clásico</option>
-                        <option value="Corte Premium">Corte Premium</option>
-                        <option value="Fade (Degradado)">Fade (Degradado)</option>
-                        <option value="Perfilado de Barba">Perfilado de Barba</option>
+                        <option value="" disabled selected>Cargando servicios...</option>
                     </select>
                 </div>
                 <div class="grupo-form">
@@ -491,6 +469,7 @@
                 <div class="admin-menu">
                     <a onclick="cambiarTabAdmin('tab-citas')" id="menu-tab-citas" class="activo">📅 Ver Citas</a>
                     <a onclick="cambiarTabAdmin('tab-barberos')" id="menu-tab-barberos">✂️ Gestionar Barberos</a>
+                    <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios">💈 Gestionar Servicios</a>
                     <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web">🌐 Editor Web</a>
                     <a onclick="cerrarSesion()" style="margin-top: 30px; color: #ffcccc;">🚪 Cerrar Sesión</a>
                 </div>
@@ -521,6 +500,33 @@
                     </div>
                     <ul id="lista-barberos" style="list-style: none;"></ul>
                 </div>
+                
+                <div id="tab-servicios" style="display: none;">
+                    <h2 style="color: var(--verde-cactus);">Catálogo de Servicios</h2>
+                    <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3 style="margin-bottom: 15px; font-size: 16px;">Agregar Nuevo Servicio</h3>
+                        <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+                            <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Tinte de barba)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
+                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $150 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
+                            <textarea id="nuevo-servicio-desc" placeholder="Descripción del servicio" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;" rows="2"></textarea>
+                        </div>
+                        <button id="btn-add-servicio" onclick="agregarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; width: 100%;">Guardar Servicio</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="tabla-admin" id="tabla-servicios">
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th>Precio</th>
+                                    <th>Descripción</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody><!-- Se llena dinámicamente --></tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div id="tab-web" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
                     <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en cualquier texto del sitio web y cambiarlo en tiempo real.</p>
@@ -587,6 +593,7 @@
         const estadoApp = {
             usuarioActual: null,
             barberos: [],
+            servicios: [],
             citas: [], 
             modoEdicion: false
         };
@@ -621,6 +628,65 @@
         });
 
         // --- SISTEMA DE DESCARGA CONFIABLE ---
+        function iniciarEscuchaServicios() {
+            if(!db) return;
+            
+            db.collection("servicios").onSnapshot((snapshot) => {
+                estadoApp.servicios = [];
+                snapshot.forEach(doc => {
+                    estadoApp.servicios.push({ id: doc.id, ...doc.data() });
+                });
+                
+                if (estadoApp.servicios.length === 0) {
+                    // Si la base está vacía, creamos los servicios iniciales
+                    const serviciosBase = [
+                        { nombre: "Corte Clásico", precio: "$200 MXN", desc: "Corte tradicional adaptado a la forma del rostro y estilo del cliente." },
+                        { nombre: "Corte Premium", precio: "$300 MXN", desc: "Corte personalizado con asesoría de imagen, lavado, peinado y aplicación de productos." },
+                        { nombre: "Fade (Degradado)", precio: "$250 MXN", desc: "Degradado de alta precisión con transiciones limpias y definidas." },
+                        { nombre: "Perfilado de Barba", precio: "$150 MXN", desc: "Definición y simetría de la barba respetando la forma del rostro." }
+                    ];
+                    serviciosBase.forEach(s => db.collection("servicios").add(s));
+                } else {
+                    renderizarServiciosPublicos();
+                    renderizarTablaServiciosAdmin();
+                }
+            }, (error) => {
+                console.error("Fallo al descargar servicios:", error);
+            });
+        }
+
+        function renderizarServiciosPublicos() {
+            const grid = document.getElementById('contenedor-servicios-publico');
+            const selectCitas = document.getElementById('servicioSelect');
+            
+            if(!grid || !selectCitas) return;
+            
+            grid.innerHTML = '';
+            selectCitas.innerHTML = '<option value="" disabled selected>Selecciona un servicio</option>';
+            
+            estadoApp.servicios.forEach(s => {
+                // Tarjeta visual
+                grid.innerHTML += `
+                    <div class="tarjeta-servicio">
+                        <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${s.nombre}</h3>
+                        <p class="${estadoApp.modoEdicion ? 'editando' : ''}">${s.desc}</p>
+                        <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
+                    </div>
+                `;
+                
+                // Opción para agendar cita
+                const opt = document.createElement('option');
+                opt.value = s.nombre;
+                opt.textContent = `${s.nombre} - ${s.precio}`;
+                selectCitas.appendChild(opt);
+            });
+
+            if(estadoApp.modoEdicion) {
+                const elementos = grid.querySelectorAll('h3, p, .precio-servicio');
+                elementos.forEach(el => el.contentEditable = "true");
+            }
+        }
+
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -731,6 +797,7 @@
                 if(!datosYaCargados) {
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
+                    iniciarEscuchaServicios();
                     datosYaCargados = true;
                 }
 
@@ -810,14 +877,16 @@
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
             document.getElementById('menu-tab-barberos').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('menu-tab-servicios').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             cambiarTabAdmin('tab-citas');
             renderizarTablaCitas();
             renderizarListaBarberos();
+            renderizarTablaServiciosAdmin();
         }
 
         function cambiarTabAdmin(idTab) {
-            ['tab-citas', 'tab-barberos', 'tab-web'].forEach(id => {
+            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-web'].forEach(id => {
                 document.getElementById(id).style.display = 'none';
                 document.getElementById('menu-' + id).classList.remove('activo');
             });
@@ -900,6 +969,64 @@
             if(confirm("¿Estás seguro de eliminar este barbero?")) {
                 db.collection("barberos").doc(idDocumento).delete().then(() => {
                     mostrarMensaje('Barbero eliminado');
+                });
+            }
+        }
+
+        // --- GESTIÓN DE SERVICIOS (ADMIN) ---
+        function renderizarTablaServiciosAdmin() {
+            const tbody = document.querySelector('#tabla-servicios tbody');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+            
+            if (estadoApp.servicios.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay servicios registrados.</td></tr>';
+                return;
+            }
+
+            estadoApp.servicios.forEach(s => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${s.nombre}</strong></td>
+                    <td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td>
+                    <td><small>${s.desc}</small></td>
+                    <td><button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function agregarServicio() {
+            if(!db) return;
+            
+            const nombre = document.getElementById('nuevo-servicio-nombre').value.trim();
+            const precio = document.getElementById('nuevo-servicio-precio').value.trim();
+            const desc = document.getElementById('nuevo-servicio-desc').value.trim();
+            
+            if (nombre && precio && desc) {
+                const btn = document.getElementById('btn-add-servicio');
+                btn.innerText = "Guardando...";
+                
+                db.collection("servicios").add({ nombre, precio, desc }).then(() => {
+                    document.getElementById('nuevo-servicio-nombre').value = '';
+                    document.getElementById('nuevo-servicio-precio').value = '';
+                    document.getElementById('nuevo-servicio-desc').value = '';
+                    mostrarMensaje('Servicio agregado exitosamente');
+                }).catch(() => {
+                    mostrarMensaje('Error al agregar servicio');
+                }).finally(() => {
+                    btn.innerText = "Guardar Servicio";
+                });
+            } else {
+                mostrarMensaje('Completa todos los campos del servicio');
+            }
+        }
+
+        function eliminarServicio(idDocumento) {
+            if(!db) return;
+            if(confirm("¿Seguro de eliminar este servicio? Desaparecerá de la página web al instante.")) {
+                db.collection("servicios").doc(idDocumento).delete().then(() => {
+                    mostrarMensaje('Servicio eliminado');
                 });
             }
         }
