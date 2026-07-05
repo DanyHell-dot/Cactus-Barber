@@ -399,11 +399,8 @@
 
         <div class="galeria-contenedor">
             <h2>Nuestros Trabajos</h2>
-            <div class="galeria">
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80');"></div>
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80');"></div>
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=500&q=80');"></div>
-                <div class="foto-galeria" style="background-image: url('https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80');"></div>
+            <div class="galeria" id="contenedor-galeria-publico">
+                <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando galería...</p>
             </div>
         </div>
     </section>
@@ -470,6 +467,7 @@
                     <a onclick="cambiarTabAdmin('tab-citas')" id="menu-tab-citas" class="activo">📅 Ver Citas</a>
                     <a onclick="cambiarTabAdmin('tab-barberos')" id="menu-tab-barberos">✂️ Gestionar Barberos</a>
                     <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios">💈 Gestionar Servicios</a>
+                    <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria">📷 Gestionar Galería</a>
                     <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web">🌐 Editor Web</a>
                     <a onclick="cerrarSesion()" style="margin-top: 30px; color: #ffcccc;">🚪 Cerrar Sesión</a>
                 </div>
@@ -528,6 +526,25 @@
                             </thead>
                             <tbody><!-- Se llena dinámicamente --></tbody>
                         </table>
+                    </div>
+                </div>
+
+                <div id="tab-galeria" style="display: none;">
+                    <h2 style="color: var(--verde-cactus);">Nuestros Trabajos (Galería)</h2>
+                    <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <h3 id="titulo-form-galeria" style="margin-bottom: 15px; font-size: 16px;">Agregar Nueva Imagen</h3>
+                        <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+                            <input type="hidden" id="editando-galeria-id" value="">
+                            <input type="text" id="nueva-galeria-url" placeholder="URL de la imagen (Ej. https://ejemplo.com/foto.jpg)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="btn-add-galeria" onclick="guardarImagenGaleria()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Imagen</button>
+                            <button id="btn-cancelar-edicion-galeria" onclick="cancelarEdicionGaleria()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
+                        </div>
+                    </div>
+                    <!-- Usamos la misma clase galeria para que se vean en cuadrícula -->
+                    <div class="galeria" id="contenedor-galeria-admin" style="gap: 20px;">
+                        <!-- Se llena dinámicamente -->
                     </div>
                 </div>
 
@@ -598,6 +615,7 @@
             usuarioActual: null,
             barberos: [],
             servicios: [],
+            galeria: [],
             citas: [], 
             modoEdicion: false
         };
@@ -689,6 +707,44 @@
                 const elementos = grid.querySelectorAll('h3, p, .precio-servicio');
                 elementos.forEach(el => el.contentEditable = "true");
             }
+        }
+
+        function iniciarEscuchaGaleria() {
+            if(!db) return;
+            
+            db.collection("galeria").onSnapshot((snapshot) => {
+                estadoApp.galeria = [];
+                snapshot.forEach(doc => {
+                    estadoApp.galeria.push({ id: doc.id, ...doc.data() });
+                });
+                
+                if (estadoApp.galeria.length === 0) {
+                    // Fotos por defecto si la base está vacía
+                    const galeriaBase = [
+                        { url: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80" },
+                        { url: "https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=500&q=80" },
+                        { url: "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=500&q=80" },
+                        { url: "https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=500&q=80" }
+                    ];
+                    galeriaBase.forEach(img => db.collection("galeria").add(img));
+                } else {
+                    renderizarGaleriaPublica();
+                    if(estadoApp.usuarioActual) renderizarGaleriaAdmin();
+                }
+            }, (error) => {
+                console.error("Fallo al descargar galería:", error);
+            });
+        }
+
+        function renderizarGaleriaPublica() {
+            const grid = document.getElementById('contenedor-galeria-publico');
+            if(!grid) return;
+            
+            grid.innerHTML = '';
+            estadoApp.galeria.forEach(img => {
+                // Si el modo edición visual está activo, les ponemos los atributos para que se puedan clickear
+                grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" ${estadoApp.modoEdicion ? 'onclick="manejadorEdicionImagen(event)"' : ''}></div>`;
+            });
         }
 
         function iniciarEscuchaBarberos() {
@@ -802,6 +858,7 @@
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
                     iniciarEscuchaServicios();
+                    iniciarEscuchaGaleria();
                     datosYaCargados = true;
                 }
 
@@ -882,15 +939,17 @@
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
             document.getElementById('menu-tab-barberos').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
             document.getElementById('menu-tab-servicios').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('menu-tab-galeria').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             cambiarTabAdmin('tab-citas');
             renderizarTablaCitas();
             renderizarListaBarberos();
             renderizarTablaServiciosAdmin();
+            renderizarGaleriaAdmin();
         }
 
         function cambiarTabAdmin(idTab) {
-            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-web'].forEach(id => {
+            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-galeria', 'tab-web'].forEach(id => {
                 document.getElementById(id).style.display = 'none';
                 document.getElementById('menu-' + id).classList.remove('activo');
             });
@@ -1080,6 +1139,94 @@
             if(confirm("¿Seguro de eliminar este servicio? Desaparecerá de la página web al instante.")) {
                 db.collection("servicios").doc(idDocumento).delete().then(() => {
                     mostrarMensaje('Servicio eliminado');
+                });
+            }
+        }
+
+        // --- GESTIÓN DE GALERÍA (ADMIN) ---
+        function renderizarGaleriaAdmin() {
+            const container = document.getElementById('contenedor-galeria-admin');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            if (estadoApp.galeria.length === 0) {
+                container.innerHTML = '<p style="text-align:center; width:100%; color: #666;">No hay imágenes registradas.</p>';
+                return;
+            }
+
+            estadoApp.galeria.forEach(img => {
+                const urlEscapada = img.url.replace(/'/g, "\\'");
+                container.innerHTML += `
+                    <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;">
+                        <div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div>
+                        <div style="padding: 15px; display: flex; gap: 8px; flex-direction: column; background: #fff;">
+                            <button onclick="prepararEdicionGaleria('${img.id}', '${urlEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar URL</button>
+                            <button onclick="eliminarImagenGaleria('${img.id}')" class="btn-accion btn-eliminar">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function guardarImagenGaleria() {
+            if(!db) return;
+            
+            const idEdicion = document.getElementById('editando-galeria-id').value;
+            const url = document.getElementById('nueva-galeria-url').value.trim();
+            
+            if (url) {
+                const btn = document.getElementById('btn-add-galeria');
+                btn.innerText = "Guardando...";
+                
+                if (idEdicion) {
+                    db.collection("galeria").doc(idEdicion).update({ url }).then(() => {
+                        mostrarMensaje('Imagen actualizada exitosamente');
+                        cancelarEdicionGaleria();
+                    }).catch(() => {
+                        mostrarMensaje('Error al actualizar imagen');
+                    }).finally(() => {
+                        btn.innerText = "Guardar Imagen";
+                    });
+                } else {
+                    db.collection("galeria").add({ url }).then(() => {
+                        document.getElementById('nueva-galeria-url').value = '';
+                        mostrarMensaje('Imagen agregada a la galería');
+                    }).catch(() => {
+                        mostrarMensaje('Error al agregar imagen');
+                    }).finally(() => {
+                        btn.innerText = "Guardar Imagen";
+                    });
+                }
+            } else {
+                mostrarMensaje('Por favor, ingresa una URL válida');
+            }
+        }
+
+        function prepararEdicionGaleria(id, url) {
+            document.getElementById('titulo-form-galeria').innerText = 'Modificar URL de Imagen';
+            document.getElementById('editando-galeria-id').value = id;
+            document.getElementById('nueva-galeria-url').value = url;
+            
+            document.getElementById('btn-add-galeria').innerText = 'Actualizar Imagen';
+            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block';
+            
+            document.getElementById('titulo-form-galeria').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelarEdicionGaleria() {
+            document.getElementById('titulo-form-galeria').innerText = 'Agregar Nueva Imagen';
+            document.getElementById('editando-galeria-id').value = '';
+            document.getElementById('nueva-galeria-url').value = '';
+            
+            document.getElementById('btn-add-galeria').innerText = 'Guardar Imagen';
+            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none';
+        }
+
+        function eliminarImagenGaleria(idDocumento) {
+            if(!db) return;
+            if(confirm("¿Seguro de eliminar esta imagen? Desaparecerá de tu galería al instante.")) {
+                db.collection("galeria").doc(idDocumento).delete().then(() => {
+                    mostrarMensaje('Imagen eliminada');
                 });
             }
         }
