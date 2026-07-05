@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbería Cactus</title>
     <style>
+        /* Definición de la paleta de colores */
         :root {
             --verde-cactus: #4E6E5D;
             --verde-olivo: #708238;
@@ -14,6 +15,7 @@
             --texto-claro: #FFFFFF;
         }
 
+        /* Configuraciones generales */
         * {
             margin: 0;
             padding: 0;
@@ -27,6 +29,7 @@
             overflow-x: hidden;
         }
 
+        /* Fondo animado de poste de barbero */
         .fondo-barbero {
             position: fixed;
             top: 0;
@@ -106,6 +109,7 @@
             background-color: var(--azul-acento);
         }
 
+        /* Clases para múltiples páginas (SPA) */
         @keyframes aparecer {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
@@ -150,6 +154,7 @@
             box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
         }
 
+        /* Galería */
         .galeria-contenedor {
             padding: 50px 20px;
             text-align: center;
@@ -177,6 +182,48 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
+        /* Lightbox para la Galería */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .lightbox-overlay.mostrar {
+            display: flex;
+            opacity: 1;
+        }
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .lightbox-overlay.mostrar .lightbox-img {
+            transform: scale(1);
+        }
+        .lightbox-cerrar {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+            transition: color 0.3s;
+        }
+        .lightbox-cerrar:hover {
+            color: #ea4335;
+        }
+
+        /* Servicios */
         .servicios-contenedor {
             padding: 50px 20px;
             max-width: 1200px;
@@ -220,6 +267,7 @@
             border: 1px solid rgba(74, 144, 226, 0.3);
         }
 
+        /* Formulario de Citas */
         .form-citas {
             background: #fff;
             padding: 30px;
@@ -250,6 +298,7 @@
             border-color: var(--azul-acento);
         }
 
+        /* Notificaciones */
         #notificacion {
             position: fixed;
             bottom: -100px;
@@ -268,6 +317,7 @@
         }
         #notificacion.mostrar { bottom: 30px; }
 
+        /* Modal de Login */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -290,53 +340,6 @@
             background: #ccc; color: #333; border: none; padding: 10px 20px;
             border-radius: 8px; margin-top: 10px; cursor: pointer;
         }
-
-        /* --- NUEVO: Estilos para el Lightbox (Visor de Imágenes) --- */
-        #lightbox-galeria {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.85); /* Fondo mucho más oscuro */
-            z-index: 2000; /* Encima de todo */
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(8px); /* Desenfoque más fuerte atrás */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        #lightbox-galeria.mostrar {
-            display: flex;
-            opacity: 1;
-        }
-
-        #lightbox-img {
-            max-width: 90%;
-            max-height: 85vh; /* Evita que se salga de la pantalla arriba/abajo */
-            border-radius: 12px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            transform: scale(0.9) translateY(20px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto de rebote sutil */
-        }
-        
-        #lightbox-galeria.mostrar #lightbox-img {
-            transform: scale(1) translateY(0);
-        }
-
-        .btn-cerrar-lightbox {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px; height: 40px;
-            font-size: 24px;
-            cursor: pointer;
-            display: flex; justify-content: center; align-items: center;
-            transition: background 0.3s;
-        }
-        .btn-cerrar-lightbox:hover { background: rgba(255,255,255,0.4); }
 
         /* Panel de Administrador */
         .admin-layout {
@@ -431,7 +434,7 @@
     <section id="inicio" class="pagina activa">
         <div class="intro">
             <h1>Tu estilo, nuestra pasión</h1>
-            <p>Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
+            <p class="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
             <button class="btn-cita" onclick="navegar('citas')">Programar cita</button>
         </div>
 
@@ -530,6 +533,7 @@
                     </div>
                 </div>
 
+                <!-- Pestaña: Barberos -->
                 <div id="tab-barberos" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
                     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
@@ -539,6 +543,7 @@
                     <ul id="lista-barberos" style="list-style: none;"></ul>
                 </div>
 
+                <!-- Pestaña: Servicios -->
                 <div id="tab-servicios" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Catálogo de Servicios</h2>
                     
@@ -571,6 +576,7 @@
                     </div>
                 </div>
 
+                <!-- Pestaña: Galería -->
                 <div id="tab-galeria" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Trabajos (Galería)</h2>
                     
@@ -597,6 +603,7 @@
                     </div>
                 </div>
 
+                <!-- Pestaña: Editor Web -->
                 <div id="tab-web" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
                     <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en los textos generales o el logotipo de la página y cambiarlos.</p>
@@ -607,6 +614,7 @@
         </div>
     </section>
 
+    <!-- Modal Login -->
     <div class="modal-overlay" id="modalLogin">
         <div class="modal-login">
             <h2>Iniciar Sesión</h2>
@@ -638,23 +646,22 @@
         </div>
     </div>
 
-    <!-- --- NUEVO: Estructura HTML del Lightbox --- -->
-    <div id="lightbox-galeria" onclick="cerrarLightbox()">
-        <button class="btn-cerrar-lightbox" onclick="cerrarLightbox()">×</button>
-        <!-- Aquí se inyectará la imagen seleccionada -->
-        <img id="lightbox-img" src="" alt="Trabajo Cactus">
+    <!-- Modal Lightbox (Efecto de Zoom para la galería pública) -->
+    <div class="lightbox-overlay" id="lightbox" onclick="cerrarLightbox()">
+        <span class="lightbox-cerrar" onclick="cerrarLightbox()">&times;</span>
+        <img src="" alt="Imagen ampliada" class="lightbox-img" id="lightbox-img">
     </div>
 
+    <!-- Notificaciones flotantes -->
     <div id="notificacion"></div>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
-    <!-- Agregamos el módulo de Storage para subir archivos -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
 
     <script>
-        // Llaves de tu proyecto
+        // Llaves de tu proyecto Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBBVbW-DrxmA1xr-SVivwJseD1u0VKUqSk",
             authDomain: "cactus-barberia.firebaseapp.com",
@@ -667,13 +674,13 @@
         let app = null;
         let db = null;
         let auth = null;
-        let storage = null; // Variable para manejar los archivos
+        let storage = null;
 
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
-            storage = firebase.storage(); // Inicializamos Storage
+            storage = firebase.storage();
         } catch(error) {
             console.error("Error al inicializar:", error);
             document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error de inicialización</option>';
@@ -697,6 +704,7 @@
         let elementoImagenActual = null;
         let datosYaCargados = false; 
 
+        // --- NAVEGACIÓN Y NOTIFICACIONES ---
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
@@ -717,7 +725,7 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- FUNCION AUXILIAR PARA SUBIR ARCHIVOS A FIREBASE STORAGE ---
+        // --- SUBIDA A FIREBASE STORAGE ---
         async function subirArchivoFirebase(archivo, carpeta) {
             if (!storage) throw new Error("Storage no inicializado");
             const nombreUnico = Date.now() + '_' + archivo.name;
@@ -726,6 +734,28 @@
             return await snapshot.ref.getDownloadURL();
         }
 
+        // --- SISTEMA DE LIGHTBOX (CAJA DE LUZ) ---
+        function abrirLightbox(url) {
+            // Si estamos en modo editor web, no queremos que se abra el lightbox
+            if (estadoApp.modoEdicion) return; 
+            
+            const lightbox = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            img.src = url;
+            lightbox.classList.add('mostrar');
+        }
+
+        function cerrarLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('mostrar');
+            // Limpiamos la fuente después de que termina la animación de desvanecimiento
+            setTimeout(() => {
+                document.getElementById('lightbox-img').src = '';
+            }, 300);
+        }
+
+
+        // --- CARGA DE DATOS: BARBEROS ---
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -749,6 +779,7 @@
             });
         }
 
+        // --- CARGA DE DATOS: SERVICIOS ---
         function iniciarEscuchaServicios() {
             if(!db) return;
             
@@ -803,6 +834,7 @@
             }
         }
 
+        // --- CARGA DE DATOS: GALERÍA ---
         function iniciarEscuchaGaleria() {
             if(!db) return;
             
@@ -832,47 +864,232 @@
         function renderizarGaleriaPublica() {
             const grid = document.getElementById('contenedor-galeria-publico');
             if(!grid) return;
-            
             grid.innerHTML = '';
+            
             estadoApp.galeria.forEach(img => {
-                // Si estamos editando, abrimos el modal de edición visual. 
-                // Si NO estamos editando, abrimos el Lightbox para el cliente.
-                const funcionClic = estadoApp.modoEdicion 
-                                    ? `manejadorEdicionImagen(event)` 
-                                    : `abrirLightbox('${img.url}')`;
-                                    
-                grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" onclick="${funcionClic}"></div>`;
+                // Al hacer clic, si estamos editando abre el editor, sino abre el lightbox.
+                grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`;
             });
         }
 
-        // --- NUEVO: Funciones JavaScript del Lightbox ---
-        function abrirLightbox(url) {
-            if (estadoApp.modoEdicion) return; // Si eres superadmin editando, no abras el visor normal
-            
-            const lightbox = document.getElementById('lightbox-galeria');
-            const imgElement = document.getElementById('lightbox-img');
-            
-            imgElement.src = url; // Le pasamos la URL de la foto seleccionada
-            lightbox.classList.add('mostrar');
-            
-            // Bloquear el scroll de fondo mientras ves la foto
-            document.body.style.overflow = 'hidden'; 
+        // --- CARGA DE DATOS: CITAS ---
+        function iniciarEscuchaCitas() {
+            if(!db) return;
+            try {
+                db.collection("citas").onSnapshot((snap) => {
+                    estadoApp.citas = [];
+                    snap.forEach(doc => {
+                        estadoApp.citas.push({ id: doc.id, ...doc.data() });
+                    });
+                    
+                    estadoApp.citas.sort((a, b) => {
+                        let timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
+                        let timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
+                        return timeB - timeA;
+                    });
+
+                    if(estadoApp.usuarioActual) renderizarTablaCitas();
+                });
+            } catch(error) {
+                console.error("Error en citas:", error);
+            }
         }
 
-        function cerrarLightbox() {
-            const lightbox = document.getElementById('lightbox-galeria');
-            lightbox.classList.remove('mostrar');
+        function cargarHorarios() {
+            const fecha = document.getElementById('fecha').value;
+            const barbero = document.getElementById('barbero').value;
+            const selectHora = document.getElementById('hora');
             
-            // Devolver el scroll normal
-            document.body.style.overflow = 'auto';
-            
-            // Limpiamos la imagen después de la animación de cerrado
-            setTimeout(() => {
-                document.getElementById('lightbox-img').src = '';
-            }, 300);
+            if (!fecha || !barbero) return;
+            selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
+
+            const numMagico = (fecha.charCodeAt(fecha.length - 1) + barbero.charCodeAt(0)) % 3;
+
+            for(let i = 10; i <= 19; i++) {
+                const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
+                const option = document.createElement('option');
+                
+                if ((i + numMagico) % 4 === 0) {
+                    option.text = `${horaStr} (No disponible)`;
+                    option.disabled = true;
+                } else {
+                    option.value = horaStr;
+                    option.text = horaStr;
+                }
+                selectHora.appendChild(option);
+            }
         }
 
-        function iniciarEscuchaBarberos() {
+        function procesarCita(evento) {
+            evento.preventDefault();
+            if(!db) return;
+
+            const btn = document.getElementById('btn-submit-cita');
+            btn.innerText = "Agendando...";
+            btn.disabled = true;
+
+            const cita = {
+                nombre: document.getElementById('nombre').value.trim(),
+                telefono: document.getElementById('telefono').value,
+                barbero: document.getElementById('barbero').value,
+                fecha: document.getElementById('fecha').value,
+                hora: document.getElementById('hora').value,
+                servicio: document.getElementById('servicioSelect').value,
+                comentarios: document.getElementById('comentarios').value,
+                fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            db.collection("citas").add(cita).then(() => {
+                mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
+                document.getElementById('formCita').reset();
+                document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
+            }).catch((error) => {
+                mostrarMensaje("Error al agendar. Intenta de nuevo.");
+            }).finally(() => {
+                btn.innerText = "Confirmar Reserva";
+                btn.disabled = false;
+            });
+        }
+
+        // --- SISTEMA DE AUTENTICACIÓN ---
+        if(auth) {
+            auth.onAuthStateChanged((user) => {
+                
+                // IMPORTANTE: Aquí inicializamos todas las escuchas de datos
+                if(!datosYaCargados) {
+                    iniciarEscuchaBarberos();
+                    iniciarEscuchaCitas();
+                    iniciarEscuchaServicios();
+                    iniciarEscuchaGaleria();
+                    datosYaCargados = true;
+                }
+
+                const btnNav = document.getElementById('btn-nav-admin');
+                if (user) {
+                    const email = user.email.toLowerCase();
+                    const infoUsuario = USUARIOS_ROLES[email] || { nombre: 'Colaborador', rol: 'barbero' };
+                    estadoApp.usuarioActual = infoUsuario;
+                    
+                    btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`;
+                    btnNav.style.backgroundColor = 'var(--azul-acento)';
+                    configurarPanelAdmin();
+                } else {
+                    estadoApp.usuarioActual = null;
+                    btnNav.innerText = 'Panel (Admin)';
+                    btnNav.style.backgroundColor = 'transparent';
+                    if (estadoApp.modoEdicion) toggleEdicionVisual(true);
+                }
+            });
+        }
+
+        function abrirLogin() {
+            estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex';
+        }
+
+        function cerrarLogin() { document.getElementById('modalLogin').style.display = 'none'; }
+
+        function procesarLogin(evento) {
+            evento.preventDefault();
+            if(!auth) {
+                mostrarMensaje("Error de conexión con Firebase.");
+                return;
+            }
+
+            const email = document.getElementById('login-user').value.trim().toLowerCase();
+            const pass = document.getElementById('login-pass').value;
+            const btnLogin = document.getElementById('btn-login');
+
+            btnLogin.innerText = "Validando...";
+            btnLogin.disabled = true;
+
+            auth.signInWithEmailAndPassword(email, pass).then(() => {
+                cerrarLogin();
+                navegar('admin');
+                mostrarMensaje(`¡Bienvenido!`);
+                document.getElementById('login-user').value = '';
+                document.getElementById('login-pass').value = '';
+            }).catch((error) => {
+                console.error("Detalle del error:", error.code);
+                if(error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    mostrarMensaje('Correo o contraseña incorrectos.');
+                } else if(error.code === 'auth/too-many-requests') {
+                    mostrarMensaje('Demasiados intentos. Espera unos minutos.');
+                } else if(error.code === 'auth/invalid-email') {
+                    mostrarMensaje('El formato del correo es inválido.');
+                } else {
+                    mostrarMensaje('Error de conexión: ' + error.message);
+                }
+            }).finally(() => {
+                btnLogin.innerText = "Entrar";
+                btnLogin.disabled = false;
+            });
+        }
+
+        function cerrarSesion() {
+            if(auth) auth.signOut().then(() => {
+                navegar('inicio');
+                mostrarMensaje('Sesión cerrada');
+            });
+        }
+
+        // --- PANEL DE ADMIN ---
+        function configurarPanelAdmin() {
+            const rol = estadoApp.usuarioActual.rol;
+            document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
+            document.getElementById('menu-tab-barberos').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('menu-tab-servicios').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('menu-tab-galeria').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
+            cambiarTabAdmin('tab-citas');
+            renderizarTablaCitas();
+            renderizarListaBarberos();
+            renderizarTablaServiciosAdmin();
+            renderizarGaleriaAdmin();
+        }
+
+        function cambiarTabAdmin(idTab) {
+            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-galeria', 'tab-web'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+                document.getElementById('menu-' + id).classList.remove('activo');
+            });
+            document.getElementById(idTab).style.display = 'block';
+            document.getElementById('menu-' + idTab).classList.add('activo');
+        }
+
+        function renderizarTablaCitas() {
+            const tbody = document.querySelector('#tabla-citas tbody');
+            tbody.innerHTML = '';
+            if(!estadoApp.usuarioActual) return;
+
+            let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' 
+                ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) 
+                : estadoApp.citas;
+
+            if (citasAMostrar.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>';
+                return;
+            }
+
+            citasAMostrar.forEach(cita => {
+                const tr = document.createElement('tr');
+                
+                // Creamos los detalles inyectando el teléfono y comentarios para Google Calendar
+                const detalles = `Teléfono: ${cita.telefono}\nServicio: ${cita.servicio}\nBarbero: ${cita.barbero}\n\nComentarios: ${cita.comentarios || 'Ninguno'}`;
+                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent(detalles)}`;
+                
+                tr.innerHTML = `
+                    <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
+                    <td>${cita.nombre} <br> <small style="color:var(--verde-cactus);">${cita.telefono}</small><br> <small>${cita.comentarios}</small></td>
+                    <td>${cita.servicio}</td>
+                    <td>${cita.barbero}</td>
+                    <td>${(estadoApp.usuarioActual.rol !== 'barbero') ? `<a href="${linkCalendar}" target="_blank" class="btn-accion btn-calendario" style="text-decoration:none;">+ Calendario</a>` : 'Lectura'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderizarListaBarberos() {
+            const ul = document.getElementById('lista-barberos');
             const selectCitas = document.getElementById('barbero');
             if(ul) ul.innerHTML = '';
             
@@ -922,6 +1139,7 @@
             }
         }
 
+        // --- GESTIÓN SERVICIOS ADMIN ---
         function renderizarTablaServiciosAdmin() {
             const tbody = document.querySelector('#tabla-servicios tbody');
             if(!tbody) return;
@@ -1024,6 +1242,7 @@
             }
         }
 
+        // --- GESTIÓN GALERÍA ADMIN ---
         function renderizarGaleriaAdmin() {
             const container = document.getElementById('contenedor-galeria-admin');
             if(!container) return;
@@ -1040,7 +1259,7 @@
                     <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;">
                         <div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div>
                         <div style="padding: 15px; display: flex; gap: 8px; flex-direction: column; background: #fff;">
-                            <button onclick="prepararEdicionGaleria('${img.id}', '${urlEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button>
+                            <button onclick="prepararEdicionGaleria('${img.id}', '${urlEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar URL</button>
                             <button onclick="eliminarImagenGaleria('${img.id}')" class="btn-accion btn-eliminar">Eliminar</button>
                         </div>
                     </div>
@@ -1048,7 +1267,6 @@
             });
         }
 
-        // --- FUNCION ACTUALIZADA: GUARDAR IMAGEN EN GALERIA ---
         async function guardarImagenGaleria() {
             if(!db || !storage) {
                 mostrarMensaje('Error: La base de datos no está lista');
@@ -1066,7 +1284,6 @@
             btn.disabled = true;
 
             try {
-                // Si el usuario seleccionó un archivo físico, lo subimos primero
                 if (inputArchivo.files.length > 0) {
                     btn.innerText = "Subiendo archivo a la nube...";
                     urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'galeria');
@@ -1109,7 +1326,7 @@
             document.getElementById('titulo-form-galeria').innerText = 'Agregar Nueva Imagen';
             document.getElementById('editando-galeria-id').value = '';
             document.getElementById('nueva-galeria-url').value = '';
-            document.getElementById('nueva-galeria-archivo').value = ''; // Limpiar el input de archivo
+            document.getElementById('nueva-galeria-archivo').value = ''; 
             
             document.getElementById('btn-add-galeria').innerText = 'Guardar Imagen';
             document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none';
@@ -1124,6 +1341,7 @@
             }
         }
 
+        // --- EDICIÓN VISUAL WEB ---
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
             const btn = document.getElementById('btn-toggle-edicion');
@@ -1168,7 +1386,6 @@
             elementoImagenActual = null;
         }
 
-        // --- FUNCION ACTUALIZADA: GUARDAR IMAGEN EN EL EDITOR VISUAL (LOGO) ---
         async function guardarNuevaImagen() {
             const inputArchivo = document.getElementById('input-archivo-imagen');
             const urlTexto = document.getElementById('input-url-imagen').value.trim();
@@ -1204,6 +1421,7 @@
             }
         }
 
+        // --- ARRANQUE INICIAL ---
         window.onload = () => {
             const hoy = new Date().toISOString().split('T')[0];
             document.getElementById('fecha').setAttribute('min', hoy);
