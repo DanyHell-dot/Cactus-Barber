@@ -504,13 +504,17 @@
                 <div id="tab-servicios" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Catálogo de Servicios</h2>
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                        <h3 style="margin-bottom: 15px; font-size: 16px;">Agregar Nuevo Servicio</h3>
+                        <h3 id="titulo-form-servicio" style="margin-bottom: 15px; font-size: 16px;">Agregar Nuevo Servicio</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
+                            <input type="hidden" id="editando-servicio-id" value="">
                             <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Tinte de barba)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
                             <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $150 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
                             <textarea id="nuevo-servicio-desc" placeholder="Descripción del servicio" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;" rows="2"></textarea>
                         </div>
-                        <button id="btn-add-servicio" onclick="agregarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; width: 100%;">Guardar Servicio</button>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="btn-add-servicio" onclick="guardarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Servicio</button>
+                            <button id="btn-cancelar-edicion-servicio" onclick="cancelarEdicionServicio()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
+                        </div>
                     </div>
                     <div class="table-container">
                         <table class="tabla-admin" id="tabla-servicios">
@@ -986,19 +990,30 @@
 
             estadoApp.servicios.forEach(s => {
                 const tr = document.createElement('tr');
+                // Escapamos comillas simples para evitar errores en onclick
+                const nombreEscapado = s.nombre.replace(/'/g, "\\'");
+                const precioEscapado = s.precio.replace(/'/g, "\\'");
+                const descEscapada = s.desc.replace(/'/g, "\\'");
+                
                 tr.innerHTML = `
                     <td><strong>${s.nombre}</strong></td>
                     <td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td>
                     <td><small>${s.desc}</small></td>
-                    <td><button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button></td>
+                    <td>
+                        <div style="display: flex; gap: 5px; flex-direction: column;">
+                            <button onclick="prepararEdicionServicio('${s.id}', '${nombreEscapado}', '${precioEscapado}', '${descEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button>
+                            <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button>
+                        </div>
+                    </td>
                 `;
                 tbody.appendChild(tr);
             });
         }
 
-        function agregarServicio() {
+        function guardarServicio() {
             if(!db) return;
             
+            const idEdicion = document.getElementById('editando-servicio-id').value;
             const nombre = document.getElementById('nuevo-servicio-nombre').value.trim();
             const precio = document.getElementById('nuevo-servicio-precio').value.trim();
             const desc = document.getElementById('nuevo-servicio-desc').value.trim();
@@ -1007,19 +1022,57 @@
                 const btn = document.getElementById('btn-add-servicio');
                 btn.innerText = "Guardando...";
                 
-                db.collection("servicios").add({ nombre, precio, desc }).then(() => {
-                    document.getElementById('nuevo-servicio-nombre').value = '';
-                    document.getElementById('nuevo-servicio-precio').value = '';
-                    document.getElementById('nuevo-servicio-desc').value = '';
-                    mostrarMensaje('Servicio agregado exitosamente');
-                }).catch(() => {
-                    mostrarMensaje('Error al agregar servicio');
-                }).finally(() => {
-                    btn.innerText = "Guardar Servicio";
-                });
+                if (idEdicion) {
+                    // Modo Edición
+                    db.collection("servicios").doc(idEdicion).update({ nombre, precio, desc }).then(() => {
+                        mostrarMensaje('Servicio actualizado exitosamente');
+                        cancelarEdicionServicio(); // Limpiar form y resetear botones
+                    }).catch(() => {
+                        mostrarMensaje('Error al actualizar servicio');
+                    }).finally(() => {
+                        btn.innerText = "Guardar Servicio";
+                    });
+                } else {
+                    // Modo Nuevo
+                    db.collection("servicios").add({ nombre, precio, desc }).then(() => {
+                        document.getElementById('nuevo-servicio-nombre').value = '';
+                        document.getElementById('nuevo-servicio-precio').value = '';
+                        document.getElementById('nuevo-servicio-desc').value = '';
+                        mostrarMensaje('Servicio agregado exitosamente');
+                    }).catch(() => {
+                        mostrarMensaje('Error al agregar servicio');
+                    }).finally(() => {
+                        btn.innerText = "Guardar Servicio";
+                    });
+                }
             } else {
                 mostrarMensaje('Completa todos los campos del servicio');
             }
+        }
+        
+        function prepararEdicionServicio(id, nombre, precio, desc) {
+            document.getElementById('titulo-form-servicio').innerText = 'Modificar Servicio';
+            document.getElementById('editando-servicio-id').value = id;
+            document.getElementById('nuevo-servicio-nombre').value = nombre;
+            document.getElementById('nuevo-servicio-precio').value = precio;
+            document.getElementById('nuevo-servicio-desc').value = desc;
+            
+            document.getElementById('btn-add-servicio').innerText = 'Actualizar Servicio';
+            document.getElementById('btn-cancelar-edicion-servicio').style.display = 'block';
+            
+            // Hacer un scroll suave hacia el formulario
+            document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelarEdicionServicio() {
+            document.getElementById('titulo-form-servicio').innerText = 'Agregar Nuevo Servicio';
+            document.getElementById('editando-servicio-id').value = '';
+            document.getElementById('nuevo-servicio-nombre').value = '';
+            document.getElementById('nuevo-servicio-precio').value = '';
+            document.getElementById('nuevo-servicio-desc').value = '';
+            
+            document.getElementById('btn-add-servicio').innerText = 'Guardar Servicio';
+            document.getElementById('btn-cancelar-edicion-servicio').style.display = 'none';
         }
 
         function eliminarServicio(idDocumento) {
