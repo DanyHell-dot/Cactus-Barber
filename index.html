@@ -74,6 +74,8 @@
             height: 50px;
             width: auto;
             border-radius: 8px;
+            object-fit: contain; /* Asegura que no se deforme */
+            background-color: transparent;
         }
 
         nav {
@@ -422,7 +424,8 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <img src="https://via.placeholder.com/150x50?text=Cactus+Logo" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
+        <!-- AÑADIDO: onerror="this.src='...'" como respaldo si Firebase tarda -->
+        <img src="https://via.placeholder.com/150x50?text=Cactus+Logo" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal" onerror="this.src='https://via.placeholder.com/150x50?text=Cactus+Logo'">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
@@ -705,6 +708,7 @@
         let datosYaCargados = false; 
 
         // --- CARGA DE CONFIGURACIÓN (LOGO) ---
+        // AÑADIDO: Esta función escucha los cambios del logo en la base de datos
         function iniciarEscuchaConfiguracion() {
             if(!db) return;
             
@@ -753,7 +757,6 @@
 
         // --- SISTEMA DE LIGHTBOX (CAJA DE LUZ) ---
         function abrirLightbox(url) {
-            // Si estamos en modo editor web, no queremos que se abra el lightbox
             if (estadoApp.modoEdicion) return; 
             
             const lightbox = document.getElementById('lightbox');
@@ -765,7 +768,6 @@
         function cerrarLightbox() {
             const lightbox = document.getElementById('lightbox');
             lightbox.classList.remove('mostrar');
-            // Limpiamos la fuente después de que termina la animación de desvanecimiento
             setTimeout(() => {
                 document.getElementById('lightbox-img').src = '';
             }, 300);
@@ -884,7 +886,6 @@
             grid.innerHTML = '';
             
             estadoApp.galeria.forEach(img => {
-                // Al hacer clic, si estamos editando abre el editor, sino abre el lightbox.
                 grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`;
             });
         }
@@ -972,9 +973,9 @@
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 
-                // IMPORTANTE: Aquí inicializamos todas las escuchas de datos
+                // AÑADIDO: Ahora la inicialización de la configuración (logo) se dispara desde aquí también
                 if(!datosYaCargados) {
-                    iniciarEscuchaConfiguracion(); // Añadido para el logo
+                    iniciarEscuchaConfiguracion(); 
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
                     iniciarEscuchaServicios();
@@ -1404,6 +1405,7 @@
             elementoImagenActual = null;
         }
 
+        // AÑADIDO: Lógica para guardar la URL del logo en Firebase
         async function guardarNuevaImagen() {
             const inputArchivo = document.getElementById('input-archivo-imagen');
             const urlTexto = document.getElementById('input-url-imagen').value.trim();
@@ -1424,7 +1426,7 @@
                     if (elementoImagenActual.tagName === 'IMG') {
                         elementoImagenActual.src = urlFinal;
                         
-                        // --- NUEVO: GUARDAR EL LOGO EN FIREBASE ---
+                        // Guardar en la base de datos si es el logo principal
                         if (elementoImagenActual.id === 'logo-principal' && db) {
                             btn.innerText = "Guardando en base de datos...";
                             await db.collection("configuracion").doc("general").set({
