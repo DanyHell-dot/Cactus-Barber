@@ -704,6 +704,23 @@
         let elementoImagenActual = null;
         let datosYaCargados = false; 
 
+        // --- CARGA DE CONFIGURACIÓN (LOGO) ---
+        function iniciarEscuchaConfiguracion() {
+            if(!db) return;
+            
+            db.collection("configuracion").doc("general").onSnapshot((doc) => {
+                if (doc.exists) {
+                    const datos = doc.data();
+                    if (datos.logoUrl) {
+                        const logoEl = document.getElementById('logo-principal');
+                        if (logoEl) logoEl.src = datos.logoUrl;
+                    }
+                }
+            }, (error) => {
+                console.error("Fallo al descargar configuración:", error);
+            });
+        }
+
         // --- NAVEGACIÓN Y NOTIFICACIONES ---
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
@@ -957,6 +974,7 @@
                 
                 // IMPORTANTE: Aquí inicializamos todas las escuchas de datos
                 if(!datosYaCargados) {
+                    iniciarEscuchaConfiguracion(); // Añadido para el logo
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
                     iniciarEscuchaServicios();
@@ -1405,10 +1423,19 @@
                 if (urlFinal && elementoImagenActual) {
                     if (elementoImagenActual.tagName === 'IMG') {
                         elementoImagenActual.src = urlFinal;
+                        
+                        // --- NUEVO: GUARDAR EL LOGO EN FIREBASE ---
+                        if (elementoImagenActual.id === 'logo-principal' && db) {
+                            btn.innerText = "Guardando en base de datos...";
+                            await db.collection("configuracion").doc("general").set({
+                                logoUrl: urlFinal
+                            }, { merge: true });
+                        }
                     } else {
                         elementoImagenActual.style.backgroundImage = `url('${urlFinal}')`;
                     }
                     cerrarModalImagen();
+                    mostrarMensaje('¡Logo actualizado exitosamente!');
                 } else {
                     mostrarMensaje('Por favor, selecciona una foto o ingresa un enlace');
                 }
