@@ -27,6 +27,7 @@
             overflow-x: hidden;
         }
 
+        /* Fondo animado */
         .fondo-barbero {
             position: fixed;
             top: 0;
@@ -56,12 +57,12 @@
 
         header {
             background: linear-gradient(to bottom, #3A5346, var(--verde-cactus));
-            padding: 15px 20px 20px 20px;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
+            flex-direction: column; /* Apilado */
             justify-content: center;
             align-items: center;
-            gap: 18px;
+            gap: 15px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -71,7 +72,7 @@
         }
 
         .logo-img {
-            height: 80px;
+            height: 80px; /* Más grande para destacar */
             width: auto;
             border-radius: 8px;
             object-fit: contain;
@@ -85,7 +86,7 @@
 
         nav {
             display: flex;
-            gap: 30px;
+            gap: 25px;
             align-items: center;
             flex-wrap: wrap;
             justify-content: center;
@@ -177,6 +178,7 @@
             box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
         }
 
+        /* Galería */
         .galeria-contenedor {
             padding: 50px 20px;
             text-align: center;
@@ -204,6 +206,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
+        /* Lightbox */
         .lightbox-overlay {
             display: none;
             position: fixed;
@@ -312,7 +315,7 @@
             font-size: 15px;
             background: var(--fondo);
             outline: none;
-            transition: background-color 0.5s; /* Para el efecto visual del autocompletado */
+            transition: background-color 0.5s;
         }
         .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus {
             border-color: var(--azul-acento);
@@ -439,14 +442,13 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- Logo con respaldo indestructible en SVG por si falla la conexión -->
+        <!-- Logo con respaldo indestructible en SVG -->
         <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
             <a onclick="navegar('citas')">Citas</a>
-            <!-- NUEVA OPCIÓN PARA QUE EL CLIENTE VEA SU HISTORIAL -->
-            <a onclick="navegar('mis-citas')" style="color: var(--azul-acento);">Mis Citas</a>
+            <a onclick="navegar('mis-citas')" style="color: #FFD700;">★ Mis Citas</a>
             <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Panel (Admin)</button>
         </nav>
     </header>
@@ -799,7 +801,7 @@
             setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
         }
 
-        // --- STREAMING_CHUNK: Cargas Públicas de Barberos y Servicios ---
+        // --- STREAMING_CHUNK: Funciones de carga pública de datos... ---
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -879,22 +881,21 @@
             });
         }
 
-        // --- STREAMING_CHUNK: Nuevo sistema de autocompletado y búsqueda de clientes... ---
+        // --- STREAMING_CHUNK: Sistema de Autocompletado y Mis Citas... ---
         
-        // 1. Autocompletar nombre al terminar de escribir teléfono
         async function buscarClienteFrecuente() {
             const tel = document.getElementById('telefono').value.trim();
             if(tel.length < 7 || !db) return; 
 
             try {
-                // Buscamos el registro más reciente con ese teléfono
+                // Buscamos si existe al menos una cita con este teléfono
                 const snapshot = await db.collection("citas").where("telefono", "==", tel).limit(1).get();
                 if(!snapshot.empty) {
                     const cita = snapshot.docs[0].data();
                     const inputNombre = document.getElementById('nombre');
                     
                     inputNombre.value = cita.nombre;
-                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)"; // Highlight azul visual
+                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)"; // Highlight visual
                     setTimeout(() => inputNombre.style.backgroundColor = "var(--fondo)", 2000);
                     
                     mostrarMensaje(`¡Qué gusto verte de nuevo, ${cita.nombre}!`);
@@ -904,7 +905,6 @@
             }
         }
 
-        // 2. Buscador del historial del cliente en "Mis Citas"
         async function mostrarMisCitas() {
             const tel = document.getElementById('telefono-buscar').value.trim();
             const contenedor = document.getElementById('contenedor-mis-citas');
@@ -928,7 +928,7 @@
                 let misCitas = [];
                 snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
                 
-                // Ordenar por fecha de la más nueva a la más vieja
+                // Ordenar por fecha (más nueva a más vieja)
                 misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
                 misCitas.forEach(cita => {
@@ -1025,10 +1025,9 @@
             });
         }
 
-        // --- STREAMING_CHUNK: Login de Administrador ---
+        // --- STREAMING_CHUNK: Control de Autenticación de Firebase... ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
-                // Iniciar escuchas de colecciones si no se han iniciado
                 if(!datosYaCargados) {
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
@@ -1079,7 +1078,7 @@
 
         function cerrarSesion() { if(auth) auth.signOut().then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
 
-        // --- STREAMING_CHUNK: Gestión del Panel Admin ---
+        // --- STREAMING_CHUNK: Panel de Administración de Datos... ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -1215,6 +1214,7 @@
 
         function eliminarServicio(idDocumento) { if(!db) return; if(confirm("¿Seguro de eliminar?")) { db.collection("servicios").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminado'); }); } }
 
+        // --- STREAMING_CHUNK: Sistema de Edición Visual y Galería... ---
         function renderizarGaleriaAdmin() {
             const container = document.getElementById('contenedor-galeria-admin');
             if(!container) return; container.innerHTML = '';
