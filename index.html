@@ -74,8 +74,7 @@
             height: 50px;
             width: auto;
             border-radius: 8px;
-            object-fit: contain; /* Evita que el logo se estire */
-            background-color: transparent;
+            object-fit: contain;
         }
 
         nav {
@@ -424,8 +423,8 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- RESPALDO AGREGADO: onerror en caso de que tarde en cargar -->
-        <img src="https://via.placeholder.com/150x50?text=Cactus+Logo" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal" onerror="this.src='https://via.placeholder.com/150x50?text=Cactus+Logo'">
+        <!-- RESPALDO INDESTRUCTIBLE: Si falla el internet, se dibuja un logo verde con código SVG -->
+        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
@@ -679,11 +678,32 @@
         let auth = null;
         let storage = null;
 
+        // --- FUNCION CLAVE QUE FALTABA PARA LEER EL LOGO ---
+        function iniciarEscuchaConfiguracion() {
+            if(!db) return;
+            
+            db.collection("configuracion").doc("general").onSnapshot((doc) => {
+                if (doc.exists) {
+                    const datos = doc.data();
+                    if (datos.logoUrl) {
+                        const logoEl = document.getElementById('logo-principal');
+                        if (logoEl) logoEl.src = datos.logoUrl;
+                    }
+                }
+            }, (error) => {
+                console.error("Fallo al descargar configuración del logo:", error);
+            });
+        }
+
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
             storage = firebase.storage();
+            
+            // LA ORDEN DEBE EJECUTARSE INMEDIATAMENTE AQUÍ
+            iniciarEscuchaConfiguracion();
+
         } catch(error) {
             console.error("Error al inicializar:", error);
             document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error de inicialización</option>';
@@ -706,26 +726,6 @@
 
         let elementoImagenActual = null;
         let datosYaCargados = false; 
-
-        // --- CARGA DE CONFIGURACIÓN (LOGO) INDEPENDIENTE DEL LOGIN ---
-        function iniciarEscuchaConfiguracion() {
-            if(!db) return;
-            
-            db.collection("configuracion").doc("general").onSnapshot((doc) => {
-                if (doc.exists) {
-                    const datos = doc.data();
-                    if (datos.logoUrl) {
-                        const logoEl = document.getElementById('logo-principal');
-                        if (logoEl) logoEl.src = datos.logoUrl;
-                    }
-                }
-            }, (error) => {
-                console.error("Fallo al descargar configuración del logo:", error);
-            });
-        }
-
-        // Ejecutar inmediatamente al cargar el script, sin esperar a Auth
-        iniciarEscuchaConfiguracion();
 
         // --- NAVEGACIÓN Y NOTIFICACIONES ---
         function navegar(idPagina) {
@@ -774,6 +774,7 @@
                 document.getElementById('lightbox-img').src = '';
             }, 300);
         }
+
 
         // --- CARGA DE DATOS: BARBEROS ---
         function iniciarEscuchaBarberos() {
@@ -974,7 +975,7 @@
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 
-                // Iniciamos las escuchas de datos que no sean el logo
+                // IMPORTANTE: Aquí inicializamos todas las escuchas de datos
                 if(!datosYaCargados) {
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
@@ -1405,6 +1406,7 @@
             elementoImagenActual = null;
         }
 
+        // --- FUNCION PARA GUARDAR EL LOGO EN BASE DE DATOS ---
         async function guardarNuevaImagen() {
             const inputArchivo = document.getElementById('input-archivo-imagen');
             const urlTexto = document.getElementById('input-url-imagen').value.trim();
@@ -1425,7 +1427,7 @@
                     if (elementoImagenActual.tagName === 'IMG') {
                         elementoImagenActual.src = urlFinal;
                         
-                        // Guardar en la base de datos de forma persistente
+                        // IMPORTANTE: GUARDAR EN FIREBASE DE FORMA PERSISTENTE
                         if (elementoImagenActual.id === 'logo-principal' && db) {
                             btn.innerText = "Guardando en base de datos...";
                             await db.collection("configuracion").doc("general").set({
