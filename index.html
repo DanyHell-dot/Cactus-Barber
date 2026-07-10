@@ -312,7 +312,7 @@
             font-size: 15px;
             background: var(--fondo);
             outline: none;
-            transition: background-color 0.5s; /* Para el efecto de cliente frecuente */
+            transition: background-color 0.5s; /* Para el efecto visual del autocompletado */
         }
         .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus {
             border-color: var(--azul-acento);
@@ -439,13 +439,14 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- Logo en Base64 para que nunca se rompa, conectado dinámicamente a Firebase -->
+        <!-- Logo con respaldo indestructible en SVG por si falla la conexión -->
         <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
             <a onclick="navegar('citas')">Citas</a>
-            <a onclick="navegar('mis-citas')">Mis Citas</a>
+            <!-- NUEVA OPCIÓN PARA QUE EL CLIENTE VEA SU HISTORIAL -->
+            <a onclick="navegar('mis-citas')" style="color: var(--azul-acento);">Mis Citas</a>
             <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Panel (Admin)</button>
         </nav>
     </header>
@@ -479,11 +480,12 @@
         <div class="form-citas">
             <form id="formCita" onsubmit="procesarCita(event)">
                 
-                <!-- El teléfono va primero para buscar al cliente cuando termine de escribir -->
+                <!-- El teléfono va primero. Al salir del campo (onblur), busca al cliente -->
                 <div class="grupo-form">
                     <label for="telefono">📞 Teléfono:</label>
                     <input type="tel" id="telefono" required placeholder="Tu número de celular" onblur="buscarClienteFrecuente()">
                 </div>
+                
                 <div class="grupo-form">
                     <label for="nombre">👤 Nombre Completo:</label>
                     <input type="text" id="nombre" required placeholder="Ej. Juan Pérez">
@@ -531,7 +533,7 @@
             </div>
             
             <div id="contenedor-mis-citas" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <!-- Aquí aparecerán las tarjetas del cliente -->
+                <!-- Aquí aparecerán las tarjetas del cliente inyectadas por JS -->
             </div>
         </div>
     </section>
@@ -570,7 +572,6 @@
                     </div>
                 </div>
 
-                <!-- Pestañas restantes del admin... -->
                 <div id="tab-barberos" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
                     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
@@ -648,6 +649,7 @@
         </div>
     </section>
 
+    <!-- Modales -->
     <div class="modal-overlay" id="modalLogin">
         <div class="modal-login">
             <h2>Iniciar Sesión</h2>
@@ -678,7 +680,6 @@
         </div>
     </div>
 
-    <!-- Modal Lightbox -->
     <div class="lightbox-overlay" id="lightbox" onclick="cerrarLightbox()">
         <span class="lightbox-cerrar" onclick="cerrarLightbox()">&times;</span>
         <img src="" alt="Imagen ampliada" class="lightbox-img" id="lightbox-img">
@@ -706,7 +707,6 @@
         let auth = null;
         let storage = null;
 
-        // IMPORTANTE: Esta es la función que lee el logo de forma universal al arrancar la página.
         function iniciarEscuchaConfiguracion() {
             if(!db) return;
             
@@ -729,12 +729,8 @@
             auth = firebase.auth();
             storage = firebase.storage();
 
-            // Ejecutamos la carga del logo INMEDIATAMENTE después de iniciar Firebase
+            // Ejecutamos la carga del logo INMEDIATAMENTE para todos
             iniciarEscuchaConfiguracion();
-            // Ejecutamos las consultas públicas de Barberos, Servicios y Galería
-            iniciarEscuchaBarberos();
-            iniciarEscuchaServicios();
-            iniciarEscuchaGaleria();
 
         } catch(error) {
             console.error("Error al inicializar:", error);
@@ -757,7 +753,7 @@
         };
 
         let elementoImagenActual = null;
-        let escuchaCitasIniciada = false;
+        let datosYaCargados = false; 
 
         // --- NAVEGACIÓN Y NOTIFICACIONES ---
         function navegar(idPagina) {
@@ -780,7 +776,6 @@
             fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
         });
 
-        // --- SUBIDA A FIREBASE STORAGE ---
         async function subirArchivoFirebase(archivo, carpeta) {
             if (!storage) throw new Error("Storage no inicializado");
             const nombreUnico = Date.now() + '_' + archivo.name;
@@ -789,7 +784,7 @@
             return await snapshot.ref.getDownloadURL();
         }
 
-        // --- STREAMING_CHUNK: Control del sistema Lightbox de fotos... ---
+        // --- LIGHTBOX ---
         function abrirLightbox(url) {
             if (estadoApp.modoEdicion) return; 
             const lightbox = document.getElementById('lightbox');
@@ -804,15 +799,13 @@
             setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
         }
 
-        // --- CARGA DE DATOS PUBLICOS (Galeria, Servicios, Barberos) ---
+        // --- STREAMING_CHUNK: Cargas Públicas de Barberos y Servicios ---
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
             db.collection("barberos").onSnapshot((snapshot) => {
                 estadoApp.barberos = [];
-                snapshot.forEach(doc => {
-                    estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre });
-                });
+                snapshot.forEach(doc => { estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre }); });
                 
                 if (estadoApp.barberos.length === 0) {
                     db.collection("barberos").add({ nombre: "TONNY" });
@@ -828,15 +821,10 @@
             if(!db) return;
             db.collection("servicios").onSnapshot((snapshot) => {
                 estadoApp.servicios = [];
-                snapshot.forEach(doc => {
-                    estadoApp.servicios.push({ id: doc.id, ...doc.data() });
-                });
+                snapshot.forEach(doc => { estadoApp.servicios.push({ id: doc.id, ...doc.data() }); });
                 
                 if (estadoApp.servicios.length === 0) {
-                    const serviciosBase = [
-                        { nombre: "Corte Clásico", precio: "$200 MXN", desc: "Corte tradicional." },
-                        { nombre: "Corte Premium", precio: "$300 MXN", desc: "Corte personalizado con asesoría." }
-                    ];
+                    const serviciosBase = [{ nombre: "Corte Clásico", precio: "$200 MXN", desc: "Corte tradicional" }];
                     serviciosBase.forEach(s => db.collection("servicios").add(s));
                 } else {
                     renderizarServiciosPublicos();
@@ -861,13 +849,10 @@
                     </div>
                 `;
                 const opt = document.createElement('option');
-                opt.value = s.nombre;
-                opt.textContent = `${s.nombre} - ${s.precio}`;
+                opt.value = s.nombre; opt.textContent = `${s.nombre} - ${s.precio}`;
                 selectCitas.appendChild(opt);
             });
-            if(estadoApp.modoEdicion) {
-                grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true");
-            }
+            if(estadoApp.modoEdicion) { grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); }
         }
 
         function iniciarEscuchaGaleria() {
@@ -894,24 +879,22 @@
             });
         }
 
-        // --- STREAMING_CHUNK: Sistema Inteligente de Citas y Clientes Frecuentes... ---
+        // --- STREAMING_CHUNK: Nuevo sistema de autocompletado y búsqueda de clientes... ---
         
-        // 1. Buscador automático al escribir el teléfono en el formulario de Citas
+        // 1. Autocompletar nombre al terminar de escribir teléfono
         async function buscarClienteFrecuente() {
             const tel = document.getElementById('telefono').value.trim();
-            if(tel.length < 7 || !db) return; // Esperamos un número razonablemente largo
+            if(tel.length < 7 || !db) return; 
 
             try {
-                // Buscamos en Firebase el teléfono. Tomamos solo el último registro (limit 1)
+                // Buscamos el registro más reciente con ese teléfono
                 const snapshot = await db.collection("citas").where("telefono", "==", tel).limit(1).get();
                 if(!snapshot.empty) {
                     const cita = snapshot.docs[0].data();
                     const inputNombre = document.getElementById('nombre');
                     
-                    // Rellenamos su nombre
                     inputNombre.value = cita.nombre;
-                    // Le damos un efecto azul rápido para que note que el sistema trabajó
-                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
+                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)"; // Highlight azul visual
                     setTimeout(() => inputNombre.style.backgroundColor = "var(--fondo)", 2000);
                     
                     mostrarMensaje(`¡Qué gusto verte de nuevo, ${cita.nombre}!`);
@@ -921,7 +904,7 @@
             }
         }
 
-        // 2. Buscador de la pestaña "Mis Citas" (Para mostrarle al cliente su historial)
+        // 2. Buscador del historial del cliente en "Mis Citas"
         async function mostrarMisCitas() {
             const tel = document.getElementById('telefono-buscar').value.trim();
             const contenedor = document.getElementById('contenedor-mis-citas');
@@ -934,7 +917,6 @@
             }
 
             try {
-                // Buscamos TODAS las citas de ese teléfono
                 const snapshot = await db.collection("citas").where("telefono", "==", tel).get();
                 contenedor.innerHTML = '';
                 
@@ -943,11 +925,10 @@
                     return;
                 }
 
-                // Las metemos en un arreglo para poder ordenarlas por fecha
                 let misCitas = [];
                 snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
                 
-                // Ordenamos las citas de la más nueva a la más vieja
+                // Ordenar por fecha de la más nueva a la más vieja
                 misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
                 misCitas.forEach(cita => {
@@ -976,16 +957,13 @@
             }
         }
 
-        // --- Carga de las Citas PARA EL ADMINISTRADOR (Solo corre si inicias sesión) ---
-        function iniciarEscuchaCitasAdmin() {
-            if(!db || escuchaCitasIniciada) return;
+        // --- Carga Admin y Procesar Reservas ---
+        function iniciarEscuchaCitas() {
+            if(!db) return;
             try {
                 db.collection("citas").onSnapshot((snap) => {
                     estadoApp.citas = [];
-                    snap.forEach(doc => {
-                        estadoApp.citas.push({ id: doc.id, ...doc.data() });
-                    });
-                    
+                    snap.forEach(doc => { estadoApp.citas.push({ id: doc.id, ...doc.data() }); });
                     estadoApp.citas.sort((a, b) => {
                         let timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
                         let timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
@@ -993,10 +971,7 @@
                     });
                     if(estadoApp.usuarioActual) renderizarTablaCitas();
                 });
-                escuchaCitasIniciada = true;
-            } catch(error) {
-                console.error("Error en citas:", error);
-            }
+            } catch(error) { console.error("Error en citas:", error); }
         }
 
         function cargarHorarios() {
@@ -1012,13 +987,10 @@
             for(let i = 10; i <= 19; i++) {
                 const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
                 const option = document.createElement('option');
-                
                 if ((i + numMagico) % 4 === 0) {
-                    option.text = `${horaStr} (No disponible)`;
-                    option.disabled = true;
+                    option.text = `${horaStr} (No disponible)`; option.disabled = true;
                 } else {
-                    option.value = horaStr;
-                    option.text = horaStr;
+                    option.value = horaStr; option.text = horaStr;
                 }
                 selectHora.appendChild(option);
             }
@@ -1029,12 +1001,11 @@
             if(!db) return;
 
             const btn = document.getElementById('btn-submit-cita');
-            btn.innerText = "Agendando...";
-            btn.disabled = true;
+            btn.innerText = "Agendando..."; btn.disabled = true;
 
             const cita = {
                 nombre: document.getElementById('nombre').value.trim(),
-                telefono: document.getElementById('telefono').value,
+                telefono: document.getElementById('telefono').value.trim(),
                 barbero: document.getElementById('barbero').value,
                 fecha: document.getElementById('fecha').value,
                 hora: document.getElementById('hora').value,
@@ -1050,19 +1021,24 @@
             }).catch((error) => {
                 mostrarMensaje("Error al agendar. Intenta de nuevo.");
             }).finally(() => {
-                btn.innerText = "Confirmar Reserva";
-                btn.disabled = false;
+                btn.innerText = "Confirmar Reserva"; btn.disabled = false;
             });
         }
 
-        // --- STREAMING_CHUNK: Sistema de Autenticación de Firebase (Admins)... ---
+        // --- STREAMING_CHUNK: Login de Administrador ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
+                // Iniciar escuchas de colecciones si no se han iniciado
+                if(!datosYaCargados) {
+                    iniciarEscuchaBarberos();
+                    iniciarEscuchaCitas();
+                    iniciarEscuchaServicios();
+                    iniciarEscuchaGaleria();
+                    datosYaCargados = true;
+                }
+
                 const btnNav = document.getElementById('btn-nav-admin');
                 if (user) {
-                    // Si un administrador entra, le descargamos la tabla completa de Citas
-                    iniciarEscuchaCitasAdmin();
-
                     const email = user.email.toLowerCase();
                     const infoUsuario = USUARIOS_ROLES[email] || { nombre: 'Colaborador', rol: 'barbero' };
                     estadoApp.usuarioActual = infoUsuario;
@@ -1079,56 +1055,31 @@
             });
         }
 
-        function abrirLogin() {
-            estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex';
-        }
-
+        function abrirLogin() { estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex'; }
         function cerrarLogin() { document.getElementById('modalLogin').style.display = 'none'; }
 
         function procesarLogin(evento) {
             evento.preventDefault();
-            if(!auth) {
-                mostrarMensaje("Error de conexión con Firebase.");
-                return;
-            }
-
+            if(!auth) return;
             const email = document.getElementById('login-user').value.trim().toLowerCase();
             const pass = document.getElementById('login-pass').value;
             const btnLogin = document.getElementById('btn-login');
 
-            btnLogin.innerText = "Validando...";
-            btnLogin.disabled = true;
+            btnLogin.innerText = "Validando..."; btnLogin.disabled = true;
 
             auth.signInWithEmailAndPassword(email, pass).then(() => {
-                cerrarLogin();
-                navegar('admin');
-                mostrarMensaje(`¡Bienvenido!`);
-                document.getElementById('login-user').value = '';
-                document.getElementById('login-pass').value = '';
+                cerrarLogin(); navegar('admin'); mostrarMensaje(`¡Bienvenido!`);
+                document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = '';
             }).catch((error) => {
-                if(error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
-                    mostrarMensaje('Correo o contraseña incorrectos.');
-                } else if(error.code === 'auth/too-many-requests') {
-                    mostrarMensaje('Demasiados intentos. Espera unos minutos.');
-                } else if(error.code === 'auth/invalid-email') {
-                    mostrarMensaje('El formato del correo es inválido.');
-                } else {
-                    mostrarMensaje('Error de conexión: ' + error.message);
-                }
+                mostrarMensaje('Correo o contraseña incorrectos.');
             }).finally(() => {
-                btnLogin.innerText = "Entrar";
-                btnLogin.disabled = false;
+                btnLogin.innerText = "Entrar"; btnLogin.disabled = false;
             });
         }
 
-        function cerrarSesion() {
-            if(auth) auth.signOut().then(() => {
-                navegar('inicio');
-                mostrarMensaje('Sesión cerrada');
-            });
-        }
+        function cerrarSesion() { if(auth) auth.signOut().then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
 
-        // --- STREAMING_CHUNK: Lógica de paneles de Control (CRUD Admin)... ---
+        // --- STREAMING_CHUNK: Gestión del Panel Admin ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -1137,10 +1088,7 @@
             document.getElementById('menu-tab-galeria').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             cambiarTabAdmin('tab-citas');
-            renderizarTablaCitas();
-            renderizarListaBarberos();
-            renderizarTablaServiciosAdmin();
-            renderizarGaleriaAdmin();
+            renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
         }
 
         function cambiarTabAdmin(idTab) {
@@ -1148,8 +1096,7 @@
                 document.getElementById(id).style.display = 'none';
                 document.getElementById('menu-' + id).classList.remove('activo');
             });
-            document.getElementById(idTab).style.display = 'block';
-            document.getElementById('menu-' + idTab).classList.add('activo');
+            document.getElementById(idTab).style.display = 'block'; document.getElementById('menu-' + idTab).classList.add('activo');
         }
 
         function renderizarTablaCitas() {
@@ -1157,14 +1104,9 @@
             tbody.innerHTML = '';
             if(!estadoApp.usuarioActual) return;
 
-            let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' 
-                ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) 
-                : estadoApp.citas;
+            let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) : estadoApp.citas;
 
-            if (citasAMostrar.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>';
-                return;
-            }
+            if (citasAMostrar.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>'; return; }
 
             citasAMostrar.forEach(cita => {
                 const tr = document.createElement('tr');
@@ -1187,10 +1129,7 @@
             const selectCitas = document.getElementById('barbero');
             if(ul) ul.innerHTML = '';
             
-            if(estadoApp.barberos.length === 0) {
-                selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos</option>';
-                return;
-            }
+            if(estadoApp.barberos.length === 0) { selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos</option>'; return; }
             selectCitas.innerHTML = '<option value="" disabled selected>¿Con quién te atenderás?</option>';
 
             estadoApp.barberos.forEach(b => {
@@ -1200,10 +1139,7 @@
                     li.innerHTML = `<span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button>`;
                     ul.appendChild(li);
                 }
-                const opt = document.createElement('option');
-                opt.value = b.nombre; 
-                opt.textContent = b.nombre;
-                selectCitas.appendChild(opt);
+                const opt = document.createElement('option'); opt.value = b.nombre; opt.textContent = b.nombre; selectCitas.appendChild(opt);
             });
         }
 
@@ -1211,40 +1147,26 @@
             if(!db) return;
             const nombre = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
             if (nombre) {
-                const btn = document.getElementById('btn-add-barbero');
-                btn.innerText = "Guardando...";
+                const btn = document.getElementById('btn-add-barbero'); btn.innerText = "Guardando...";
                 db.collection("barberos").add({ nombre: nombre }).then(() => {
-                    document.getElementById('nuevo-barbero').value = '';
-                    mostrarMensaje('Barbero agregado exitosamente');
-                }).finally(() => {
-                    btn.innerText = "Añadir";
-                });
+                    document.getElementById('nuevo-barbero').value = ''; mostrarMensaje('Barbero agregado');
+                }).finally(() => { btn.innerText = "Añadir"; });
             }
         }
 
         function eliminarBarbero(idDocumento) {
             if(!db) return;
-            if(confirm("¿Estás seguro de eliminar este barbero?")) {
-                db.collection("barberos").doc(idDocumento).delete().then(() => { mostrarMensaje('Barbero eliminado'); });
-            }
+            if(confirm("¿Estás seguro de eliminar este barbero?")) { db.collection("barberos").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminado'); }); }
         }
 
-        // --- STREAMING_CHUNK: Gestión de Servicios por el administrador... ---
         function renderizarTablaServiciosAdmin() {
             const tbody = document.querySelector('#tabla-servicios tbody');
-            if(!tbody) return;
-            tbody.innerHTML = '';
-            if (estadoApp.servicios.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No hay servicios registrados.</td></tr>';
-                return;
-            }
+            if(!tbody) return; tbody.innerHTML = '';
+            if (estadoApp.servicios.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Sin servicios.</td></tr>'; return; }
 
             estadoApp.servicios.forEach(s => {
                 const tr = document.createElement('tr');
-                const nombreEscapado = s.nombre.replace(/'/g, "\\'");
-                const precioEscapado = s.precio.replace(/'/g, "\\'");
-                const descEscapada = s.desc.replace(/'/g, "\\'");
-
+                const nombreEscapado = s.nombre.replace(/'/g, "\\'"); const precioEscapado = s.precio.replace(/'/g, "\\'"); const descEscapada = s.desc.replace(/'/g, "\\'");
                 tr.innerHTML = `
                     <td><strong>${s.nombre}</strong></td>
                     <td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td>
@@ -1266,66 +1188,38 @@
             const desc = document.getElementById('nuevo-servicio-desc').value.trim();
             
             if (nombre && precio && desc) {
-                const btn = document.getElementById('btn-add-servicio');
-                btn.innerText = "Guardando...";
+                const btn = document.getElementById('btn-add-servicio'); btn.innerText = "Guardando...";
                 const datos = { nombre, precio, desc };
-
                 if (idEdicion) {
-                    db.collection("servicios").doc(idEdicion).update(datos).then(() => {
-                        mostrarMensaje('Servicio actualizado exitosamente');
-                        cancelarEdicionServicio();
-                    }).finally(() => { btn.innerText = "Guardar Servicio"; });
+                    db.collection("servicios").doc(idEdicion).update(datos).then(() => { mostrarMensaje('Actualizado'); cancelarEdicionServicio(); }).finally(() => { btn.innerText = "Guardar Servicio"; });
                 } else {
-                    db.collection("servicios").add(datos).then(() => {
-                        document.getElementById('nuevo-servicio-nombre').value = '';
-                        document.getElementById('nuevo-servicio-precio').value = '';
-                        document.getElementById('nuevo-servicio-desc').value = '';
-                        mostrarMensaje('Servicio agregado exitosamente');
-                    }).finally(() => { btn.innerText = "Guardar Servicio"; });
+                    db.collection("servicios").add(datos).then(() => { cancelarEdicionServicio(); mostrarMensaje('Agregado'); }).finally(() => { btn.innerText = "Guardar Servicio"; });
                 }
-            } else {
-                mostrarMensaje('Completa todos los campos');
-            }
+            } else { mostrarMensaje('Completa todos los campos'); }
         }
 
         function prepararEdicionServicio(id, nombre, precio, desc) {
-            document.getElementById('titulo-form-servicio').innerText = 'Modificar Servicio Existente';
-            document.getElementById('editando-servicio-id').value = id;
-            document.getElementById('nuevo-servicio-nombre').value = nombre;
-            document.getElementById('nuevo-servicio-precio').value = precio;
-            document.getElementById('nuevo-servicio-desc').value = desc;
-            document.getElementById('btn-add-servicio').innerText = 'Actualizar Servicio';
-            document.getElementById('btn-cancelar-edicion').style.display = 'block';
+            document.getElementById('titulo-form-servicio').innerText = 'Modificar Servicio';
+            document.getElementById('editando-servicio-id').value = id; document.getElementById('nuevo-servicio-nombre').value = nombre;
+            document.getElementById('nuevo-servicio-precio').value = precio; document.getElementById('nuevo-servicio-desc').value = desc;
+            document.getElementById('btn-add-servicio').innerText = 'Actualizar Servicio'; document.getElementById('btn-cancelar-edicion').style.display = 'block';
             document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
         }
 
         function cancelarEdicionServicio() {
             document.getElementById('titulo-form-servicio').innerText = 'Agregar Nuevo Servicio';
-            document.getElementById('editando-servicio-id').value = '';
-            document.getElementById('nuevo-servicio-nombre').value = '';
-            document.getElementById('nuevo-servicio-precio').value = '';
-            document.getElementById('nuevo-servicio-desc').value = '';
-            document.getElementById('btn-add-servicio').innerText = 'Guardar Servicio';
-            document.getElementById('btn-cancelar-edicion').style.display = 'none';
+            document.getElementById('editando-servicio-id').value = ''; document.getElementById('nuevo-servicio-nombre').value = '';
+            document.getElementById('nuevo-servicio-precio').value = ''; document.getElementById('nuevo-servicio-desc').value = '';
+            document.getElementById('btn-add-servicio').innerText = 'Guardar Servicio'; document.getElementById('btn-cancelar-edicion').style.display = 'none';
         }
 
-        function eliminarServicio(idDocumento) {
-            if(!db) return;
-            if(confirm("¿Seguro de eliminar este servicio? Desaparecerá de la página web al instante.")) {
-                db.collection("servicios").doc(idDocumento).delete().then(() => { mostrarMensaje('Servicio eliminado'); });
-            }
-        }
+        function eliminarServicio(idDocumento) { if(!db) return; if(confirm("¿Seguro de eliminar?")) { db.collection("servicios").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminado'); }); } }
 
-        // --- STREAMING_CHUNK: Gestión de Galería en Panel Admin y Lógica de Edición Visual... ---
         function renderizarGaleriaAdmin() {
             const container = document.getElementById('contenedor-galeria-admin');
-            if(!container) return;
-            container.innerHTML = '';
-            
-            if (estadoApp.galeria.length === 0) {
-                container.innerHTML = '<p style="text-align:center; width:100%; color: #666;">No hay imágenes registradas.</p>';
-                return;
-            }
+            if(!container) return; container.innerHTML = '';
+            if (estadoApp.galeria.length === 0) { container.innerHTML = '<p style="text-align:center; width:100%; color: #666;">No hay imágenes.</p>'; return; }
+
             estadoApp.galeria.forEach(img => {
                 const urlEscapada = img.url.replace(/'/g, "\\'");
                 container.innerHTML += `
@@ -1342,68 +1236,39 @@
 
         async function guardarImagenGaleria() {
             if(!db || !storage) return;
-            
             const idEdicion = document.getElementById('editando-galeria-id').value;
             const inputArchivo = document.getElementById('nueva-galeria-archivo');
             const urlTexto = document.getElementById('nueva-galeria-url').value.trim();
             const btn = document.getElementById('btn-add-galeria');
-            
             let urlFinal = urlTexto;
-            btn.innerText = "Procesando...";
-            btn.disabled = true;
+
+            btn.innerText = "Procesando..."; btn.disabled = true;
 
             try {
-                if (inputArchivo.files.length > 0) {
-                    btn.innerText = "Subiendo archivo a la nube...";
-                    urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'galeria');
-                }
-
+                if (inputArchivo.files.length > 0) { btn.innerText = "Subiendo..."; urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'galeria'); }
                 if (urlFinal) {
                     btn.innerText = "Guardando...";
-                    if (idEdicion) {
-                        await db.collection("galeria").doc(idEdicion).update({ url: urlFinal });
-                        mostrarMensaje('Imagen actualizada exitosamente');
-                    } else {
-                        await db.collection("galeria").add({ url: urlFinal });
-                        mostrarMensaje('Imagen agregada a la galería');
-                    }
+                    if (idEdicion) { await db.collection("galeria").doc(idEdicion).update({ url: urlFinal }); mostrarMensaje('Actualizado'); } 
+                    else { await db.collection("galeria").add({ url: urlFinal }); mostrarMensaje('Agregada'); }
                     cancelarEdicionGaleria();
-                } else {
-                    mostrarMensaje('Por favor, selecciona una foto o ingresa un enlace');
-                }
-            } catch (error) {
-                console.error("Error al procesar la imagen:", error);
-                mostrarMensaje('Error al guardar. Revisa tus permisos de Storage.');
-            } finally {
-                btn.innerText = "Guardar Imagen";
-                btn.disabled = false;
-            }
+                } else { mostrarMensaje('Selecciona foto o URL'); }
+            } catch (error) { mostrarMensaje('Error al guardar.'); } 
+            finally { btn.innerText = "Guardar Imagen"; btn.disabled = false; }
         }
 
         function prepararEdicionGaleria(id, url) {
-            document.getElementById('titulo-form-galeria').innerText = 'Modificar Imagen';
-            document.getElementById('editando-galeria-id').value = id;
-            document.getElementById('nueva-galeria-url').value = url;
-            document.getElementById('btn-add-galeria').innerText = 'Actualizar Imagen';
-            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block';
-            document.getElementById('titulo-form-galeria').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('titulo-form-galeria').innerText = 'Modificar Imagen'; document.getElementById('editando-galeria-id').value = id;
+            document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = 'Actualizar Imagen';
+            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; document.getElementById('titulo-form-galeria').scrollIntoView({ behavior: 'smooth' });
         }
 
         function cancelarEdicionGaleria() {
-            document.getElementById('titulo-form-galeria').innerText = 'Agregar Nueva Imagen';
-            document.getElementById('editando-galeria-id').value = '';
-            document.getElementById('nueva-galeria-url').value = '';
-            document.getElementById('nueva-galeria-archivo').value = ''; 
-            document.getElementById('btn-add-galeria').innerText = 'Guardar Imagen';
-            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none';
+            document.getElementById('titulo-form-galeria').innerText = 'Agregar Nueva Imagen'; document.getElementById('editando-galeria-id').value = '';
+            document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; 
+            document.getElementById('btn-add-galeria').innerText = 'Guardar Imagen'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none';
         }
 
-        function eliminarImagenGaleria(idDocumento) {
-            if(!db) return;
-            if(confirm("¿Seguro de eliminar esta imagen? Desaparecerá de tu galería al instante.")) {
-                db.collection("galeria").doc(idDocumento).delete().then(() => { mostrarMensaje('Imagen eliminada'); });
-            }
-        }
+        function eliminarImagenGaleria(idDocumento) { if(!db) return; if(confirm("¿Seguro de eliminar?")) { db.collection("galeria").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminada'); }); } }
 
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
@@ -1412,14 +1277,11 @@
             const elementosImagen = document.querySelectorAll('.logo-img');
 
             if (estadoApp.modoEdicion) {
-                btn.innerText = 'Deshabilitar Edición Visual';
-                btn.style.background = '#d32f2f';
-                mostrarMensaje('Edición ACTIVADA.');
+                btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
                 elementosTexto.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
                 elementosImagen.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
             } else {
-                btn.innerText = 'Habilitar Edición Visual de Textos';
-                btn.style.background = 'var(--azul-acento)';
+                btn.innerText = 'Habilitar Edición Visual de Textos'; btn.style.background = 'var(--azul-acento)';
                 elementosTexto.forEach(el => { el.contentEditable = "false"; el.classList.remove('editando'); });
                 elementosImagen.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
             }
@@ -1427,64 +1289,39 @@
 
         function manejadorEdicionImagen(evento) {
             if (!estadoApp.modoEdicion) return;
-            evento.preventDefault();
-            evento.stopPropagation();
+            evento.preventDefault(); evento.stopPropagation();
             elementoImagenActual = evento.currentTarget;
             const inputUrl = document.getElementById('input-url-imagen');
-            
-            if (elementoImagenActual.tagName === 'IMG') {
-                inputUrl.value = elementoImagenActual.src;
-            } else {
-                let bgUrl = elementoImagenActual.style.backgroundImage;
-                inputUrl.value = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
-            }
+            if (elementoImagenActual.tagName === 'IMG') { inputUrl.value = elementoImagenActual.src; } 
+            else { let bgUrl = elementoImagenActual.style.backgroundImage; inputUrl.value = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, ''); }
             document.getElementById('modalEdicionImagen').style.display = 'flex';
         }
 
         function cerrarModalImagen() {
-            document.getElementById('modalEdicionImagen').style.display = 'none';
-            document.getElementById('input-archivo-imagen').value = '';
-            document.getElementById('input-url-imagen').value = '';
-            elementoImagenActual = null;
+            document.getElementById('modalEdicionImagen').style.display = 'none'; document.getElementById('input-archivo-imagen').value = '';
+            document.getElementById('input-url-imagen').value = ''; elementoImagenActual = null;
         }
 
         async function guardarNuevaImagen() {
-            const inputArchivo = document.getElementById('input-archivo-imagen');
-            const urlTexto = document.getElementById('input-url-imagen').value.trim();
-            const btn = document.getElementById('btn-guardar-imagen-visual');
-            
-            let urlFinal = urlTexto;
-            btn.innerText = "Procesando...";
-            btn.disabled = true;
+            const inputArchivo = document.getElementById('input-archivo-imagen'); const urlTexto = document.getElementById('input-url-imagen').value.trim();
+            const btn = document.getElementById('btn-guardar-imagen-visual'); let urlFinal = urlTexto;
+
+            btn.innerText = "Procesando..."; btn.disabled = true;
 
             try {
-                if (inputArchivo.files.length > 0) {
-                    btn.innerText = "Subiendo a la nube...";
-                    urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'web_assets');
-                }
-
+                if (inputArchivo.files.length > 0) { btn.innerText = "Subiendo..."; urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'web_assets'); }
                 if (urlFinal && elementoImagenActual) {
-                    if (elementoImagenActual.tagName === 'IMG') {
+                    if (elementoImagenActual.tagName === 'IMG') { 
                         elementoImagenActual.src = urlFinal;
-                        if (elementoImagenActual.id === 'logo-principal' && db) {
-                            btn.innerText = "Guardando en base de datos...";
+                        // Guardar permanentemente en configuración
+                        if(elementoImagenActual.id === 'logo-principal' && db) {
                             await db.collection("configuracion").doc("general").set({ logoUrl: urlFinal }, { merge: true });
                         }
-                    } else {
-                        elementoImagenActual.style.backgroundImage = `url('${urlFinal}')`;
-                    }
-                    cerrarModalImagen();
-                    mostrarMensaje('¡Imagen actualizada exitosamente!');
-                } else {
-                    mostrarMensaje('Por favor, selecciona una foto o ingresa un enlace');
-                }
-            } catch (error) {
-                console.error("Error al guardar imagen visual:", error);
-                mostrarMensaje('Error al procesar la imagen.');
-            } finally {
-                btn.innerText = "Guardar Cambios";
-                btn.disabled = false;
-            }
+                    } else { elementoImagenActual.style.backgroundImage = `url('${urlFinal}')`; }
+                    cerrarModalImagen(); mostrarMensaje('Actualizada');
+                } else { mostrarMensaje('Selecciona foto o enlace'); }
+            } catch (error) { mostrarMensaje('Error al guardar.'); } 
+            finally { btn.innerText = "Guardar Cambios"; btn.disabled = false; }
         }
 
         // --- ARRANQUE INICIAL ---
