@@ -27,7 +27,6 @@
             overflow-x: hidden;
         }
 
-        /* Fondo animado */
         .fondo-barbero {
             position: fixed;
             top: 0;
@@ -59,10 +58,10 @@
             background: linear-gradient(to bottom, #3A5346, var(--verde-cactus));
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Apilado */
+            flex-direction: column; /* Apila el logo y el menú */
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 15px; /* Espacio entre el logo y el menú */
             position: sticky;
             top: 0;
             z-index: 100;
@@ -72,7 +71,7 @@
         }
 
         .logo-img {
-            height: 80px; /* Más grande para destacar */
+            height: 80px; /* Logo más grande y protagonista */
             width: auto;
             border-radius: 8px;
             object-fit: contain;
@@ -81,14 +80,14 @@
         }
 
         .logo-img:hover {
-            transform: scale(1.05);
+            transform: scale(1.05); /* Zoom sutil */
         }
 
         nav {
             display: flex;
             gap: 25px;
             align-items: center;
-            flex-wrap: wrap;
+            flex-wrap: wrap; /* Se adapta en pantallas pequeñas */
             justify-content: center;
         }
 
@@ -96,8 +95,8 @@
             color: var(--texto-claro);
             text-decoration: none;
             font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            text-transform: uppercase; /* Tipografía boutique en mayúsculas */
+            letter-spacing: 2px; /* Espaciado elegante */
             font-weight: 600;
             transition: all 0.3s;
             cursor: pointer;
@@ -172,13 +171,14 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
             transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: inline-block;
         }
         .btn-cita:hover {
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
         }
 
-        /* Galería */
         .galeria-contenedor {
             padding: 50px 20px;
             text-align: center;
@@ -206,7 +206,46 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
-        /* Lightbox */
+        .ubicacion-contenedor {
+            padding: 20px 20px 60px 20px;
+            text-align: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .ubicacion-contenedor h2 {
+            color: var(--verde-cactus);
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .tarjeta-ubicacion {
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-bottom: 5px solid var(--verde-olivo);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .tarjeta-ubicacion h3 {
+            color: var(--texto-oscuro);
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .tarjeta-ubicacion p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .btn-mapa {
+            background-color: var(--verde-olivo);
+            padding: 12px 30px;
+            font-size: 16px;
+        }
+        .btn-mapa:hover {
+            background-color: var(--verde-cactus);
+        }
+
         .lightbox-overlay {
             display: none;
             position: fixed;
@@ -442,12 +481,12 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- Logo con respaldo indestructible en SVG -->
+        <!-- Logo con respaldo indestructible en SVG por si Firebase falla -->
         <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
             <a onclick="navegar('servicios')">Servicios</a>
-            <a onclick="navegar('citas')">Citas</a>
+            <a onclick="navegar('citas')">Agendar Cita</a>
             <a onclick="navegar('mis-citas')" style="color: #FFD700;">★ Mis Citas</a>
             <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Panel (Admin)</button>
         </nav>
@@ -464,6 +503,15 @@
             <h2>Nuestros Trabajos</h2>
             <div class="galeria" id="contenedor-galeria-publico">
                 <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando galería...</p>
+            </div>
+        </div>
+
+        <div class="ubicacion-contenedor">
+            <h2>Visítanos</h2>
+            <div class="tarjeta-ubicacion">
+                <h3>📍 Barbería Cactus</h3>
+                <p>Lomas del Coapinole, 48290<br>Puerto Vallarta, Jal.</p>
+                <a href="https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6" target="_blank" class="btn-cita btn-mapa">Abrir en Google Maps</a>
             </div>
         </div>
     </section>
@@ -484,7 +532,7 @@
                 
                 <!-- El teléfono va primero. Al salir del campo (onblur), busca al cliente -->
                 <div class="grupo-form">
-                    <label for="telefono">📞 Teléfono:</label>
+                    <label for="telefono">📞 Teléfono (Celular):</label>
                     <input type="tel" id="telefono" required placeholder="Tu número de celular" onblur="buscarClienteFrecuente()">
                 </div>
                 
@@ -521,12 +569,23 @@
                 </div>
                 <button id="btn-submit-cita" type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;">Confirmar Reserva</button>
             </form>
+
+            <!-- Nueva pantalla de éxito que se muestra tras agendar -->
+            <div id="pantalla-exito" style="display:none; text-align:center; padding: 20px 0;">
+                <h3 style="color: var(--verde-cactus); font-size: 24px; margin-bottom: 15px;">¡Reserva Confirmada! 🎉</h3>
+                <p style="color: #555; font-size: 16px; margin-bottom: 25px;" id="texto-exito">Tu cita ha sido agendada exitosamente.</p>
+                
+                <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);">📅 Agregar a Google Calendar</a>
+                <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);">🔔 Notificación de Confirmación</button>
+                
+                <button type="button" onclick="reiniciarFormularioCita()" class="btn-admin" style="background: var(--verde-cactus); color: white; border: none; padding: 12px 25px;">Volver a agendar</button>
+            </div>
         </div>
     </section>
 
     <section id="mis-citas" class="galeria-contenedor pagina">
         <h2>Historial de Citas</h2>
-        <p style="margin-bottom: 30px;">Ingresa tu número de teléfono para ver tus citas programadas y pasadas.</p>
+        <p style="margin-bottom: 30px;">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
         
         <div class="form-citas" style="text-align: center;">
             <div class="grupo-form">
@@ -535,7 +594,7 @@
             </div>
             
             <div id="contenedor-mis-citas" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <!-- Aquí aparecerán las tarjetas del cliente inyectadas por JS -->
+                <!-- Aquí aparecerán las tarjetas de citas inyectadas por JS -->
             </div>
         </div>
     </section>
@@ -731,7 +790,7 @@
             auth = firebase.auth();
             storage = firebase.storage();
 
-            // Ejecutamos la carga del logo INMEDIATAMENTE para todos
+            // Ejecutamos la carga del logo INMEDIATAMENTE al entrar
             iniciarEscuchaConfiguracion();
 
         } catch(error) {
@@ -757,7 +816,7 @@
         let elementoImagenActual = null;
         let datosYaCargados = false; 
 
-        // --- NAVEGACIÓN Y NOTIFICACIONES ---
+        // --- STREAMING_CHUNK:Lógica de Navegación e Interfaz... ---
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
@@ -786,7 +845,6 @@
             return await snapshot.ref.getDownloadURL();
         }
 
-        // --- LIGHTBOX ---
         function abrirLightbox(url) {
             if (estadoApp.modoEdicion) return; 
             const lightbox = document.getElementById('lightbox');
@@ -801,7 +859,7 @@
             setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
         }
 
-        // --- STREAMING_CHUNK: Funciones de carga pública de datos... ---
+        // --- STREAMING_CHUNK:Funciones para cargar Barberos, Servicios y Galería pública... ---
         function iniciarEscuchaBarberos() {
             const selectCitas = document.getElementById('barbero');
             if(!db) return;
@@ -881,21 +939,19 @@
             });
         }
 
-        // --- STREAMING_CHUNK: Sistema de Autocompletado y Mis Citas... ---
-        
+        // --- STREAMING_CHUNK:Lógica para el Autocompletado de Clientes y Búsqueda de Citas... ---
         async function buscarClienteFrecuente() {
             const tel = document.getElementById('telefono').value.trim();
             if(tel.length < 7 || !db) return; 
 
             try {
-                // Buscamos si existe al menos una cita con este teléfono
                 const snapshot = await db.collection("citas").where("telefono", "==", tel).limit(1).get();
                 if(!snapshot.empty) {
                     const cita = snapshot.docs[0].data();
                     const inputNombre = document.getElementById('nombre');
                     
                     inputNombre.value = cita.nombre;
-                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)"; // Highlight visual
+                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
                     setTimeout(() => inputNombre.style.backgroundColor = "var(--fondo)", 2000);
                     
                     mostrarMensaje(`¡Qué gusto verte de nuevo, ${cita.nombre}!`);
@@ -928,7 +984,6 @@
                 let misCitas = [];
                 snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
                 
-                // Ordenar por fecha (más nueva a más vieja)
                 misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
                 misCitas.forEach(cita => {
@@ -953,11 +1008,11 @@
                 });
             } catch(error) {
                 console.error("Error obteniendo citas:", error);
-                contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error al conectarse a la base de datos.</p>';
+                contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error al consultar la base de datos.</p>';
             }
         }
 
-        // --- Carga Admin y Procesar Reservas ---
+        // --- STREAMING_CHUNK:Lógica para Procesamiento de Reservas en tiempo real... ---
         function iniciarEscuchaCitas() {
             if(!db) return;
             try {
@@ -996,6 +1051,61 @@
             }
         }
 
+        function generarEnlaceCalendario(cita) {
+            const fechaLimpia = cita.fecha.replace(/-/g, '');
+            
+            // Adaptar la hora a formato 24hrs para Google Calendar
+            let timePart = cita.hora.split(' ')[0];
+            let modifier = cita.hora.split(' ')[1];
+            let hours = timePart.split(':')[0];
+            let minutes = timePart.split(':')[1];
+            
+            if (hours === '12') hours = '00';
+            if (modifier === 'PM') hours = (parseInt(hours, 10) + 12).toString();
+            
+            const horaInicio = hours.padStart(2, '0') + minutes + '00';
+            const horaFin = (parseInt(hours, 10) + 1).toString().padStart(2, '0') + minutes + '00'; // Se calcula 1 hora de duración
+            
+            const fechaInicio = `${fechaLimpia}T${horaInicio}`;
+            const fechaFin = `${fechaLimpia}T${horaFin}`;
+            
+            const titulo = encodeURIComponent(`Corte en Barbería Cactus (${cita.servicio})`);
+            const detalles = encodeURIComponent(`¡Tu cita está confirmada!\n\nBarbero: ${cita.barbero}\nServicio: ${cita.servicio}\n\nGracias por tu preferencia.`);
+            const ubicacion = encodeURIComponent(`Barbería Cactus, Lomas del Coapinole, 48290 Puerto Vallarta, Jal. (https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6)`);
+            
+            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titulo}&dates=${fechaInicio}/${fechaFin}&details=${detalles}&location=${ubicacion}`;
+        }
+
+        function activarNotificacionLocal() {
+            const pantalla = document.getElementById('pantalla-exito');
+            const fecha = pantalla.dataset.fecha;
+            const hora = pantalla.dataset.hora;
+            
+            if (!("Notification" in window)) {
+                mostrarMensaje("Tu navegador o celular no soporta notificaciones web.");
+                return;
+            }
+            
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    new Notification("💈 Barbería Cactus", {
+                        body: `Cita confirmada el ${fecha} a las ${hora}. Lomas del Coapinole, Pto. Vallarta.`,
+                        icon: "https://cdn-icons-png.flaticon.com/512/3015/3015246.png" // Ícono genérico de barbería
+                    });
+                    mostrarMensaje("¡Notificación enviada!");
+                } else {
+                    mostrarMensaje("Permiso de notificaciones denegado.");
+                }
+            });
+        }
+
+        function reiniciarFormularioCita() {
+            document.getElementById('formCita').reset();
+            document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
+            document.getElementById('pantalla-exito').style.display = 'none';
+            document.getElementById('formCita').style.display = 'block';
+        }
+
         function procesarCita(evento) {
             evento.preventDefault();
             if(!db) return;
@@ -1016,8 +1126,20 @@
             
             db.collection("citas").add(cita).then(() => {
                 mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
-                document.getElementById('formCita').reset();
-                document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
+                
+                // Mostrar pantalla de éxito en lugar del formulario
+                document.getElementById('formCita').style.display = 'none';
+                const pantallaExito = document.getElementById('pantalla-exito');
+                pantallaExito.style.display = 'block';
+                
+                // Guardamos datos temporalmente para la notificación
+                pantallaExito.dataset.fecha = cita.fecha;
+                pantallaExito.dataset.hora = cita.hora;
+                
+                // Actualizamos textos y enlace
+                document.getElementById('texto-exito').innerHTML = `Te esperamos el <strong>${cita.fecha}</strong> a las <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Puerto Vallarta.`;
+                document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
+
             }).catch((error) => {
                 mostrarMensaje("Error al agendar. Intenta de nuevo.");
             }).finally(() => {
@@ -1025,7 +1147,7 @@
             });
         }
 
-        // --- STREAMING_CHUNK: Control de Autenticación de Firebase... ---
+        // --- STREAMING_CHUNK:Control de Sesiones de Firebase Authentication... ---
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 if(!datosYaCargados) {
@@ -1078,7 +1200,7 @@
 
         function cerrarSesion() { if(auth) auth.signOut().then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
 
-        // --- STREAMING_CHUNK: Panel de Administración de Datos... ---
+        // --- STREAMING_CHUNK:Gestión del Panel de Administrador (CRUD)... ---
         function configurarPanelAdmin() {
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
@@ -1214,7 +1336,7 @@
 
         function eliminarServicio(idDocumento) { if(!db) return; if(confirm("¿Seguro de eliminar?")) { db.collection("servicios").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminado'); }); } }
 
-        // --- STREAMING_CHUNK: Sistema de Edición Visual y Galería... ---
+        // --- STREAMING_CHUNK:Funciones para Editor Web y Cambios de Imágenes en vivo... ---
         function renderizarGaleriaAdmin() {
             const container = document.getElementById('contenedor-galeria-admin');
             if(!container) return; container.innerHTML = '';
@@ -1313,7 +1435,6 @@
                 if (urlFinal && elementoImagenActual) {
                     if (elementoImagenActual.tagName === 'IMG') { 
                         elementoImagenActual.src = urlFinal;
-                        // Guardar permanentemente en configuración
                         if(elementoImagenActual.id === 'logo-principal' && db) {
                             await db.collection("configuracion").doc("general").set({ logoUrl: urlFinal }, { merge: true });
                         }
