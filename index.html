@@ -74,7 +74,7 @@
             height: 50px;
             width: auto;
             border-radius: 8px;
-            object-fit: contain; /* Asegura que no se deforme */
+            object-fit: contain; /* Evita que el logo se estire */
             background-color: transparent;
         }
 
@@ -424,7 +424,7 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- AÑADIDO: onerror="this.src='...'" como respaldo si Firebase tarda -->
+        <!-- RESPALDO AGREGADO: onerror en caso de que tarde en cargar -->
         <img src="https://via.placeholder.com/150x50?text=Cactus+Logo" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal" onerror="this.src='https://via.placeholder.com/150x50?text=Cactus+Logo'">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
@@ -707,8 +707,7 @@
         let elementoImagenActual = null;
         let datosYaCargados = false; 
 
-        // --- CARGA DE CONFIGURACIÓN (LOGO) ---
-        // AÑADIDO: Esta función escucha los cambios del logo en la base de datos
+        // --- CARGA DE CONFIGURACIÓN (LOGO) INDEPENDIENTE DEL LOGIN ---
         function iniciarEscuchaConfiguracion() {
             if(!db) return;
             
@@ -721,9 +720,12 @@
                     }
                 }
             }, (error) => {
-                console.error("Fallo al descargar configuración:", error);
+                console.error("Fallo al descargar configuración del logo:", error);
             });
         }
+
+        // Ejecutar inmediatamente al cargar el script, sin esperar a Auth
+        iniciarEscuchaConfiguracion();
 
         // --- NAVEGACIÓN Y NOTIFICACIONES ---
         function navegar(idPagina) {
@@ -772,7 +774,6 @@
                 document.getElementById('lightbox-img').src = '';
             }, 300);
         }
-
 
         // --- CARGA DE DATOS: BARBEROS ---
         function iniciarEscuchaBarberos() {
@@ -973,9 +974,8 @@
         if(auth) {
             auth.onAuthStateChanged((user) => {
                 
-                // AÑADIDO: Ahora la inicialización de la configuración (logo) se dispara desde aquí también
+                // Iniciamos las escuchas de datos que no sean el logo
                 if(!datosYaCargados) {
-                    iniciarEscuchaConfiguracion(); 
                     iniciarEscuchaBarberos();
                     iniciarEscuchaCitas();
                     iniciarEscuchaServicios();
@@ -1405,7 +1405,6 @@
             elementoImagenActual = null;
         }
 
-        // AÑADIDO: Lógica para guardar la URL del logo en Firebase
         async function guardarNuevaImagen() {
             const inputArchivo = document.getElementById('input-archivo-imagen');
             const urlTexto = document.getElementById('input-url-imagen').value.trim();
@@ -1426,7 +1425,7 @@
                     if (elementoImagenActual.tagName === 'IMG') {
                         elementoImagenActual.src = urlFinal;
                         
-                        // Guardar en la base de datos si es el logo principal
+                        // Guardar en la base de datos de forma persistente
                         if (elementoImagenActual.id === 'logo-principal' && db) {
                             btn.innerText = "Guardando en base de datos...";
                             await db.collection("configuracion").doc("general").set({
