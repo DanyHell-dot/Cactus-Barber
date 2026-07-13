@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-     <link rel="icon" type="image/png" href="https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg">
+       <link rel="icon" type="image/png" href="https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbería Cactus</title>
@@ -26,6 +26,7 @@
             background-color: var(--fondo);
             color: var(--texto-oscuro);
             overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
         .fondo-barbero {
@@ -36,33 +37,35 @@
             height: 100vh;
             z-index: -1;
             opacity: 0.05; 
-            background: repeating-linear-gradient(
-                -45deg,
-                #d32f2f,
-                #d32f2f 40px,
-                transparent 40px,
-                transparent 80px,
-                #1976d2 80px,
-                #1976d2 120px,
-                transparent 120px,
-                transparent 160px
-            );
+            background: repeating-linear-gradient(-45deg, #d32f2f, #d32f2f 40px, transparent 40px, transparent 80px, #1976d2 80px, #1976d2 120px, transparent 120px, transparent 160px);
             background-size: 226px 226px;
         }
 
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        
+        .cascada { animation: revelarCascada 0.6s ease-out forwards; opacity: 0; }
+        @keyframes revelarCascada {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         @keyframes deslizarAbajo {
             from { transform: translateY(-100%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         header {
             background: linear-gradient(to bottom, #3A5346, var(--verde-cactus));
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Apila el logo y el menú verticalmente */
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
-            gap: 15px; /* Espacio elegante entre logo y menú */
+            gap: 15px; 
             position: sticky;
             top: 0;
             z-index: 100;
@@ -72,21 +75,18 @@
         }
 
         .logo-img {
-            height: 80px; /* Logo más grande y protagonista */
+            height: 80px; 
             width: auto;
             border-radius: 8px;
             object-fit: contain;
             filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
             transition: transform 0.3s ease;
         }
-
-        .logo-img:hover {
-            transform: scale(1.05);
-        }
+        .logo-img:hover { transform: scale(1.05); }
 
         nav {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             align-items: center;
             flex-wrap: wrap; 
             justify-content: center;
@@ -96,8 +96,8 @@
             color: var(--texto-claro);
             text-decoration: none;
             font-size: 13px;
-            text-transform: uppercase; /* Tipografía boutique en mayúsculas */
-            letter-spacing: 2px; /* Espaciado elegante */
+            text-transform: uppercase; 
+            letter-spacing: 2px; 
             font-weight: 600;
             transition: all 0.3s;
             cursor: pointer;
@@ -105,7 +105,6 @@
             border-bottom: 2px solid transparent;
             opacity: 0.9;
         }
-
         nav a:hover {
             color: #fff;
             opacity: 1;
@@ -113,7 +112,7 @@
             transform: translateY(-2px);
         }
 
-        .btn-admin {
+        .btn-admin, .btn-idioma {
             background-color: rgba(255,255,255,0.05);
             color: var(--texto-claro);
             border: 1px solid rgba(255,255,255,0.3);
@@ -126,17 +125,21 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
-        .btn-admin:hover {
+        .btn-admin:hover, .btn-idioma:hover {
             background-color: var(--azul-acento);
             border-color: var(--azul-acento);
             box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
             transform: translateY(-2px);
         }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        .btn-idioma {
+            background-color: transparent;
+            border: 1px solid rgba(255,255,255,0.5);
+            padding: 6px 12px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .pagina { display: none; animation: aparecer 0.4s ease-out; }
@@ -169,17 +172,9 @@
             text-decoration: none;
             display: inline-block;
         }
-        .btn-cita:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6);
-        }
+        .btn-cita:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6); }
 
-        .galeria-contenedor {
-            padding: 50px 20px;
-            text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .galeria-contenedor { padding: 50px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
         .galeria-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
         .galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
         .foto-galeria {
@@ -190,30 +185,43 @@
         }
         .foto-galeria:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
-        .ubicacion-contenedor {
-            padding: 20px 20px 60px 20px;
-            text-align: center;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-        .ubicacion-contenedor h2 {
-            color: var(--verde-cactus);
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
+        .ubicacion-contenedor { padding: 20px 20px 60px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
+        .ubicacion-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
         .tarjeta-ubicacion {
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-bottom: 5px solid var(--verde-olivo);
-            max-width: 600px;
-            margin: 0 auto;
+            background: #fff; padding: 30px; border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 5px solid var(--verde-olivo); max-width: 600px; margin: 0 auto;
         }
         .tarjeta-ubicacion h3 { color: var(--texto-oscuro); margin-bottom: 15px; font-size: 22px; }
         .tarjeta-ubicacion p { color: #555; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
         .btn-mapa { background-color: var(--verde-olivo); padding: 12px 30px; font-size: 16px; }
         .btn-mapa:hover { background-color: var(--verde-cactus); }
+
+        .servicios-contenedor { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
+        .servicios-contenedor h2 { text-align: center; color: var(--verde-cactus); font-size: 32px; margin-bottom: 40px; }
+        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .tarjeta-servicio {
+            background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s;
+        }
+        .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); }
+        .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
+        .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
+        .precio-servicio {
+            display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento);
+            font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .form-citas {
+            background: #fff; padding: 30px; border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left;
+        }
+        .grupo-form { margin-bottom: 20px; }
+        .grupo-form label { display: block; margin-bottom: 8px; color: var(--verde-cactus); font-weight: bold; font-size: 14px; }
+        .grupo-form input, .grupo-form select, .grupo-form textarea {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
+            font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s;
+        }
+        .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus { border-color: var(--azul-acento); }
 
         .lightbox-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -233,34 +241,6 @@
         }
         .lightbox-cerrar:hover { color: #ea4335; }
 
-        .servicios-contenedor { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
-        .servicios-contenedor h2 { text-align: center; color: var(--verde-cactus); font-size: 32px; margin-bottom: 40px; }
-        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .tarjeta-servicio {
-            background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s;
-        }
-        .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); }
-        .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
-        .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
-        
-        .precio-servicio {
-            display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento);
-            font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3);
-        }
-
-        .form-citas {
-            background: #fff; padding: 30px; border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left;
-        }
-        .grupo-form { margin-bottom: 20px; }
-        .grupo-form label { display: block; margin-bottom: 8px; color: var(--verde-cactus); font-weight: bold; font-size: 14px; }
-        .grupo-form input, .grupo-form select, .grupo-form textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
-            font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s;
-        }
-        .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus { border-color: var(--azul-acento); }
-
         #notificacion {
             position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
             background-color: var(--texto-oscuro); color: var(--texto-claro); padding: 15px 25px;
@@ -268,17 +248,6 @@
             z-index: 1000; font-size: 14px; text-align: center; min-width: 300px;
         }
         #notificacion.mostrar { bottom: 30px; }
-
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
-        .modal-login {
-            background: var(--texto-claro); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center;
-        }
-        .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
-        .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
 
         .admin-layout { display: flex; min-height: 80vh; background: #fff; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin: 20px; overflow: hidden; flex-wrap: wrap; }
         .admin-sidebar { background: var(--verde-cactus); color: white; width: 250px; padding: 20px; flex-grow: 1; }
@@ -294,16 +263,21 @@
 
         .btn-accion { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; color: white; transition: opacity 0.3s; }
         .btn-accion:hover { opacity: 0.8; }
-        .btn-calendario { background: #ea4335; }
+        .btn-calendario { background: #ea4335; text-decoration: none; }
         .btn-eliminar { background: #d32f2f; }
         .btn-editar-web { background: var(--azul-acento); font-size: 16px; padding: 15px; }
 
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
+        }
+        .modal-login { background: var(--texto-claro); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
+        .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
+        .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+        
         .editando { border: 2px dashed var(--azul-acento) !important; padding: 5px; background: rgba(74, 144, 226, 0.1); }
         .editando-img { border: 3px dashed #ea4335 !important; cursor: pointer !important; position: relative; }
-        .editando-img::before {
-            content: "📷 Cambiar foto"; position: absolute; top: 5px; right: 5px; background: rgba(234, 67, 53, 0.9);
-            color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; z-index: 10; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+        .editando-img::before { content: "📷 Cambiar"; position: absolute; top: 5px; right: 5px; background: rgba(234, 67, 53, 0.9); color: white; padding: 4px; border-radius: 4px; font-size: 10px; z-index: 10; pointer-events: none; }
 
         @media (max-width: 768px) {
             .admin-layout { flex-direction: column; margin: 10px; }
@@ -320,105 +294,106 @@
     <header>
         <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
-            <a onclick="navegar('inicio')">Inicio</a>
-            <a onclick="navegar('servicios')">Servicios</a>
-            <a onclick="navegar('citas')">Agendar Cita</a>
-            <a onclick="navegar('mis-citas')" style="color: #FFD700;">★ Mis Citas</a>
+            <a onclick="navegar('inicio')" data-i18n="nav-inicio">Inicio</a>
+            <a onclick="navegar('servicios')" data-i18n="nav-servicios">Servicios</a>
+            <a onclick="navegar('citas')" data-i18n="nav-citas">Agendar Cita</a>
+            <a onclick="navegar('mis-citas')" style="color: #FFD700;" data-i18n="nav-mis-citas">★ Mis Citas</a>
+            <button class="btn-idioma" onclick="toggleIdioma()">🌐 <span id="texto-btn-idioma">EN</span></button>
             <button class="btn-admin" id="btn-nav-admin" onclick="abrirLogin()">Panel (Admin)</button>
         </nav>
     </header>
 
     <section id="inicio" class="pagina activa">
-        <div class="intro">
-            <h1>Tu estilo, nuestra pasión</h1>
-            <p class="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
-            <button class="btn-cita" onclick="navegar('citas')">Programar cita</button>
+        <div class="intro reveal">
+            <h1 data-i18n="intro-h1">Tu estilo, nuestra pasión</h1>
+            <p class="intro-p" data-i18n="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
+            <button class="btn-cita" onclick="navegar('citas')" data-i18n="btn-intro">Programar cita</button>
         </div>
 
-        <div class="galeria-contenedor">
-            <h2>Nuestros Trabajos</h2>
+        <div class="galeria-contenedor reveal">
+            <h2 data-i18n="galeria-h2">Nuestros Trabajos</h2>
             <div class="galeria" id="contenedor-galeria-publico">
                 <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando galería...</p>
             </div>
         </div>
 
-        <div class="ubicacion-contenedor">
-            <h2>Visítanos</h2>
+        <div class="ubicacion-contenedor reveal">
+            <h2 data-i18n="ubicacion-h2">Visítanos</h2>
             <div class="tarjeta-ubicacion">
                 <h3>📍 Barbería Cactus</h3>
                 <p>Lomas del Coapinole, 48290<br>Puerto Vallarta, Jal.</p>
-                <a href="https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6" target="_blank" class="btn-cita btn-mapa">Abrir en Google Maps</a>
+                <a href="https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6" target="_blank" class="btn-cita btn-mapa" data-i18n="btn-mapa">Abrir en Google Maps</a>
             </div>
         </div>
     </section>
 
     <section id="servicios" class="servicios-contenedor pagina">
-        <h2>Nuestros Servicios</h2>
+        <h2 class="reveal" data-i18n="servicios-h2">Nuestros Servicios</h2>
         <div class="grid-servicios" id="contenedor-servicios-publico">
             <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando servicios...</p>
         </div>
     </section>
 
     <section id="citas" class="galeria-contenedor pagina">
-        <h2>Reserva tu Espacio</h2>
-        <p style="margin-bottom: 30px;">Completa el formulario para agendar tu próxima visita.</p>
+        <h2 class="reveal" data-i18n="citas-h2">Reserva tu Espacio</h2>
+        <p class="reveal" style="margin-bottom: 30px;" data-i18n="citas-p">Completa el formulario para agendar tu próxima visita.</p>
         
-        <div class="form-citas">
+        <div class="form-citas reveal">
             <form id="formCita" onsubmit="procesarCita(event)">
                 <div class="grupo-form">
-                    <label for="telefono">📞 Teléfono (Celular):</label>
-                    <input type="tel" id="telefono" required placeholder="Tu número de celular" onblur="buscarClienteFrecuente()">
+                    <label for="telefono" data-i18n="lbl-tel">📞 Teléfono (Celular):</label>
+                    <input type="tel" id="telefono" required data-i18n-ph="lbl-tel-ph" placeholder="Tu número de celular" onblur="buscarClienteFrecuente()">
                 </div>
                 <div class="grupo-form">
-                    <label for="nombre">👤 Nombre Completo:</label>
-                    <input type="text" id="nombre" required placeholder="Ej. Juan Pérez">
+                    <label for="nombre" data-i18n="lbl-nom">👤 Nombre Completo:</label>
+                    <input type="text" id="nombre" required data-i18n-ph="lbl-nom-ph" placeholder="Ej. Juan Pérez">
                 </div>
                 <div class="grupo-form">
-                    <label for="servicioSelect">💈 Servicio a realizar:</label>
+                    <label for="servicioSelect" data-i18n="lbl-serv">💈 Servicio a realizar:</label>
                     <select id="servicioSelect" required>
                         <option value="" disabled selected>Cargando servicios...</option>
                     </select>
                 </div>
                 <div class="grupo-form">
-                    <label for="barbero">👨‍🔧 Selecciona tu Barbero:</label>
+                    <label for="barbero" data-i18n="lbl-barb">👨‍🔧 Selecciona tu Barbero:</label>
                     <select id="barbero" required onchange="cargarHorarios()">
                         <option value="" disabled selected>Conectando con la barbería...</option>
                     </select>
                 </div>
                 <div class="grupo-form">
-                    <label for="fecha">📆 Fecha:</label>
+                    <label for="fecha" data-i18n="lbl-fec">📆 Fecha:</label>
                     <input type="date" id="fecha" required onchange="cargarHorarios()">
                 </div>
                 <div class="grupo-form">
-                    <label for="hora">🕒 Hora:</label>
+                    <label for="hora" data-i18n="lbl-hor">🕒 Hora:</label>
                     <select id="hora" required>
                         <option value="" disabled selected>Primero selecciona Fecha y Barbero</option>
                     </select>
                 </div>
                 <div class="grupo-form">
-                    <label for="comentarios">📝 Comentarios (Opcional):</label>
-                    <textarea id="comentarios" rows="3" placeholder="Ej. Quiero un diseño en especial..."></textarea>
+                    <label for="comentarios" data-i18n="lbl-com">📝 Comentarios (Opcional):</label>
+                    <textarea id="comentarios" rows="3" data-i18n-ph="lbl-com-ph" placeholder="Ej. Quiero un diseño en especial..."></textarea>
                 </div>
-                <button id="btn-submit-cita" type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;">Confirmar Reserva</button>
+                <button id="btn-submit-cita" type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;" data-i18n="btn-conf">Confirmar Reserva</button>
             </form>
 
             <div id="pantalla-exito" style="display:none; text-align:center; padding: 20px 0;">
-                <h3 style="color: var(--verde-cactus); font-size: 24px; margin-bottom: 15px;">¡Reserva Confirmada! 🎉</h3>
-                <p style="color: #555; font-size: 16px; margin-bottom: 25px;" id="texto-exito">Tu cita ha sido agendada exitosamente.</p>
-                <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);">📅 Agregar a Google Calendar</a>
-                <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);">🔔 Notificación de Confirmación</button>
-                <button type="button" onclick="reiniciarFormularioCita()" class="btn-admin" style="background: var(--verde-cactus); color: white; border: none; padding: 12px 25px;">Volver a agendar</button>
+                <h3 style="color: var(--verde-cactus); font-size: 24px; margin-bottom: 15px;" data-i18n="exito-tit">¡Reserva Confirmada! 🎉</h3>
+                <p style="color: #555; font-size: 16px; margin-bottom: 25px;" id="texto-exito"></p>
+                <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);" data-i18n="btn-cal">📅 Agregar a Google Calendar</a>
+                <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);" data-i18n="btn-not">🔔 Recibir Notificación</button>
+                <button type="button" onclick="reiniciarFormularioCita()" class="btn-admin" style="background: var(--verde-cactus); color: white; border: none; padding: 12px 25px;" data-i18n="btn-volver">Volver a agendar</button>
             </div>
         </div>
     </section>
 
     <section id="mis-citas" class="galeria-contenedor pagina">
-        <h2>Historial de Citas</h2>
-        <p style="margin-bottom: 30px;">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
-        <div class="form-citas" style="text-align: center;">
+        <h2 class="reveal" data-i18n="nav-mis-citas">Historial de Citas</h2>
+        <p class="reveal" style="margin-bottom: 30px;" data-i18n="hist-p">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
+        <div class="form-citas reveal" style="text-align: center;">
             <div class="grupo-form">
-                <input type="tel" id="telefono-buscar" placeholder="Tu número de celular..." style="text-align: center; margin-bottom: 15px;">
-                <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="mostrarMisCitas()">🔍 Buscar Citas</button>
+                <input type="tel" id="telefono-buscar" data-i18n-ph="lbl-tel-ph" placeholder="Tu número de celular..." style="text-align: center; margin-bottom: 15px;">
+                <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="mostrarMisCitas()" data-i18n="btn-buscar">🔍 Buscar Citas</button>
             </div>
             <div id="contenedor-mis-citas" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;"></div>
         </div>
@@ -427,71 +402,79 @@
     <section id="admin" class="pagina">
         <div class="admin-layout">
             <div class="admin-sidebar">
-                <h3>Panel de Control</h3>
+                <h3 data-i18n="admin-panel">Panel de Control</h3>
                 <p id="admin-usuario-info" style="font-size: 14px; margin-bottom: 20px; color: #ddd;"></p>
                 <div class="admin-menu">
-                    <a onclick="cambiarTabAdmin('tab-citas')" id="menu-tab-citas" class="activo">📅 Ver Citas</a>
-                    <a onclick="cambiarTabAdmin('tab-barberos')" id="menu-tab-barberos">✂️ Gestionar Barberos</a>
-                    <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios">💈 Gestionar Servicios</a>
-                    <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria">📷 Gestionar Galería</a>
-                    <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web">🌐 Editor Web</a>
-                    <a onclick="cerrarSesion()" style="margin-top: 30px; color: #ffcccc;">🚪 Cerrar Sesión</a>
+                    <a onclick="cambiarTabAdmin('tab-citas')" id="menu-tab-citas" class="activo" data-i18n="menu-citas">📅 Ver Citas</a>
+                    <a onclick="cambiarTabAdmin('tab-barberos')" id="menu-tab-barberos" data-i18n="menu-barberos">✂️ Gestionar Barberos</a>
+                    <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios" data-i18n="menu-servicios">💈 Gestionar Servicios</a>
+                    <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria" data-i18n="menu-galeria">📷 Gestionar Galería</a>
+                    <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web" data-i18n="menu-web">🌐 Editor Web</a>
+                    <a onclick="cerrarSesion()" style="margin-top: 30px; color: #ffcccc;" data-i18n="menu-salir">🚪 Cerrar Sesión</a>
                 </div>
             </div>
             <div class="admin-content">
-                
                 <div id="tab-citas">
-                    <h2 style="color: var(--verde-cactus);">Citas Programadas</h2>
+                    <h2 style="color: var(--verde-cactus);" data-i18n="tit-citas">Citas Programadas</h2>
                     <div class="table-container">
                         <table class="tabla-admin" id="tabla-citas">
                             <thead>
                                 <tr>
-                                    <th>Fecha y Hora</th>
-                                    <th>Cliente</th>
-                                    <th>Servicio y Precio</th>
-                                    <th>Barbero</th>
-                                    <th>Acciones</th>
+                                    <th data-i18n="th-fec">Fecha y Hora</th>
+                                    <th data-i18n="th-cli">Cliente</th>
+                                    <th data-i18n="th-ser">Servicio y Precio</th>
+                                    <th data-i18n="th-bar">Barbero</th>
+                                    <th data-i18n="th-acc">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody><!-- Se llena dinámicamente --></tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="tab-barberos" style="display: none;">
-                    <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
+                    <h2 style="color: var(--verde-cactus);" data-i18n="tit-barberos">Nuestros Barberos</h2>
                     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-                        <input type="text" id="nuevo-barbero" placeholder="Nombre del barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-                        <button id="btn-add-barbero" onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;">Añadir</button>
+                        <input type="text" id="nuevo-barbero" data-i18n-ph="ph-barbero" placeholder="Nombre del barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                        <button onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;" data-i18n="btn-añadir">Añadir</button>
                     </div>
                     <ul id="lista-barberos" style="list-style: none;"></ul>
                 </div>
 
                 <div id="tab-servicios" style="display: none;">
-                    <h2 style="color: var(--verde-cactus);">Catálogo de Servicios</h2>
+                    <h2 style="color: var(--verde-cactus);" data-i18n="tit-servicios">Catálogo de Servicios</h2>
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 id="titulo-form-servicio" style="margin-bottom: 15px; font-size: 16px;">Agregar Nuevo Servicio</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
                             <input type="hidden" id="editando-servicio-id" value="">
                             <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Corte Premium)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            <input type="text" id="nuevo-servicio-nombre-en" placeholder="Nombre en Inglés (Ej. Premium Haircut)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f0f7ff;">
                             <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-                            <textarea id="nuevo-servicio-desc" placeholder="Descripción breve..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
+                            <textarea id="nuevo-servicio-desc" placeholder="Descripción breve en Español..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
+                            <textarea id="nuevo-servicio-desc-en" placeholder="Descripción breve en Inglés..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f0f7ff; resize: vertical;"></textarea>
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <button id="btn-add-servicio" onclick="guardarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Servicio</button>
-                            <button id="btn-cancelar-edicion" onclick="cancelarEdicionServicio()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
+                            <button id="btn-add-servicio" onclick="guardarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;" data-i18n="btn-guardar-serv">Guardar Servicio</button>
+                            <button id="btn-cancelar-edicion" onclick="cancelarEdicionServicio()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;" data-i18n="btn-cancelar">Cancelar</button>
                         </div>
                     </div>
                     <div class="table-container">
                         <table class="tabla-admin" id="tabla-servicios">
-                            <thead><tr><th>Servicio</th><th>Precio</th><th>Descripción</th><th>Acciones</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th>Servicio</th>
+                                    <th data-i18n="th-pre">Precio</th>
+                                    <th data-i18n="th-des">Descripción</th>
+                                    <th data-i18n="th-acc">Acciones</th>
+                                </tr>
+                            </thead>
                             <tbody></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="tab-galeria" style="display: none;">
-                    <h2 style="color: var(--verde-cactus);">Nuestros Trabajos (Galería)</h2>
+                    <h2 style="color: var(--verde-cactus);" data-i18n="tit-galeria">Nuestros Trabajos (Galería)</h2>
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 id="titulo-form-galeria" style="margin-bottom: 15px; font-size: 16px;">Agregar Nueva Imagen</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
@@ -501,15 +484,15 @@
                             <input type="text" id="nueva-galeria-url" placeholder="URL de la imagen" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
                         </div>
                         <div style="display: flex; gap: 10px;">
-                            <button id="btn-add-galeria" onclick="guardarImagenGaleria()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Imagen</button>
-                            <button id="btn-cancelar-edicion-galeria" onclick="cancelarEdicionGaleria()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
+                            <button id="btn-add-galeria" onclick="guardarImagenGaleria()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;" data-i18n="btn-guardar-img">Guardar Imagen</button>
+                            <button id="btn-cancelar-edicion-galeria" onclick="cancelarEdicionGaleria()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;" data-i18n="btn-cancelar">Cancelar</button>
                         </div>
                     </div>
                     <div class="galeria" id="contenedor-galeria-admin" style="gap: 20px;"></div>
                 </div>
 
                 <div id="tab-web" style="display: none;">
-                    <h2 style="color: var(--verde-cactus);">Editor de Página</h2>
+                    <h2 style="color: var(--verde-cactus);" data-i18n="tit-web">Editor de Página</h2>
                     <p style="margin-bottom: 20px;">Activa el modo de edición para cambiar textos e imágenes haciendo clic en ellos.</p>
                     <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual</button>
                 </div>
@@ -565,22 +548,11 @@
 
         let app = null; let db = null; let auth = null; let storage = null;
 
-        function iniciarEscuchaConfiguracion() {
-            if(!db) return;
-            db.collection("configuracion").doc("general").onSnapshot((doc) => {
-                if (doc.exists && doc.data().logoUrl) {
-                    const logoEl = document.getElementById('logo-principal');
-                    if (logoEl) logoEl.src = doc.data().logoUrl;
-                }
-            });
-        }
-
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
             storage = firebase.storage();
-            iniciarEscuchaConfiguracion();
         } catch(error) { console.error("Error al inicializar Firebase:", error); }
 
         const estadoApp = { usuarioActual: null, barberos: [], servicios: [], galeria: [], citas: [], modoEdicion: false };
@@ -592,10 +564,142 @@
 
         let elementoImagenActual = null; let datosYaCargados = false; 
 
+        let idiomaActual = 'es';
+        const textosUI = {
+            'es': {
+                'nav-inicio': 'Inicio', 'nav-servicios': 'Servicios', 'nav-citas': 'Agendar Cita', 'nav-mis-citas': '★ Mis Citas',
+                'intro-h1': 'Tu estilo, nuestra pasión', 'intro-p': 'Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.',
+                'btn-intro': 'Programar cita', 'galeria-h2': 'Nuestros Trabajos', 'ubicacion-h2': 'Visítanos',
+                'btn-mapa': 'Abrir en Google Maps', 'servicios-h2': 'Nuestros Servicios', 'citas-h2': 'Reserva tu Espacio',
+                'citas-p': 'Completa el formulario para agendar tu próxima visita.', 'lbl-tel': '📞 Teléfono (Celular):',
+                'lbl-nom': '👤 Nombre Completo:', 'lbl-serv': '💈 Servicio a realizar:', 'lbl-barb': '👨‍🔧 Selecciona tu Barbero:',
+                'lbl-fec': '📆 Fecha:', 'lbl-hor': '🕒 Hora:', 'lbl-com': '📝 Comentarios (Opcional):',
+                'lbl-tel-ph': 'Tu número de celular', 'lbl-nom-ph': 'Ej. Juan Pérez', 'lbl-com-ph': 'Ej. Quiero un diseño en especial...',
+                'btn-conf': 'Confirmar Reserva', 'exito-tit': '¡Reserva Confirmada! 🎉', 'btn-cal': '📅 Agregar a Google Calendar',
+                'btn-not': '🔔 Recibir Notificación', 'btn-volver': 'Volver a agendar', 'hist-p': 'Ingresa tu celular para ver tus citas.',
+                'btn-buscar': '🔍 Buscar Citas', 'txt-ex-1': 'Te esperamos el', 'txt-ex-2': 'a las',
+                
+                // PANEL ADMIN TRADUCCIONES FALTANTES
+                'admin-panel': 'Panel de Control',
+                'admin-rol': 'Rol:',
+                'menu-citas': '📅 Ver Citas',
+                'menu-barberos': '✂️ Gestionar Barberos',
+                'menu-servicios': '💈 Gestionar Servicios',
+                'menu-galeria': '📷 Gestionar Galería',
+                'menu-web': '🌐 Editor Web',
+                'menu-salir': '🚪 Cerrar Sesión',
+                
+                'tit-citas': 'Citas Programadas',
+                'tit-barberos': 'Nuestros Barberos',
+                'tit-servicios': 'Catálogo de Servicios',
+                'tit-galeria': 'Nuestros Trabajos (Galería)',
+                'tit-web': 'Editor de Página',
+                
+                'th-fec': 'Fecha y Hora', 'th-cli': 'Cliente', 'th-ser': 'Servicio y Precio', 'th-bar': 'Barbero', 'th-acc': 'Acciones',
+                'th-des': 'Descripción', 'th-pre': 'Precio',
+                
+                'btn-añadir': 'Añadir', 'btn-editar': 'Editar', 'btn-eliminar': 'Eliminar',
+                'btn-guardar-serv': 'Guardar Servicio', 'btn-guardar-img': 'Guardar Imagen',
+                'btn-cancelar': 'Cancelar', 'btn-cal-admin': '📅 Calendario', 'btn-editar-url': 'Cambiar',
+                
+                'ph-barbero': 'Nombre del barbero', 'txt-sin-citas': 'No hay citas programadas.',
+                'txt-sin-serv': 'No hay servicios registrados.',
+                'opt-sin-barb': 'Cargando barberos...', 'opt-sel-barb': 'Cargando barberos...'
+            },
+            'en': {
+                'nav-inicio': 'Home', 'nav-servicios': 'Services', 'nav-citas': 'Book Now', 'nav-mis-citas': '★ My Bookings',
+                'intro-h1': 'Your style, our passion', 'intro-p': 'Welcome to the Cactus experience. We are experts in taking care of your image and taking your style to the next level.',
+                'btn-intro': 'Book Appointment', 'galeria-h2': 'Our Work', 'ubicacion-h2': 'Visit Us',
+                'btn-mapa': 'Open in Google Maps', 'servicios-h2': 'Our Services', 'citas-h2': 'Reserve Your Spot',
+                'citas-p': 'Fill out the form to schedule your next visit.', 'lbl-tel': '📞 Phone (Mobile):',
+                'lbl-nom': '👤 Full Name:', 'lbl-serv': '💈 Select Service:', 'lbl-barb': '👨‍🔧 Select Barber:',
+                'lbl-fec': '📆 Date:', 'lbl-hor': '🕒 Time:', 'lbl-com': '📝 Comments (Optional):',
+                'lbl-tel-ph': 'Your mobile number', 'lbl-nom-ph': 'Ex. John Doe', 'lbl-com-ph': 'Ex. I want a specific fade...',
+                'btn-conf': 'Confirm Booking', 'exito-tit': 'Booking Confirmed! 🎉', 'btn-cal': '📅 Add to Google Calendar',
+                'btn-not': '🔔 Get Notification', 'btn-volver': 'Book another', 'hist-p': 'Enter your mobile to see your bookings.',
+                'btn-buscar': '🔍 Find Bookings', 'txt-ex-1': 'See you on', 'txt-ex-2': 'at',
+                
+                // PANEL ADMIN TRADUCCIONES FALTANTES
+                'admin-panel': 'Control Panel',
+                'admin-rol': 'Role:',
+                'menu-citas': '📅 View Bookings',
+                'menu-barberos': '✂️ Manage Barbers',
+                'menu-servicios': '💈 Manage Services',
+                'menu-galeria': '📷 Manage Gallery',
+                'menu-web': '🌐 Web Editor',
+                'menu-salir': '🚪 Logout',
+                
+                'tit-citas': 'Scheduled Bookings',
+                'tit-barberos': 'Our Barbers',
+                'tit-servicios': 'Service Catalog',
+                'tit-galeria': 'Our Work (Gallery)',
+                'tit-web': 'Page Editor',
+                
+                'th-fec': 'Date and Time', 'th-cli': 'Client', 'th-ser': 'Service and Price', 'th-bar': 'Barber', 'th-acc': 'Actions',
+                'th-des': 'Description', 'th-pre': 'Price',
+                
+                'btn-añadir': 'Add', 'btn-editar': 'Edit', 'btn-eliminar': 'Delete',
+                'btn-guardar-serv': 'Save Service', 'btn-guardar-img': 'Save Image',
+                'btn-cancelar': 'Cancel', 'btn-cal-admin': '📅 Calendar', 'btn-editar-url': 'Change',
+                
+                'ph-barbero': 'Barber Name', 'txt-sin-citas': 'No scheduled bookings.',
+                'txt-sin-serv': 'No registered services.',
+                'opt-sin-barb': 'Loading barbers...', 'opt-sel-barb': 'Loading barbers...'
+            }
+        };
+
+        function toggleIdioma() {
+            idiomaActual = idiomaActual === 'es' ? 'en' : 'es';
+            document.getElementById('texto-btn-idioma').innerText = idiomaActual === 'es' ? 'EN' : 'ES';
+            const txt = textosUI[idiomaActual];
+            
+            // Traducir estáticos
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const clave = el.getAttribute('data-i18n');
+                if (txt[clave]) el.innerText = txt[clave];
+            });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const clave = el.getAttribute('data-i18n-ph');
+                if (txt[clave]) el.placeholder = txt[clave];
+            });
+            
+            // Actualizar el mensaje de éxito si está visible
+            const pExito = document.getElementById('pantalla-exito');
+            if(pExito.style.display === 'block'){
+                document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${pExito.dataset.fecha}</strong> ${txt['txt-ex-2']} <strong>${pExito.dataset.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
+            }
+            
+            // Re-renderizar dinámicos
+            renderizarServiciosPublicos();
+            if(estadoApp.usuarioActual) {
+                renderizarTablaCitas();
+                renderizarListaBarberos();
+                renderizarTablaServiciosAdmin();
+                renderizarGaleriaAdmin();
+                configurarPanelAdmin();
+            }
+        }
+
+        function activarAnimacionesScroll() {
+            const observador = new IntersectionObserver((entradas) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.reveal').forEach(el => {
+                el.classList.remove('visible'); 
+                observador.observe(el);
+            });
+        }
+
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
             window.scrollTo(0, 0);
+            setTimeout(activarAnimacionesScroll, 50);
         }
 
         let timeoutNotificacion;
@@ -607,21 +711,24 @@
         }
 
         window.addEventListener('scroll', () => { document.getElementById('fondoAnimado').style.backgroundPosition = `0px ${window.scrollY * 0.8}px`; });
-
+        function abrirLightbox(url) { if (!estadoApp.modoEdicion) { document.getElementById('lightbox-img').src = url; document.getElementById('lightbox').classList.add('mostrar'); } }
+        function cerrarLightbox() { document.getElementById('lightbox').classList.remove('mostrar'); }
         async function subirArchivoFirebase(archivo, carpeta) {
             const nombreUnico = Date.now() + '_' + archivo.name;
             const ref = storage.ref().child(carpeta + '/' + nombreUnico);
-            const snapshot = await ref.put(archivo);
-            return await snapshot.ref.getDownloadURL();
+            const snapshot = await ref.put(archivo); return await snapshot.ref.getDownloadURL();
         }
 
-        function abrirLightbox(url) {
-            if (estadoApp.modoEdicion) return; 
-            document.getElementById('lightbox-img').src = url;
-            document.getElementById('lightbox').classList.add('mostrar');
+        function iniciarEscuchaConfiguracion() {
+            if(!db) return;
+            db.collection("configuracion").doc("general").onSnapshot((doc) => {
+                if (doc.exists && doc.data().logoUrl) {
+                    const logoEl = document.getElementById('logo-principal');
+                    if (logoEl) logoEl.src = doc.data().logoUrl;
+                }
+            });
         }
-        function cerrarLightbox() { document.getElementById('lightbox').classList.remove('mostrar'); }
-
+        
         function iniciarEscuchaBarberos() {
             if(!db) return;
             db.collection("barberos").onSnapshot((snapshot) => {
@@ -641,30 +748,6 @@
             });
         }
 
-        function renderizarServiciosPublicos() {
-            const grid = document.getElementById('contenedor-servicios-publico');
-            const selectCitas = document.getElementById('servicioSelect');
-            if(!grid || !selectCitas) return;
-            grid.innerHTML = ''; selectCitas.innerHTML = '<option value="" disabled selected>Selecciona un servicio</option>';
-            
-            estadoApp.servicios.forEach(s => {
-                grid.innerHTML += `
-                    <div class="tarjeta-servicio">
-                        <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${s.nombre}</h3>
-                        <p class="${estadoApp.modoEdicion ? 'editando' : ''}">${s.desc}</p>
-                        <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
-                    </div>
-                `;
-                // NUEVO: Agregamos el data-precio para capturarlo al agendar
-                const opt = document.createElement('option');
-                opt.value = s.nombre; 
-                opt.setAttribute('data-precio', s.precio);
-                opt.textContent = `${s.nombre} - ${s.precio}`;
-                selectCitas.appendChild(opt);
-            });
-            if(estadoApp.modoEdicion) { grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); }
-        }
-
         function iniciarEscuchaGaleria() {
             if(!db) return;
             db.collection("galeria").onSnapshot((snapshot) => {
@@ -674,12 +757,54 @@
             });
         }
 
+        function iniciarEscuchaCitas() {
+            if(!db) return;
+            db.collection("citas").onSnapshot((snap) => {
+                estadoApp.citas = [];
+                snap.forEach(doc => { estadoApp.citas.push({ id: doc.id, ...doc.data() }); });
+                estadoApp.citas.sort((a, b) => (b.fechaCreacion?.toMillis() || 0) - (a.fechaCreacion?.toMillis() || 0));
+                if(estadoApp.usuarioActual) renderizarTablaCitas();
+            });
+        }
+
+        function renderizarServiciosPublicos() {
+            const grid = document.getElementById('contenedor-servicios-publico');
+            const selectCitas = document.getElementById('servicioSelect');
+            if(!grid || !selectCitas) return;
+            grid.innerHTML = ''; 
+            
+            const textoCargando = idiomaActual === 'es' ? 'Selecciona un servicio...' : 'Select a service...';
+            selectCitas.innerHTML = `<option value="" disabled selected>${textoCargando}</option>`;
+            
+            estadoApp.servicios.forEach((s, index) => {
+                const nombreMostrar = (idiomaActual === 'en' && s.nombre_en) ? s.nombre_en : s.nombre;
+                const descMostrar = (idiomaActual === 'en' && s.desc_en) ? s.desc_en : s.desc;
+
+                grid.innerHTML += `
+                    <div class="tarjeta-servicio cascada" style="animation-delay: ${index * 100}ms">
+                        <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${nombreMostrar}</h3>
+                        <p class="${estadoApp.modoEdicion ? 'editando' : ''}">${descMostrar}</p>
+                        <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
+                    </div>
+                `;
+                
+                const opt = document.createElement('option');
+                opt.value = s.nombre; 
+                opt.setAttribute('data-precio', s.precio);
+                opt.textContent = `${nombreMostrar} - ${s.precio}`;
+                selectCitas.appendChild(opt);
+            });
+            if(estadoApp.modoEdicion) { grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); }
+            setTimeout(activarAnimacionesScroll, 100);
+        }
+
         function renderizarGaleriaPublica() {
             const grid = document.getElementById('contenedor-galeria-publico');
             grid.innerHTML = '';
-            estadoApp.galeria.forEach(img => {
-                grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`;
+            estadoApp.galeria.forEach((img, index) => {
+                grid.innerHTML += `<div class="foto-galeria cascada ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}'); animation-delay: ${index * 100}ms" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`;
             });
+            setTimeout(activarAnimacionesScroll, 100);
         }
 
         async function buscarClienteFrecuente() {
@@ -691,51 +816,9 @@
                     const cita = snapshot.docs[0].data(); const inputNombre = document.getElementById('nombre');
                     inputNombre.value = cita.nombre; inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
                     setTimeout(() => inputNombre.style.backgroundColor = "var(--fondo)", 2000);
-                    mostrarMensaje(`¡Qué gusto verte de nuevo, ${cita.nombre}!`);
+                    mostrarMensaje(idiomaActual === 'es' ? `¡Qué gusto verte de nuevo, ${cita.nombre}!` : `Great to see you again, ${cita.nombre}!`);
                 }
             } catch(error) { console.error(error); }
-        }
-
-        async function mostrarMisCitas() {
-            const tel = document.getElementById('telefono-buscar').value.trim();
-            const contenedor = document.getElementById('contenedor-mis-citas');
-            contenedor.innerHTML = '<p style="text-align:center; color: var(--verde-cactus);">Buscando citas...</p>';
-
-            if (!tel || !db) { mostrarMensaje("Ingresa tu número."); contenedor.innerHTML = ''; return; }
-
-            try {
-                const snapshot = await db.collection("citas").where("telefono", "==", tel).get();
-                contenedor.innerHTML = '';
-                if (snapshot.empty) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f; font-weight: bold;">No encontramos citas.</p>'; return; }
-
-                let misCitas = []; snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
-                misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-
-                misCitas.forEach(cita => {
-                    const esPasada = new Date(`${cita.fecha}T00:00:00`) < new Date(new Date().setHours(0,0,0,0));
-                    const estadoColor = esPasada ? 'var(--verde-olivo)' : 'var(--azul-acento)';
-                    contenedor.innerHTML += `
-                        <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
-                                <strong style="font-size: 16px;">${cita.fecha} <br> ${cita.hora}</strong>
-                                <span style="background: ${estadoColor}20; color: ${estadoColor}; padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;">${esPasada ? 'Completada' : 'Próxima'}</span>
-                            </div>
-                            <p style="margin: 5px 0;">💈 <strong>Servicio:</strong> ${cita.servicio} ${cita.precio ? `(${cita.precio})` : ''}</p>
-                            <p style="margin: 5px 0;">👨‍🔧 <strong>Barbero:</strong> ${cita.barbero}</p>
-                        </div>
-                    `;
-                });
-            } catch(error) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error de conexión.</p>'; }
-        }
-
-        function iniciarEscuchaCitas() {
-            if(!db) return;
-            db.collection("citas").onSnapshot((snap) => {
-                estadoApp.citas = [];
-                snap.forEach(doc => { estadoApp.citas.push({ id: doc.id, ...doc.data() }); });
-                estadoApp.citas.sort((a, b) => (b.fechaCreacion?.toMillis() || 0) - (a.fechaCreacion?.toMillis() || 0));
-                if(estadoApp.usuarioActual) renderizarTablaCitas();
-            });
         }
 
         function cargarHorarios() {
@@ -777,9 +860,8 @@
 
         function procesarCita(evento) {
             evento.preventDefault(); if(!db) return;
-            const btn = document.getElementById('btn-submit-cita'); btn.innerText = "Agendando..."; btn.disabled = true;
-
-            // NUEVO: Atrapamos el precio del servicio seleccionado
+            const btn = document.getElementById('btn-submit-cita'); btn.innerText = "..."; btn.disabled = true;
+            
             const selectServicio = document.getElementById('servicioSelect');
             const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
 
@@ -790,7 +872,7 @@
                 fecha: document.getElementById('fecha').value,
                 hora: document.getElementById('hora').value,
                 servicio: selectServicio.value,
-                precio: precioSeleccionado, // Guardamos el precio en Firestore
+                precio: precioSeleccionado, 
                 comentarios: document.getElementById('comentarios').value,
                 fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
             };
@@ -799,35 +881,58 @@
                 document.getElementById('formCita').style.display = 'none';
                 const pExito = document.getElementById('pantalla-exito'); pExito.style.display = 'block';
                 pExito.dataset.fecha = cita.fecha; pExito.dataset.hora = cita.hora;
-                document.getElementById('texto-exito').innerHTML = `Te esperamos el <strong>${cita.fecha}</strong> a las <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
+                
+                const txt = textosUI[idiomaActual];
+                document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
-            }).finally(() => { btn.innerText = "Confirmar Reserva"; btn.disabled = false; });
+            }).finally(() => { btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false; });
+        }
+
+        async function mostrarMisCitas() {
+            const tel = document.getElementById('telefono-buscar').value.trim();
+            const contenedor = document.getElementById('contenedor-mis-citas');
+            contenedor.innerHTML = '<p style="text-align:center; color: var(--verde-cactus);">...</p>';
+
+            if (!tel || !db) { mostrarMensaje("Ingresa tu número."); contenedor.innerHTML = ''; return; }
+            try {
+                const snapshot = await db.collection("citas").where("telefono", "==", tel).get();
+                contenedor.innerHTML = '';
+                if (snapshot.empty) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f; font-weight: bold;">Sin citas.</p>'; return; }
+
+                let misCitas = []; snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
+                misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+
+                misCitas.forEach(cita => {
+                    const esPasada = new Date(`${cita.fecha}T00:00:00`) < new Date(new Date().setHours(0,0,0,0));
+                    const estadoColor = esPasada ? 'var(--verde-olivo)' : 'var(--azul-acento)';
+                    contenedor.innerHTML += `
+                        <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <strong style="font-size: 16px;">${cita.fecha} <br> ${cita.hora}</strong>
+                                <span style="background: ${estadoColor}20; color: ${estadoColor}; padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;">${esPasada ? 'Ok' : 'Next'}</span>
+                            </div>
+                            <p style="margin: 5px 0;">💈 <strong>Servicio:</strong> ${cita.servicio} ${cita.precio ? `(${cita.precio})` : ''}</p>
+                            <p style="margin: 5px 0;">👨‍🔧 <strong>Barbero:</strong> ${cita.barbero}</p>
+                        </div>
+                    `;
+                });
+            } catch(error) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error.</p>'; }
         }
 
         async function limpiarCitasAntiguas() {
             if (!db) return;
-            // Calculamos qué día fue hace 14 días
-            const haceDosSemanas = new Date();
-            haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
-            const fechaLimite = haceDosSemanas.toISOString().split('T')[0]; // Formato YYYY-MM-DD
-
+            const haceDosSemanas = new Date(); haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
+            const fechaLimite = haceDosSemanas.toISOString().split('T')[0];
             try {
-                // Buscamos todas las citas más viejas que la fecha límite
                 const snapshot = await db.collection("citas").where("fecha", "<", fechaLimite).get();
-                let borradas = 0;
-                
-                snapshot.forEach(doc => {
-                    db.collection("citas").doc(doc.id).delete();
-                    borradas++;
-                });
-                
-                if (borradas > 0) { console.log(`Limpieza de sistema: Se eliminaron ${borradas} citas antiguas.`); }
-            } catch (error) { console.error("Error al limpiar el historial de citas:", error); }
+                let borradas = 0; snapshot.forEach(doc => { db.collection("citas").doc(doc.id).delete(); borradas++; });
+                if (borradas > 0) console.log(`Limpieza: ${borradas} citas antiguas eliminadas.`);
+            } catch (error) { console.error("Error al limpiar:", error); }
         }
 
         if(auth) {
             auth.onAuthStateChanged((user) => {
-                if(!datosYaCargados) { iniciarEscuchaBarberos(); iniciarEscuchaCitas(); iniciarEscuchaServicios(); iniciarEscuchaGaleria(); datosYaCargados = true; }
+                if(!datosYaCargados) { iniciarEscuchaConfiguracion(); iniciarEscuchaBarberos(); iniciarEscuchaCitas(); iniciarEscuchaServicios(); iniciarEscuchaGaleria(); datosYaCargados = true; }
                 const btnNav = document.getElementById('btn-nav-admin');
                 if (user) {
                     estadoApp.usuarioActual = USUARIOS_ROLES[user.email.toLowerCase()] || { nombre: 'Colaborador', rol: 'barbero' };
@@ -843,7 +948,7 @@
         function abrirLogin() { estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex'; }
         function cerrarLogin() { document.getElementById('modalLogin').style.display = 'none'; }
         function procesarLogin(e) {
-            e.preventDefault(); const btn = document.getElementById('btn-login'); btn.innerText = "Validando..."; btn.disabled = true;
+            e.preventDefault(); const btn = document.getElementById('btn-login'); btn.innerText = "..."; btn.disabled = true;
             auth.signInWithEmailAndPassword(document.getElementById('login-user').value.trim(), document.getElementById('login-pass').value)
                 .then(() => { cerrarLogin(); navegar('admin'); document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = ''; })
                 .catch(() => mostrarMensaje('Error de acceso.')).finally(() => { btn.innerText = "Entrar"; btn.disabled = false; });
@@ -851,11 +956,10 @@
         function cerrarSesion() { if(auth) auth.signOut().then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
 
         function configurarPanelAdmin() {
-            // NUEVO: Ejecutamos la limpieza silenciosa cada vez que un admin entra al panel
             limpiarCitasAntiguas();
-
             const rol = estadoApp.usuarioActual.rol;
-            document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
+            const txt = textosUI[idiomaActual];
+            document.getElementById('admin-usuario-info').innerText = `${txt['admin-rol']} ${rol.toUpperCase()}`;
             ['barberos', 'servicios', 'galeria'].forEach(t => document.getElementById(`menu-tab-${t}`).style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none');
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             cambiarTabAdmin('tab-citas'); renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
@@ -869,34 +973,33 @@
         function renderizarTablaCitas() {
             const tbody = document.querySelector('#tabla-citas tbody'); tbody.innerHTML = '';
             if(!estadoApp.usuarioActual) return;
-
+            const txt = textosUI[idiomaActual];
             let citas = estadoApp.usuarioActual.rol === 'barbero' ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) : estadoApp.citas;
-            if (citas.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>'; return; }
+            if (citas.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">${txt['txt-sin-citas']}</td></tr>`; return; }
 
             citas.forEach(cita => {
                 const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
-                <td>${cita.nombre} <br> <small style="color:var(--verde-cactus);">${cita.telefono}</small><br> <small>${cita.comentarios}</small></td>
-                <!-- NUEVO: Mostrar el precio en la tabla -->
-                <td>${cita.servicio} <br> <strong style="color:var(--azul-acento);">${cita.precio || 'N/A'}</strong></td>
-                <td>${cita.barbero}</td>
-                <td style="display: flex; gap: 5px; flex-wrap: wrap;">
-                    <a href="${generarEnlaceCalendario(cita)}" target="_blank" class="btn-accion" style="background: #4285F4; text-decoration: none; color: white;">📅 Calendario</a>
-                    ${(estadoApp.usuarioActual.rol !== 'barbero') ? `<button onclick="eliminarCitaId('${cita.id}')" class="btn-accion btn-eliminar">Eliminar</button>` : ''}
-                </td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-    
-    function eliminarCitaId(id) { if(db && confirm('¿Borrar esta cita?')) db.collection("citas").doc(id).delete(); }
+                tr.innerHTML = `
+                    <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
+                    <td>${cita.nombre} <br> <small style="color:var(--verde-cactus);">${cita.telefono}</small><br> <small>${cita.comentarios}</small></td>
+                    <td>${cita.servicio} <br> <strong style="color:var(--azul-acento);">${cita.precio || 'N/A'}</strong></td>
+                    <td>${cita.barbero}</td>
+                    <td style="display: flex; gap: 5px; flex-wrap: wrap;">
+                        <a href="${generarEnlaceCalendario(cita)}" target="_blank" class="btn-accion btn-calendario">${txt['btn-cal-admin']}</a>
+                        ${(estadoApp.usuarioActual.rol !== 'barbero') ? `<button onclick="eliminarCitaId('${cita.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button>` : ''}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+        function eliminarCitaId(id) { if(db && confirm('¿Borrar esta cita?')) db.collection("citas").doc(id).delete(); }
 
         function renderizarListaBarberos() {
             const ul = document.getElementById('lista-barberos'); const selectCitas = document.getElementById('barbero');
-            if(ul) ul.innerHTML = ''; selectCitas.innerHTML = estadoApp.barberos.length === 0 ? '<option value="" disabled selected>Sin barberos</option>' : '<option value="" disabled selected>¿Con quién te atenderás?</option>';
+            const txt = textosUI[idiomaActual];
+            if(ul) ul.innerHTML = ''; selectCitas.innerHTML = estadoApp.barberos.length === 0 ? `<option value="" disabled selected>${txt['opt-sin-barb']}</option>` : `<option value="" disabled selected>${txt['opt-sel-barb']}</option>`;
             estadoApp.barberos.forEach(b => {
-                if(ul) { ul.innerHTML += `<li style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;"><span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button></li>`; }
+                if(ul) { ul.innerHTML += `<li style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;"><span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></li>`; }
                 const opt = document.createElement('option'); opt.value = b.nombre; opt.textContent = b.nombre; selectCitas.appendChild(opt);
             });
         }
@@ -908,44 +1011,55 @@
 
         function renderizarTablaServiciosAdmin() {
             const tbody = document.querySelector('#tabla-servicios tbody'); if(!tbody) return; tbody.innerHTML = '';
-            if (estadoApp.servicios.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Sin servicios.</td></tr>'; return; }
+            const txt = textosUI[idiomaActual];
+            if (estadoApp.servicios.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">${txt['txt-sin-serv']}</td></tr>`; return; }
             estadoApp.servicios.forEach(s => {
                 const nE = s.nombre.replace(/'/g, "\\'"); const pE = s.precio.replace(/'/g, "\\'"); const dE = s.desc.replace(/'/g, "\\'");
-                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong></td><td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button></td></tr>`;
+                const nEn = (s.nombre_en || '').replace(/'/g, "\\'"); const dEn = (s.desc_en || '').replace(/'/g, "\\'");
+                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong><br><small style="color:#888;">${s.nombre_en || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td></tr>`;
             });
         }
         function guardarServicio() {
-            const id = document.getElementById('editando-servicio-id').value; const datos = { nombre: document.getElementById('nuevo-servicio-nombre').value.trim(), precio: document.getElementById('nuevo-servicio-precio').value.trim(), desc: document.getElementById('nuevo-servicio-desc').value.trim() };
-            if (datos.nombre && datos.precio && datos.desc && db) {
-                id ? db.collection("servicios").doc(id).update(datos).then(cancelarEdicionServicio) : db.collection("servicios").add(datos).then(cancelarEdicionServicio);
-            }
+            const id = document.getElementById('editando-servicio-id').value; 
+            const datos = { 
+                nombre: document.getElementById('nuevo-servicio-nombre').value.trim(), 
+                nombre_en: document.getElementById('nuevo-servicio-nombre-en').value.trim(),
+                precio: document.getElementById('nuevo-servicio-precio').value.trim(), 
+                desc: document.getElementById('nuevo-servicio-desc').value.trim(),
+                desc_en: document.getElementById('nuevo-servicio-desc-en').value.trim()
+            };
+            if (datos.nombre && datos.precio && datos.desc && db) { id ? db.collection("servicios").doc(id).update(datos).then(cancelarEdicionServicio) : db.collection("servicios").add(datos).then(cancelarEdicionServicio); }
         }
-        function prepararEdicionServicio(id, nom, pre, des) {
-            document.getElementById('editando-servicio-id').value = id; document.getElementById('nuevo-servicio-nombre').value = nom; document.getElementById('nuevo-servicio-precio').value = pre; document.getElementById('nuevo-servicio-desc').value = des;
-            document.getElementById('btn-add-servicio').innerText = 'Actualizar'; document.getElementById('btn-cancelar-edicion').style.display = 'block'; document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
+        function prepararEdicionServicio(id, nom, pre, des, nomEn, desEn) {
+            const txt = textosUI[idiomaActual];
+            document.getElementById('editando-servicio-id').value = id; 
+            document.getElementById('nuevo-servicio-nombre').value = nom; 
+            document.getElementById('nuevo-servicio-nombre-en').value = nomEn || '';
+            document.getElementById('nuevo-servicio-precio').value = pre; 
+            document.getElementById('nuevo-servicio-desc').value = des;
+            document.getElementById('nuevo-servicio-desc-en').value = desEn || '';
+            document.getElementById('btn-add-servicio').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; document.getElementById('btn-cancelar-edicion').style.display = 'block'; document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
         }
         function cancelarEdicionServicio() {
-            ['editando-servicio-id', 'nuevo-servicio-nombre', 'nuevo-servicio-precio', 'nuevo-servicio-desc'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('btn-add-servicio').innerText = 'Guardar'; document.getElementById('btn-cancelar-edicion').style.display = 'none';
+            const txt = textosUI[idiomaActual];
+            ['editando-servicio-id', 'nuevo-servicio-nombre', 'nuevo-servicio-nombre-en', 'nuevo-servicio-precio', 'nuevo-servicio-desc', 'nuevo-servicio-desc-en'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('btn-add-servicio').innerText = txt['btn-guardar-serv']; document.getElementById('btn-cancelar-edicion').style.display = 'none';
         }
         function eliminarServicio(id) { if(db && confirm("¿Eliminar?")) db.collection("servicios").doc(id).delete(); }
 
         function renderizarGaleriaAdmin() {
             const c = document.getElementById('contenedor-galeria-admin'); if(!c) return; c.innerHTML = '';
-            estadoApp.galeria.forEach(img => {
-                c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar URL</button><button onclick="if(db && confirm('¿Eliminar?')) db.collection('galeria').doc('${img.id}').delete()" class="btn-accion btn-eliminar">Eliminar</button></div></div>`;
-            });
+            const txt = textosUI[idiomaActual];
+            estadoApp.galeria.forEach(img => { c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="if(db && confirm('¿Eliminar?')) db.collection('galeria').doc('${img.id}').delete()" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div></div>`; });
         }
         async function guardarImagenGaleria() {
             const id = document.getElementById('editando-galeria-id').value; const file = document.getElementById('nueva-galeria-archivo').files[0]; let url = document.getElementById('nueva-galeria-url').value.trim();
             const btn = document.getElementById('btn-add-galeria'); btn.disabled = true;
-            try {
-                if(file) url = await subirArchivoFirebase(file, 'galeria');
-                if(url) { id ? await db.collection("galeria").doc(id).update({url}) : await db.collection("galeria").add({url}); cancelarEdicionGaleria(); }
-            } catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
+            try { if(file) url = await subirArchivoFirebase(file, 'galeria'); if(url) { id ? await db.collection("galeria").doc(id).update({url}) : await db.collection("galeria").add({url}); cancelarEdicionGaleria(); } } 
+            catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
         }
-        function prepararEdicionGaleria(id, url) { document.getElementById('editando-galeria-id').value = id; document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = 'Actualizar'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; }
-        function cancelarEdicionGaleria() { document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = 'Guardar'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
+        function prepararEdicionGaleria(id, url) { document.getElementById('editando-galeria-id').value = id; document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; }
+        function cancelarEdicionGaleria() { const txt = textosUI[idiomaActual]; document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = txt['btn-guardar-img']; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
 
         function toggleEdicionVisual(forzarApagado = false) {
             estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
@@ -979,7 +1093,10 @@
             } catch (e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
         }
 
-        window.onload = () => document.getElementById('fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
+        window.onload = () => { 
+            document.getElementById('fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
+            activarAnimacionesScroll();
+        }
     </script>
 </body>
 </html>
