@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="icon" type="image/png" href="https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg">
+     <link rel="icon" type="image/png" href="https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbería Cactus</title>
@@ -59,10 +59,10 @@
             background: linear-gradient(to bottom, #3A5346, var(--verde-cactus));
             padding: 20px;
             display: flex;
-            flex-direction: column; /* Apila el logo y el menú */
+            flex-direction: column; /* Apila el logo y el menú verticalmente */
             justify-content: center;
             align-items: center;
-            gap: 15px; /* Espacio entre el logo y el menú */
+            gap: 15px; /* Espacio elegante entre logo y menú */
             position: sticky;
             top: 0;
             z-index: 100;
@@ -81,14 +81,14 @@
         }
 
         .logo-img:hover {
-            transform: scale(1.05); /* Zoom sutil */
+            transform: scale(1.05);
         }
 
         nav {
             display: flex;
             gap: 25px;
             align-items: center;
-            flex-wrap: wrap; /* Se adapta en pantallas pequeñas */
+            flex-wrap: wrap; 
             justify-content: center;
         }
 
@@ -139,14 +139,8 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .pagina {
-            display: none;
-            animation: aparecer 0.4s ease-out;
-        }
-
-        .pagina.activa {
-            display: block;
-        }
+        .pagina { display: none; animation: aparecer 0.4s ease-out; }
+        .pagina.activa { display: block; }
 
         .intro {
             text-align: center;
@@ -187,25 +181,14 @@
             margin: 0 auto;
         }
         .galeria-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
-        .galeria {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 20px;
-        }
+        .galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
         .foto-galeria {
-            background-color: #ddd;
-            height: 200px;
-            border-radius: 12px;
-            background-size: cover;
-            background-position: center;
+            background-color: #ddd; height: 200px; border-radius: 12px;
+            background-size: cover; background-position: center;
             transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer;
         }
-        .foto-galeria:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        }
+        .foto-galeria:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
         .ubicacion-contenedor {
             padding: 20px 20px 60px 20px;
@@ -227,246 +210,99 @@
             max-width: 600px;
             margin: 0 auto;
         }
-        .tarjeta-ubicacion h3 {
-            color: var(--texto-oscuro);
-            margin-bottom: 15px;
-            font-size: 22px;
-        }
-        .tarjeta-ubicacion p {
-            color: #555;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 25px;
-        }
-        .btn-mapa {
-            background-color: var(--verde-olivo);
-            padding: 12px 30px;
-            font-size: 16px;
-        }
-        .btn-mapa:hover {
-            background-color: var(--verde-cactus);
-        }
+        .tarjeta-ubicacion h3 { color: var(--texto-oscuro); margin-bottom: 15px; font-size: 22px; }
+        .tarjeta-ubicacion p { color: #555; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
+        .btn-mapa { background-color: var(--verde-olivo); padding: 12px 30px; font-size: 16px; }
+        .btn-mapa:hover { background-color: var(--verde-cactus); }
 
         .lightbox-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease;
         }
-        .lightbox-overlay.mostrar {
-            display: flex;
-            opacity: 1;
-        }
+        .lightbox-overlay.mostrar { display: flex; opacity: 1; }
         .lightbox-img {
-            max-width: 90%;
-            max-height: 90%;
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5);
-            transform: scale(0.8);
+            max-width: 90%; max-height: 90%; border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.5); transform: scale(0.8);
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .lightbox-overlay.mostrar .lightbox-img {
-            transform: scale(1);
-        }
+        .lightbox-overlay.mostrar .lightbox-img { transform: scale(1); }
         .lightbox-cerrar {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 40px;
-            cursor: pointer;
-            user-select: none;
-            transition: color 0.3s;
+            position: absolute; top: 20px; right: 30px; color: white;
+            font-size: 40px; cursor: pointer; user-select: none; transition: color 0.3s;
         }
-        .lightbox-cerrar:hover {
-            color: #ea4335;
-        }
+        .lightbox-cerrar:hover { color: #ea4335; }
 
-        .servicios-contenedor {
-            padding: 50px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .servicios-contenedor h2 {
-            text-align: center;
-            color: var(--verde-cactus);
-            font-size: 32px;
-            margin-bottom: 40px;
-        }
-        .grid-servicios {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-        }
+        .servicios-contenedor { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
+        .servicios-contenedor h2 { text-align: center; color: var(--verde-cactus); font-size: 32px; margin-bottom: 40px; }
+        .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
         .tarjeta-servicio {
-            background: #fff;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--verde-olivo);
-            transition: transform 0.3s, border-color 0.3s;
+            background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s;
         }
-        .tarjeta-servicio:hover {
-            transform: translateY(-5px);
-            border-left-color: var(--azul-acento);
-        }
+        .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); }
         .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
         .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
         
         .precio-servicio {
-            display: inline-block;
-            background-color: rgba(74, 144, 226, 0.15);
-            color: var(--azul-acento);
-            font-weight: bold;
-            padding: 6px 14px;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-size: 15px;
-            border: 1px solid rgba(74, 144, 226, 0.3);
+            display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento);
+            font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3);
         }
 
         .form-citas {
-            background: #fff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px;
-            margin: 0 auto;
-            text-align: left;
+            background: #fff; padding: 30px; border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left;
         }
         .grupo-form { margin-bottom: 20px; }
-        .grupo-form label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--verde-cactus);
-            font-weight: bold;
-            font-size: 14px;
-        }
+        .grupo-form label { display: block; margin-bottom: 8px; color: var(--verde-cactus); font-weight: bold; font-size: 14px; }
         .grupo-form input, .grupo-form select, .grupo-form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 15px;
-            background: var(--fondo);
-            outline: none;
-            transition: background-color 0.5s;
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
+            font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s;
         }
-        .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus {
-            border-color: var(--azul-acento);
-        }
+        .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus { border-color: var(--azul-acento); }
 
         #notificacion {
-            position: fixed;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--texto-oscuro);
-            color: var(--texto-claro);
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: bottom 0.4s ease-out;
-            z-index: 1000;
-            font-size: 14px;
-            text-align: center;
-            min-width: 300px;
+            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
+            background-color: var(--texto-oscuro); color: var(--texto-claro); padding: 15px 25px;
+            border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: bottom 0.4s ease-out;
+            z-index: 1000; font-size: 14px; text-align: center; min-width: 300px;
         }
         #notificacion.mostrar { bottom: 30px; }
 
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.6);
-            z-index: 1000;
-            justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
+            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
         }
         .modal-login {
-            background: var(--texto-claro);
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%; max-width: 400px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            text-align: center;
+            background: var(--texto-claro); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center;
         }
         .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
-        .btn-cerrar-modal {
-            background: #ccc; color: #333; border: none; padding: 10px 20px;
-            border-radius: 8px; margin-top: 10px; cursor: pointer;
-        }
+        .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
 
-        .admin-layout {
-            display: flex;
-            min-height: 80vh;
-            background: #fff;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin: 20px;
-            overflow: hidden;
-            flex-wrap: wrap;
-        }
-        .admin-sidebar {
-            background: var(--verde-cactus); color: white;
-            width: 250px; padding: 20px; flex-grow: 1;
-        }
+        .admin-layout { display: flex; min-height: 80vh; background: #fff; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin: 20px; overflow: hidden; flex-wrap: wrap; }
+        .admin-sidebar { background: var(--verde-cactus); color: white; width: 250px; padding: 20px; flex-grow: 1; }
         .admin-sidebar h3 { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 10px; }
-        .admin-menu a {
-            display: block; color: white; text-decoration: none;
-            padding: 12px; margin-bottom: 5px; border-radius: 8px;
-            cursor: pointer; transition: background 0.3s;
-        }
+        .admin-menu a { display: block; color: white; text-decoration: none; padding: 12px; margin-bottom: 5px; border-radius: 8px; cursor: pointer; transition: background 0.3s; }
         .admin-menu a:hover, .admin-menu a.activo { background: var(--verde-olivo); }
         .admin-content { padding: 30px; flex: 3; min-width: 300px; overflow-x: auto; }
 
         .tabla-admin { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .tabla-admin th, .tabla-admin td { border: 1px solid #eee; padding: 12px; text-align: left; }
         .tabla-admin th { background: var(--fondo); color: var(--verde-cactus); }
+        .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-        .table-container {
-            width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .btn-accion {
-            padding: 6px 12px; border: none; border-radius: 4px;
-            cursor: pointer; font-size: 12px; color: white; transition: opacity 0.3s;
-        }
+        .btn-accion { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; color: white; transition: opacity 0.3s; }
         .btn-accion:hover { opacity: 0.8; }
         .btn-calendario { background: #ea4335; }
         .btn-eliminar { background: #d32f2f; }
         .btn-editar-web { background: var(--azul-acento); font-size: 16px; padding: 15px; }
 
-        .editando {
-            border: 2px dashed var(--azul-acento) !important;
-            padding: 5px; background: rgba(74, 144, 226, 0.1);
-        }
-
-        .editando-img {
-            border: 3px dashed #ea4335 !important;
-            cursor: pointer !important;
-            position: relative;
-        }
-        
+        .editando { border: 2px dashed var(--azul-acento) !important; padding: 5px; background: rgba(74, 144, 226, 0.1); }
+        .editando-img { border: 3px dashed #ea4335 !important; cursor: pointer !important; position: relative; }
         .editando-img::before {
-            content: "📷 Cambiar foto";
-            position: absolute;
-            top: 5px; right: 5px;
-            background: rgba(234, 67, 53, 0.9);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            z-index: 10;
-            pointer-events: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            content: "📷 Cambiar foto"; position: absolute; top: 5px; right: 5px; background: rgba(234, 67, 53, 0.9);
+            color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; z-index: 10; pointer-events: none; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 768px) {
@@ -482,7 +318,6 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- Logo con respaldo indestructible en SVG por si Firebase falla -->
         <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')">Inicio</a>
@@ -530,18 +365,14 @@
         
         <div class="form-citas">
             <form id="formCita" onsubmit="procesarCita(event)">
-                
-                <!-- El teléfono va primero. Al salir del campo (onblur), busca al cliente -->
                 <div class="grupo-form">
                     <label for="telefono">📞 Teléfono (Celular):</label>
                     <input type="tel" id="telefono" required placeholder="Tu número de celular" onblur="buscarClienteFrecuente()">
                 </div>
-                
                 <div class="grupo-form">
                     <label for="nombre">👤 Nombre Completo:</label>
                     <input type="text" id="nombre" required placeholder="Ej. Juan Pérez">
                 </div>
-
                 <div class="grupo-form">
                     <label for="servicioSelect">💈 Servicio a realizar:</label>
                     <select id="servicioSelect" required>
@@ -571,14 +402,11 @@
                 <button id="btn-submit-cita" type="submit" class="btn-cita" style="width: 100%; margin-top: 15px;">Confirmar Reserva</button>
             </form>
 
-            <!-- Nueva pantalla de éxito que se muestra tras agendar -->
             <div id="pantalla-exito" style="display:none; text-align:center; padding: 20px 0;">
                 <h3 style="color: var(--verde-cactus); font-size: 24px; margin-bottom: 15px;">¡Reserva Confirmada! 🎉</h3>
                 <p style="color: #555; font-size: 16px; margin-bottom: 25px;" id="texto-exito">Tu cita ha sido agendada exitosamente.</p>
-                
                 <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);">📅 Agregar a Google Calendar</a>
                 <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);">🔔 Notificación de Confirmación</button>
-                
                 <button type="button" onclick="reiniciarFormularioCita()" class="btn-admin" style="background: var(--verde-cactus); color: white; border: none; padding: 12px 25px;">Volver a agendar</button>
             </div>
         </div>
@@ -587,16 +415,12 @@
     <section id="mis-citas" class="galeria-contenedor pagina">
         <h2>Historial de Citas</h2>
         <p style="margin-bottom: 30px;">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
-        
         <div class="form-citas" style="text-align: center;">
             <div class="grupo-form">
                 <input type="tel" id="telefono-buscar" placeholder="Tu número de celular..." style="text-align: center; margin-bottom: 15px;">
                 <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="mostrarMisCitas()">🔍 Buscar Citas</button>
             </div>
-            
-            <div id="contenedor-mis-citas" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                <!-- Aquí aparecerán las tarjetas de citas inyectadas por JS -->
-            </div>
+            <div id="contenedor-mis-citas" style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;"></div>
         </div>
     </section>
 
@@ -624,7 +448,7 @@
                                 <tr>
                                     <th>Fecha y Hora</th>
                                     <th>Cliente</th>
-                                    <th>Servicio</th>
+                                    <th>Servicio y Precio</th>
                                     <th>Barbero</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -637,7 +461,7 @@
                 <div id="tab-barberos" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Barberos</h2>
                     <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-                        <input type="text" id="nuevo-barbero" placeholder="Nombre del nuevo barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                        <input type="text" id="nuevo-barbero" placeholder="Nombre del barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                         <button id="btn-add-barbero" onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;">Añadir</button>
                     </div>
                     <ul id="lista-barberos" style="list-style: none;"></ul>
@@ -645,73 +469,54 @@
 
                 <div id="tab-servicios" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Catálogo de Servicios</h2>
-                    
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 id="titulo-form-servicio" style="margin-bottom: 15px; font-size: 16px;">Agregar Nuevo Servicio</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
                             <input type="hidden" id="editando-servicio-id" value="">
                             <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Corte Premium)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                             <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-                            <textarea id="nuevo-servicio-desc" placeholder="Descripción breve del servicio..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
+                            <textarea id="nuevo-servicio-desc" placeholder="Descripción breve..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
                         </div>
                         <div style="display: flex; gap: 10px;">
                             <button id="btn-add-servicio" onclick="guardarServicio()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Servicio</button>
                             <button id="btn-cancelar-edicion" onclick="cancelarEdicionServicio()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
                         </div>
                     </div>
-
                     <div class="table-container">
                         <table class="tabla-admin" id="tabla-servicios">
-                            <thead>
-                                <tr>
-                                    <th>Servicio</th>
-                                    <th>Precio</th>
-                                    <th>Descripción</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody><!-- Se llena dinámicamente --></tbody>
+                            <thead><tr><th>Servicio</th><th>Precio</th><th>Descripción</th><th>Acciones</th></tr></thead>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="tab-galeria" style="display: none;">
                     <h2 style="color: var(--verde-cactus);">Nuestros Trabajos (Galería)</h2>
-                    
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <h3 id="titulo-form-galeria" style="margin-bottom: 15px; font-size: 16px;">Agregar Nueva Imagen</h3>
                         <div style="display: grid; gap: 10px; margin-bottom: 15px;">
                             <input type="hidden" id="editando-galeria-id" value="">
-                            
-                            <label style="font-size: 14px; font-weight: bold; color: var(--texto-oscuro);">Sube una foto de tu equipo:</label>
                             <input type="file" id="nueva-galeria-archivo" accept="image/*" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%; background: #fff;">
-                            
-                            <p style="font-size: 12px; color: #666; text-align: center; margin: 5px 0;">— O pega un enlace de internet —</p>
-                            
-                            <input type="text" id="nueva-galeria-url" placeholder="URL de la imagen (Ej. https://ejemplo.com/foto.jpg)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
+                            <p style="font-size: 12px; color: #666; text-align: center; margin: 5px 0;">— O pega un enlace —</p>
+                            <input type="text" id="nueva-galeria-url" placeholder="URL de la imagen" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; width: 100%;">
                         </div>
                         <div style="display: flex; gap: 10px;">
                             <button id="btn-add-galeria" onclick="guardarImagenGaleria()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;">Guardar Imagen</button>
                             <button id="btn-cancelar-edicion-galeria" onclick="cancelarEdicionGaleria()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;">Cancelar</button>
                         </div>
                     </div>
-
-                    <div class="galeria" id="contenedor-galeria-admin" style="gap: 20px;">
-                        <!-- Se llena dinámicamente -->
-                    </div>
+                    <div class="galeria" id="contenedor-galeria-admin" style="gap: 20px;"></div>
                 </div>
 
                 <div id="tab-web" style="display: none;">
-                    <h2 style="color: var(--verde-cactus);">Editor de Página (Super Admin)</h2>
-                    <p style="margin-bottom: 20px;">Activa el modo de edición para hacer clic en los textos generales o el logotipo de la página y cambiarlos.</p>
+                    <h2 style="color: var(--verde-cactus);">Editor de Página</h2>
+                    <p style="margin-bottom: 20px;">Activa el modo de edición para cambiar textos e imágenes haciendo clic en ellos.</p>
                     <button id="btn-toggle-edicion" class="btn-accion btn-editar-web" onclick="toggleEdicionVisual()">Habilitar Edición Visual</button>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- Modales -->
     <div class="modal-overlay" id="modalLogin">
         <div class="modal-login">
             <h2>Iniciar Sesión</h2>
@@ -727,16 +532,10 @@
     <div class="modal-overlay" id="modalEdicionImagen">
         <div class="modal-login">
             <h2 style="color: var(--verde-cactus); margin-bottom: 15px;">Cambiar Imagen</h2>
-            
             <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: left;">
-                <label style="font-size: 14px; font-weight: bold; color: var(--texto-oscuro);">Sube una foto de tu equipo:</label>
                 <input type="file" id="input-archivo-imagen" accept="image/*" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; background: #fff;">
-                
-                <p style="font-size: 12px; color: #666; text-align: center; margin: 5px 0;">— O usa un enlace de internet —</p>
-                
                 <input type="text" id="input-url-imagen" style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #ccc;" placeholder="https://ejemplo.com/logo.png">
             </div>
-
             <button class="btn-cita" id="btn-guardar-imagen-visual" style="width: 100%; padding: 12px; font-size: 16px;" onclick="guardarNuevaImagen()">Guardar Cambios</button>
             <button class="btn-cerrar-modal" style="width: 100%;" onclick="cerrarModalImagen()">Cancelar</button>
         </div>
@@ -764,24 +563,15 @@
             appId: "1:502779012185:web:483b1375f0e6a8291f7d48"
         };
 
-        let app = null;
-        let db = null;
-        let auth = null;
-        let storage = null;
+        let app = null; let db = null; let auth = null; let storage = null;
 
         function iniciarEscuchaConfiguracion() {
             if(!db) return;
-            
             db.collection("configuracion").doc("general").onSnapshot((doc) => {
-                if (doc.exists) {
-                    const datos = doc.data();
-                    if (datos.logoUrl) {
-                        const logoEl = document.getElementById('logo-principal');
-                        if (logoEl) logoEl.src = datos.logoUrl;
-                    }
+                if (doc.exists && doc.data().logoUrl) {
+                    const logoEl = document.getElementById('logo-principal');
+                    if (logoEl) logoEl.src = doc.data().logoUrl;
                 }
-            }, (error) => {
-                console.error("Fallo al descargar configuración del logo:", error);
             });
         }
 
@@ -790,34 +580,18 @@
             db = firebase.firestore();
             auth = firebase.auth();
             storage = firebase.storage();
-
-            // Ejecutamos la carga del logo INMEDIATAMENTE al entrar
             iniciarEscuchaConfiguracion();
+        } catch(error) { console.error("Error al inicializar Firebase:", error); }
 
-        } catch(error) {
-            console.error("Error al inicializar:", error);
-            document.getElementById('barbero').innerHTML = '<option value="" disabled selected>Error de inicialización</option>';
-        }
-
-        const estadoApp = {
-            usuarioActual: null,
-            barberos: [],
-            servicios: [],
-            galeria: [],
-            citas: [], 
-            modoEdicion: false
-        };
-
+        const estadoApp = { usuarioActual: null, barberos: [], servicios: [], galeria: [], citas: [], modoEdicion: false };
         const USUARIOS_ROLES = {
             'dude@cactus.com': { nombre: 'DUDE', rol: 'barbero' },
             'tonny@cactus.com': { nombre: 'TONNY', rol: 'admin' },
             'super@cactus.com': { nombre: 'SUPER', rol: 'superadmin' }
         };
 
-        let elementoImagenActual = null;
-        let datosYaCargados = false; 
+        let elementoImagenActual = null; let datosYaCargados = false; 
 
-        // --- STREAMING_CHUNK:Lógica de Navegación e Interfaz... ---
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
@@ -827,19 +601,14 @@
         let timeoutNotificacion;
         function mostrarMensaje(texto) {
             const noti = document.getElementById('notificacion');
-            noti.innerText = texto;
-            noti.classList.add('mostrar');
+            noti.innerText = texto; noti.classList.add('mostrar');
             clearTimeout(timeoutNotificacion);
             timeoutNotificacion = setTimeout(() => noti.classList.remove('mostrar'), 3000);
         }
 
-        window.addEventListener('scroll', () => {
-            const fondo = document.getElementById('fondoAnimado');
-            fondo.style.backgroundPosition = `0px ${window.scrollY * 0.8}px`;
-        });
+        window.addEventListener('scroll', () => { document.getElementById('fondoAnimado').style.backgroundPosition = `0px ${window.scrollY * 0.8}px`; });
 
         async function subirArchivoFirebase(archivo, carpeta) {
-            if (!storage) throw new Error("Storage no inicializado");
             const nombreUnico = Date.now() + '_' + archivo.name;
             const ref = storage.ref().child(carpeta + '/' + nombreUnico);
             const snapshot = await ref.put(archivo);
@@ -848,33 +617,17 @@
 
         function abrirLightbox(url) {
             if (estadoApp.modoEdicion) return; 
-            const lightbox = document.getElementById('lightbox');
-            const img = document.getElementById('lightbox-img');
-            img.src = url;
-            lightbox.classList.add('mostrar');
+            document.getElementById('lightbox-img').src = url;
+            document.getElementById('lightbox').classList.add('mostrar');
         }
+        function cerrarLightbox() { document.getElementById('lightbox').classList.remove('mostrar'); }
 
-        function cerrarLightbox() {
-            const lightbox = document.getElementById('lightbox');
-            lightbox.classList.remove('mostrar');
-            setTimeout(() => { document.getElementById('lightbox-img').src = ''; }, 300);
-        }
-
-        // --- STREAMING_CHUNK:Funciones para cargar Barberos, Servicios y Galería pública... ---
         function iniciarEscuchaBarberos() {
-            const selectCitas = document.getElementById('barbero');
             if(!db) return;
             db.collection("barberos").onSnapshot((snapshot) => {
                 estadoApp.barberos = [];
                 snapshot.forEach(doc => { estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre }); });
-                
-                if (estadoApp.barberos.length === 0) {
-                    db.collection("barberos").add({ nombre: "TONNY" });
-                    db.collection("barberos").add({ nombre: "DUDE" });
-                } else {
-                    renderizarListaBarberos();
-                    cargarHorarios();
-                }
+                renderizarListaBarberos(); cargarHorarios();
             });
         }
 
@@ -883,14 +636,8 @@
             db.collection("servicios").onSnapshot((snapshot) => {
                 estadoApp.servicios = [];
                 snapshot.forEach(doc => { estadoApp.servicios.push({ id: doc.id, ...doc.data() }); });
-                
-                if (estadoApp.servicios.length === 0) {
-                    const serviciosBase = [{ nombre: "Corte Clásico", precio: "$200 MXN", desc: "Corte tradicional" }];
-                    serviciosBase.forEach(s => db.collection("servicios").add(s));
-                } else {
-                    renderizarServiciosPublicos();
-                    if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
-                }
+                renderizarServiciosPublicos();
+                if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
             });
         }
 
@@ -898,8 +645,7 @@
             const grid = document.getElementById('contenedor-servicios-publico');
             const selectCitas = document.getElementById('servicioSelect');
             if(!grid || !selectCitas) return;
-            grid.innerHTML = '';
-            selectCitas.innerHTML = '<option value="" disabled selected>Selecciona un servicio</option>';
+            grid.innerHTML = ''; selectCitas.innerHTML = '<option value="" disabled selected>Selecciona un servicio</option>';
             
             estadoApp.servicios.forEach(s => {
                 grid.innerHTML += `
@@ -909,8 +655,11 @@
                         <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
                     </div>
                 `;
+                // NUEVO: Agregamos el data-precio para capturarlo al agendar
                 const opt = document.createElement('option');
-                opt.value = s.nombre; opt.textContent = `${s.nombre} - ${s.precio}`;
+                opt.value = s.nombre; 
+                opt.setAttribute('data-precio', s.precio);
+                opt.textContent = `${s.nombre} - ${s.precio}`;
                 selectCitas.appendChild(opt);
             });
             if(estadoApp.modoEdicion) { grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); }
@@ -921,45 +670,30 @@
             db.collection("galeria").onSnapshot((snapshot) => {
                 estadoApp.galeria = [];
                 snapshot.forEach(doc => { estadoApp.galeria.push({ id: doc.id, ...doc.data() }); });
-                
-                if (estadoApp.galeria.length === 0) {
-                    db.collection("galeria").add({ url: "https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=500&q=80" });
-                } else {
-                    renderizarGaleriaPublica();
-                    if(estadoApp.usuarioActual) renderizarGaleriaAdmin();
-                }
+                renderizarGaleriaPublica(); if(estadoApp.usuarioActual) renderizarGaleriaAdmin();
             });
         }
 
         function renderizarGaleriaPublica() {
             const grid = document.getElementById('contenedor-galeria-publico');
-            if(!grid) return;
             grid.innerHTML = '';
             estadoApp.galeria.forEach(img => {
                 grid.innerHTML += `<div class="foto-galeria ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`;
             });
         }
 
-        // --- STREAMING_CHUNK:Lógica para el Autocompletado de Clientes y Búsqueda de Citas... ---
         async function buscarClienteFrecuente() {
             const tel = document.getElementById('telefono').value.trim();
             if(tel.length < 7 || !db) return; 
-
             try {
                 const snapshot = await db.collection("citas").where("telefono", "==", tel).limit(1).get();
                 if(!snapshot.empty) {
-                    const cita = snapshot.docs[0].data();
-                    const inputNombre = document.getElementById('nombre');
-                    
-                    inputNombre.value = cita.nombre;
-                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
+                    const cita = snapshot.docs[0].data(); const inputNombre = document.getElementById('nombre');
+                    inputNombre.value = cita.nombre; inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
                     setTimeout(() => inputNombre.style.backgroundColor = "var(--fondo)", 2000);
-                    
                     mostrarMensaje(`¡Qué gusto verte de nuevo, ${cita.nombre}!`);
                 }
-            } catch(error) {
-                console.error("Error buscando cliente frecuente:", error);
-            }
+            } catch(error) { console.error(error); }
         }
 
         async function mostrarMisCitas() {
@@ -967,152 +701,87 @@
             const contenedor = document.getElementById('contenedor-mis-citas');
             contenedor.innerHTML = '<p style="text-align:center; color: var(--verde-cactus);">Buscando citas...</p>';
 
-            if (!tel || !db) {
-                mostrarMensaje("Por favor, ingresa tu número de teléfono.");
-                contenedor.innerHTML = '';
-                return;
-            }
+            if (!tel || !db) { mostrarMensaje("Ingresa tu número."); contenedor.innerHTML = ''; return; }
 
             try {
                 const snapshot = await db.collection("citas").where("telefono", "==", tel).get();
                 contenedor.innerHTML = '';
-                
-                if (snapshot.empty) {
-                    contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f; font-weight: bold;">No encontramos citas registradas con este número.</p>';
-                    return;
-                }
+                if (snapshot.empty) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f; font-weight: bold;">No encontramos citas.</p>'; return; }
 
-                let misCitas = [];
-                snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
-                
+                let misCitas = []; snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
                 misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
                 misCitas.forEach(cita => {
-                    const fechaCita = new Date(`${cita.fecha}T00:00:00`);
-                    const hoy = new Date();
-                    hoy.setHours(0,0,0,0);
-                    
-                    const esPasada = fechaCita < hoy;
-                    const estadoText = esPasada ? 'Completada' : 'Próxima';
+                    const esPasada = new Date(`${cita.fecha}T00:00:00`) < new Date(new Date().setHours(0,0,0,0));
                     const estadoColor = esPasada ? 'var(--verde-olivo)' : 'var(--azul-acento)';
-
                     contenedor.innerHTML += `
                         <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                <strong style="font-size: 16px; color: var(--texto-oscuro);">${cita.fecha} <br> ${cita.hora}</strong>
-                                <span style="background: ${estadoColor}20; color: ${estadoColor}; padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;">${estadoText}</span>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <strong style="font-size: 16px;">${cita.fecha} <br> ${cita.hora}</strong>
+                                <span style="background: ${estadoColor}20; color: ${estadoColor}; padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;">${esPasada ? 'Completada' : 'Próxima'}</span>
                             </div>
-                            <p style="margin: 5px 0; font-size: 15px; color: #555;">💈 <strong>Servicio:</strong> ${cita.servicio}</p>
-                            <p style="margin: 5px 0; font-size: 15px; color: #555;">👨‍🔧 <strong>Barbero:</strong> ${cita.barbero}</p>
+                            <p style="margin: 5px 0;">💈 <strong>Servicio:</strong> ${cita.servicio} ${cita.precio ? `(${cita.precio})` : ''}</p>
+                            <p style="margin: 5px 0;">👨‍🔧 <strong>Barbero:</strong> ${cita.barbero}</p>
                         </div>
                     `;
                 });
-            } catch(error) {
-                console.error("Error obteniendo citas:", error);
-                contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error al consultar la base de datos.</p>';
-            }
+            } catch(error) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error de conexión.</p>'; }
         }
 
-        // --- STREAMING_CHUNK:Lógica para Procesamiento de Reservas en tiempo real... ---
         function iniciarEscuchaCitas() {
             if(!db) return;
-            try {
-                db.collection("citas").onSnapshot((snap) => {
-                    estadoApp.citas = [];
-                    snap.forEach(doc => { estadoApp.citas.push({ id: doc.id, ...doc.data() }); });
-                    estadoApp.citas.sort((a, b) => {
-                        let timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
-                        let timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
-                        return timeB - timeA;
-                    });
-                    if(estadoApp.usuarioActual) renderizarTablaCitas();
-                });
-            } catch(error) { console.error("Error en citas:", error); }
+            db.collection("citas").onSnapshot((snap) => {
+                estadoApp.citas = [];
+                snap.forEach(doc => { estadoApp.citas.push({ id: doc.id, ...doc.data() }); });
+                estadoApp.citas.sort((a, b) => (b.fechaCreacion?.toMillis() || 0) - (a.fechaCreacion?.toMillis() || 0));
+                if(estadoApp.usuarioActual) renderizarTablaCitas();
+            });
         }
 
         function cargarHorarios() {
-            const fecha = document.getElementById('fecha').value;
-            const barbero = document.getElementById('barbero').value;
+            const fecha = document.getElementById('fecha').value; const barbero = document.getElementById('barbero').value;
             const selectHora = document.getElementById('hora');
-            
             if (!fecha || !barbero) return;
             selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
-
             const numMagico = (fecha.charCodeAt(fecha.length - 1) + barbero.charCodeAt(0)) % 3;
-
             for(let i = 10; i <= 19; i++) {
                 const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
-                const option = document.createElement('option');
-                if ((i + numMagico) % 4 === 0) {
-                    option.text = `${horaStr} (No disponible)`; option.disabled = true;
-                } else {
-                    option.value = horaStr; option.text = horaStr;
-                }
-                selectHora.appendChild(option);
+                const opt = document.createElement('option');
+                if ((i + numMagico) % 4 === 0) { opt.text = `${horaStr} (No disponible)`; opt.disabled = true; } 
+                else { opt.value = horaStr; opt.text = horaStr; }
+                selectHora.appendChild(opt);
             }
         }
 
         function generarEnlaceCalendario(cita) {
-            const fechaLimpia = cita.fecha.replace(/-/g, '');
-            
-            // Adaptar la hora a formato 24hrs para Google Calendar
-            let timePart = cita.hora.split(' ')[0];
-            let modifier = cita.hora.split(' ')[1];
-            let hours = timePart.split(':')[0];
-            let minutes = timePart.split(':')[1];
-            
-            if (hours === '12') hours = '00';
-            if (modifier === 'PM') hours = (parseInt(hours, 10) + 12).toString();
-            
-            const horaInicio = hours.padStart(2, '0') + minutes + '00';
-            const horaFin = (parseInt(hours, 10) + 1).toString().padStart(2, '0') + minutes + '00'; // Se calcula 1 hora de duración
-            
-            const fechaInicio = `${fechaLimpia}T${horaInicio}`;
-            const fechaFin = `${fechaLimpia}T${horaFin}`;
-            
-            const titulo = encodeURIComponent(`Corte en Barbería Cactus (${cita.servicio})`);
-            const detalles = encodeURIComponent(`¡Tu cita está confirmada!\n\nBarbero: ${cita.barbero}\nServicio: ${cita.servicio}\n\nGracias por tu preferencia.`);
-            const ubicacion = encodeURIComponent(`Barbería Cactus, Lomas del Coapinole, 48290 Puerto Vallarta, Jal. (https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6)`);
-            
-            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titulo}&dates=${fechaInicio}/${fechaFin}&details=${detalles}&location=${ubicacion}`;
+            const fechaL = cita.fecha.replace(/-/g, '');
+            let [hours, minutes] = cita.hora.split(' ')[0].split(':'); let mod = cita.hora.split(' ')[1];
+            if (hours === '12') hours = '00'; if (mod === 'PM') hours = (parseInt(hours, 10) + 12).toString();
+            const hInicio = hours.padStart(2, '0') + minutes + '00'; const hFin = (parseInt(hours, 10) + 1).toString().padStart(2, '0') + minutes + '00';
+            const det = encodeURIComponent(`Cita confirmada\nBarbero: ${cita.barbero}\nServicio: ${cita.servicio}\nPrecio: ${cita.precio || 'N/A'}`);
+            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Corte Barbería Cactus')}&dates=${fechaL}T${hInicio}/${fechaL}T${hFin}&details=${det}&location=${encodeURIComponent('Barbería Cactus, Puerto Vallarta')}`;
         }
 
         function activarNotificacionLocal() {
-            const pantalla = document.getElementById('pantalla-exito');
-            const fecha = pantalla.dataset.fecha;
-            const hora = pantalla.dataset.hora;
-            
-            if (!("Notification" in window)) {
-                mostrarMensaje("Tu navegador o celular no soporta notificaciones web.");
-                return;
-            }
-            
-            Notification.requestPermission().then(permission => {
-                if (permission === "granted") {
-                    new Notification("💈 Barbería Cactus", {
-                        body: `Cita confirmada el ${fecha} a las ${hora}. Lomas del Coapinole, Pto. Vallarta.`,
-                        icon: "https://cdn-icons-png.flaticon.com/512/3015/3015246.png" // Ícono genérico de barbería
-                    });
-                    mostrarMensaje("¡Notificación enviada!");
-                } else {
-                    mostrarMensaje("Permiso de notificaciones denegado.");
-                }
+            const btn = document.getElementById('pantalla-exito');
+            if (!("Notification" in window)) { mostrarMensaje("Notificaciones no soportadas."); return; }
+            Notification.requestPermission().then(perm => {
+                if (perm === "granted") { new Notification("💈 Barbería Cactus", { body: `Cita: ${btn.dataset.fecha} a las ${btn.dataset.hora}` }); mostrarMensaje("Notificación programada."); }
             });
         }
 
         function reiniciarFormularioCita() {
-            document.getElementById('formCita').reset();
-            document.getElementById('hora').innerHTML = '<option value="" disabled selected>Primero selecciona Fecha y Barbero</option>';
-            document.getElementById('pantalla-exito').style.display = 'none';
-            document.getElementById('formCita').style.display = 'block';
+            document.getElementById('formCita').reset(); document.getElementById('hora').innerHTML = '<option value="" disabled selected>Selecciona Fecha y Barbero</option>';
+            document.getElementById('pantalla-exito').style.display = 'none'; document.getElementById('formCita').style.display = 'block';
         }
 
         function procesarCita(evento) {
-            evento.preventDefault();
-            if(!db) return;
+            evento.preventDefault(); if(!db) return;
+            const btn = document.getElementById('btn-submit-cita'); btn.innerText = "Agendando..."; btn.disabled = true;
 
-            const btn = document.getElementById('btn-submit-cita');
-            btn.innerText = "Agendando..."; btn.disabled = true;
+            // NUEVO: Atrapamos el precio del servicio seleccionado
+            const selectServicio = document.getElementById('servicioSelect');
+            const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
 
             const cita = {
                 nombre: document.getElementById('nombre').value.trim(),
@@ -1120,58 +789,52 @@
                 barbero: document.getElementById('barbero').value,
                 fecha: document.getElementById('fecha').value,
                 hora: document.getElementById('hora').value,
-                servicio: document.getElementById('servicioSelect').value,
+                servicio: selectServicio.value,
+                precio: precioSeleccionado, // Guardamos el precio en Firestore
                 comentarios: document.getElementById('comentarios').value,
                 fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
             };
             
             db.collection("citas").add(cita).then(() => {
-                mostrarMensaje(`¡Cita confirmada! Te esperamos el ${cita.fecha} a las ${cita.hora}.`);
-                
-                // Mostrar pantalla de éxito en lugar del formulario
                 document.getElementById('formCita').style.display = 'none';
-                const pantallaExito = document.getElementById('pantalla-exito');
-                pantallaExito.style.display = 'block';
-                
-                // Guardamos datos temporalmente para la notificación
-                pantallaExito.dataset.fecha = cita.fecha;
-                pantallaExito.dataset.hora = cita.hora;
-                
-                // Actualizamos textos y enlace
-                document.getElementById('texto-exito').innerHTML = `Te esperamos el <strong>${cita.fecha}</strong> a las <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Puerto Vallarta.`;
+                const pExito = document.getElementById('pantalla-exito'); pExito.style.display = 'block';
+                pExito.dataset.fecha = cita.fecha; pExito.dataset.hora = cita.hora;
+                document.getElementById('texto-exito').innerHTML = `Te esperamos el <strong>${cita.fecha}</strong> a las <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
-
-            }).catch((error) => {
-                mostrarMensaje("Error al agendar. Intenta de nuevo.");
-            }).finally(() => {
-                btn.innerText = "Confirmar Reserva"; btn.disabled = false;
-            });
+            }).finally(() => { btn.innerText = "Confirmar Reserva"; btn.disabled = false; });
         }
 
-        // --- STREAMING_CHUNK:Control de Sesiones de Firebase Authentication... ---
+        async function limpiarCitasAntiguas() {
+            if (!db) return;
+            // Calculamos qué día fue hace 14 días
+            const haceDosSemanas = new Date();
+            haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
+            const fechaLimite = haceDosSemanas.toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+            try {
+                // Buscamos todas las citas más viejas que la fecha límite
+                const snapshot = await db.collection("citas").where("fecha", "<", fechaLimite).get();
+                let borradas = 0;
+                
+                snapshot.forEach(doc => {
+                    db.collection("citas").doc(doc.id).delete();
+                    borradas++;
+                });
+                
+                if (borradas > 0) { console.log(`Limpieza de sistema: Se eliminaron ${borradas} citas antiguas.`); }
+            } catch (error) { console.error("Error al limpiar el historial de citas:", error); }
+        }
+
         if(auth) {
             auth.onAuthStateChanged((user) => {
-                if(!datosYaCargados) {
-                    iniciarEscuchaBarberos();
-                    iniciarEscuchaCitas();
-                    iniciarEscuchaServicios();
-                    iniciarEscuchaGaleria();
-                    datosYaCargados = true;
-                }
-
+                if(!datosYaCargados) { iniciarEscuchaBarberos(); iniciarEscuchaCitas(); iniciarEscuchaServicios(); iniciarEscuchaGaleria(); datosYaCargados = true; }
                 const btnNav = document.getElementById('btn-nav-admin');
                 if (user) {
-                    const email = user.email.toLowerCase();
-                    const infoUsuario = USUARIOS_ROLES[email] || { nombre: 'Colaborador', rol: 'barbero' };
-                    estadoApp.usuarioActual = infoUsuario;
-                    
-                    btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`;
-                    btnNav.style.backgroundColor = 'var(--azul-acento)';
+                    estadoApp.usuarioActual = USUARIOS_ROLES[user.email.toLowerCase()] || { nombre: 'Colaborador', rol: 'barbero' };
+                    btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`; btnNav.style.backgroundColor = 'var(--azul-acento)';
                     configurarPanelAdmin();
                 } else {
-                    estadoApp.usuarioActual = null;
-                    btnNav.innerText = 'Panel (Admin)';
-                    btnNav.style.backgroundColor = 'transparent';
+                    estadoApp.usuarioActual = null; btnNav.innerText = 'Panel (Admin)'; btnNav.style.backgroundColor = 'transparent';
                     if (estadoApp.modoEdicion) toggleEdicionVisual(true);
                 }
             });
@@ -1179,278 +842,144 @@
 
         function abrirLogin() { estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex'; }
         function cerrarLogin() { document.getElementById('modalLogin').style.display = 'none'; }
-
-        function procesarLogin(evento) {
-            evento.preventDefault();
-            if(!auth) return;
-            const email = document.getElementById('login-user').value.trim().toLowerCase();
-            const pass = document.getElementById('login-pass').value;
-            const btnLogin = document.getElementById('btn-login');
-
-            btnLogin.innerText = "Validando..."; btnLogin.disabled = true;
-
-            auth.signInWithEmailAndPassword(email, pass).then(() => {
-                cerrarLogin(); navegar('admin'); mostrarMensaje(`¡Bienvenido!`);
-                document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = '';
-            }).catch((error) => {
-                mostrarMensaje('Correo o contraseña incorrectos.');
-            }).finally(() => {
-                btnLogin.innerText = "Entrar"; btnLogin.disabled = false;
-            });
+        function procesarLogin(e) {
+            e.preventDefault(); const btn = document.getElementById('btn-login'); btn.innerText = "Validando..."; btn.disabled = true;
+            auth.signInWithEmailAndPassword(document.getElementById('login-user').value.trim(), document.getElementById('login-pass').value)
+                .then(() => { cerrarLogin(); navegar('admin'); document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = ''; })
+                .catch(() => mostrarMensaje('Error de acceso.')).finally(() => { btn.innerText = "Entrar"; btn.disabled = false; });
         }
-
         function cerrarSesion() { if(auth) auth.signOut().then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
 
-        // --- STREAMING_CHUNK:Gestión del Panel de Administrador (CRUD)... ---
         function configurarPanelAdmin() {
+            // NUEVO: Ejecutamos la limpieza silenciosa cada vez que un admin entra al panel
+            limpiarCitasAntiguas();
+
             const rol = estadoApp.usuarioActual.rol;
             document.getElementById('admin-usuario-info').innerText = `Rol: ${rol.toUpperCase()}`;
-            document.getElementById('menu-tab-barberos').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
-            document.getElementById('menu-tab-servicios').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
-            document.getElementById('menu-tab-galeria').style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none';
+            ['barberos', 'servicios', 'galeria'].forEach(t => document.getElementById(`menu-tab-${t}`).style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none');
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
-            cambiarTabAdmin('tab-citas');
-            renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
+            cambiarTabAdmin('tab-citas'); renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
         }
 
         function cambiarTabAdmin(idTab) {
-            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-galeria', 'tab-web'].forEach(id => {
-                document.getElementById(id).style.display = 'none';
-                document.getElementById('menu-' + id).classList.remove('activo');
-            });
+            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-galeria', 'tab-web'].forEach(id => { document.getElementById(id).style.display = 'none'; document.getElementById('menu-' + id).classList.remove('activo'); });
             document.getElementById(idTab).style.display = 'block'; document.getElementById('menu-' + idTab).classList.add('activo');
         }
 
         function renderizarTablaCitas() {
-            const tbody = document.querySelector('#tabla-citas tbody');
-            tbody.innerHTML = '';
+            const tbody = document.querySelector('#tabla-citas tbody'); tbody.innerHTML = '';
             if(!estadoApp.usuarioActual) return;
 
-            let citasAMostrar = estadoApp.usuarioActual.rol === 'barbero' ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) : estadoApp.citas;
+            let citas = estadoApp.usuarioActual.rol === 'barbero' ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) : estadoApp.citas;
+            if (citas.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>'; return; }
 
-            if (citasAMostrar.length === 0) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No hay citas registradas.</td></tr>'; return; }
-
-            citasAMostrar.forEach(cita => {
+            citas.forEach(cita => {
                 const tr = document.createElement('tr');
-                const detalles = `Teléfono: ${cita.telefono}\nServicio: ${cita.servicio}\nBarbero: ${cita.barbero}\n\nComentarios: ${cita.comentarios || 'Ninguno'}`;
-                const linkCalendar = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Cita: ' + cita.nombre)}&dates=${cita.fecha.replace(/-/g, '')}T120000Z/${cita.fecha.replace(/-/g, '')}T130000Z&details=${encodeURIComponent(detalles)}`;
-                
-                tr.innerHTML = `
-                    <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
-                    <td>${cita.nombre} <br> <small style="color:var(--verde-cactus);">${cita.telefono}</small><br> <small>${cita.comentarios}</small></td>
-                    <td>${cita.servicio}</td>
-                    <td>${cita.barbero}</td>
-                    <td>${(estadoApp.usuarioActual.rol !== 'barbero') ? `<a href="${linkCalendar}" target="_blank" class="btn-accion btn-calendario" style="text-decoration:none;">+ Calendario</a>` : 'Lectura'}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
+            tr.innerHTML = `
+                <td>${cita.fecha} <br> <strong>${cita.hora}</strong></td>
+                <td>${cita.nombre} <br> <small style="color:var(--verde-cactus);">${cita.telefono}</small><br> <small>${cita.comentarios}</small></td>
+                <!-- NUEVO: Mostrar el precio en la tabla -->
+                <td>${cita.servicio} <br> <strong style="color:var(--azul-acento);">${cita.precio || 'N/A'}</strong></td>
+                <td>${cita.barbero}</td>
+                <td style="display: flex; gap: 5px; flex-wrap: wrap;">
+                    <a href="${generarEnlaceCalendario(cita)}" target="_blank" class="btn-accion" style="background: #4285F4; text-decoration: none; color: white;">📅 Calendario</a>
+                    ${(estadoApp.usuarioActual.rol !== 'barbero') ? `<button onclick="eliminarCitaId('${cita.id}')" class="btn-accion btn-eliminar">Eliminar</button>` : ''}
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+    
+    function eliminarCitaId(id) { if(db && confirm('¿Borrar esta cita?')) db.collection("citas").doc(id).delete(); }
 
         function renderizarListaBarberos() {
-            const ul = document.getElementById('lista-barberos');
-            const selectCitas = document.getElementById('barbero');
-            if(ul) ul.innerHTML = '';
-            
-            if(estadoApp.barberos.length === 0) { selectCitas.innerHTML = '<option value="" disabled selected>No hay barberos</option>'; return; }
-            selectCitas.innerHTML = '<option value="" disabled selected>¿Con quién te atenderás?</option>';
-
+            const ul = document.getElementById('lista-barberos'); const selectCitas = document.getElementById('barbero');
+            if(ul) ul.innerHTML = ''; selectCitas.innerHTML = estadoApp.barberos.length === 0 ? '<option value="" disabled selected>Sin barberos</option>' : '<option value="" disabled selected>¿Con quién te atenderás?</option>';
             estadoApp.barberos.forEach(b => {
-                if(ul) {
-                    const li = document.createElement('li');
-                    li.style.cssText = 'padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;';
-                    li.innerHTML = `<span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button>`;
-                    ul.appendChild(li);
-                }
+                if(ul) { ul.innerHTML += `<li style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;"><span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">Eliminar</button></li>`; }
                 const opt = document.createElement('option'); opt.value = b.nombre; opt.textContent = b.nombre; selectCitas.appendChild(opt);
             });
         }
-
         function agregarBarbero() {
-            if(!db) return;
-            const nombre = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
-            if (nombre) {
-                const btn = document.getElementById('btn-add-barbero'); btn.innerText = "Guardando...";
-                db.collection("barberos").add({ nombre: nombre }).then(() => {
-                    document.getElementById('nuevo-barbero').value = ''; mostrarMensaje('Barbero agregado');
-                }).finally(() => { btn.innerText = "Añadir"; });
-            }
+            const nom = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
+            if (nom && db) db.collection("barberos").add({ nombre: nom }).then(() => document.getElementById('nuevo-barbero').value = '');
         }
-
-        function eliminarBarbero(idDocumento) {
-            if(!db) return;
-            if(confirm("¿Estás seguro de eliminar este barbero?")) { db.collection("barberos").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminado'); }); }
-        }
+        function eliminarBarbero(id) { if(db && confirm("¿Eliminar barbero?")) db.collection("barberos").doc(id).delete(); }
 
         function renderizarTablaServiciosAdmin() {
-            const tbody = document.querySelector('#tabla-servicios tbody');
-            if(!tbody) return; tbody.innerHTML = '';
+            const tbody = document.querySelector('#tabla-servicios tbody'); if(!tbody) return; tbody.innerHTML = '';
             if (estadoApp.servicios.length === 0) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Sin servicios.</td></tr>'; return; }
-
             estadoApp.servicios.forEach(s => {
-                const tr = document.createElement('tr');
-                const nombreEscapado = s.nombre.replace(/'/g, "\\'"); const precioEscapado = s.precio.replace(/'/g, "\\'"); const descEscapada = s.desc.replace(/'/g, "\\'");
-                tr.innerHTML = `
-                    <td><strong>${s.nombre}</strong></td>
-                    <td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td>
-                    <td style="font-size: 13px;">${s.desc}</td>
-                    <td style="display: flex; gap: 5px;">
-                        <button onclick="prepararEdicionServicio('${s.id}', '${nombreEscapado}', '${precioEscapado}', '${descEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button>
-                        <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
+                const nE = s.nombre.replace(/'/g, "\\'"); const pE = s.precio.replace(/'/g, "\\'"); const dE = s.desc.replace(/'/g, "\\'");
+                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong></td><td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">Eliminar</button></td></tr>`;
             });
         }
-
         function guardarServicio() {
-            if(!db) return;
-            const idEdicion = document.getElementById('editando-servicio-id').value;
-            const nombre = document.getElementById('nuevo-servicio-nombre').value.trim();
-            const precio = document.getElementById('nuevo-servicio-precio').value.trim();
-            const desc = document.getElementById('nuevo-servicio-desc').value.trim();
-            
-            if (nombre && precio && desc) {
-                const btn = document.getElementById('btn-add-servicio'); btn.innerText = "Guardando...";
-                const datos = { nombre, precio, desc };
-                if (idEdicion) {
-                    db.collection("servicios").doc(idEdicion).update(datos).then(() => { mostrarMensaje('Actualizado'); cancelarEdicionServicio(); }).finally(() => { btn.innerText = "Guardar Servicio"; });
-                } else {
-                    db.collection("servicios").add(datos).then(() => { cancelarEdicionServicio(); mostrarMensaje('Agregado'); }).finally(() => { btn.innerText = "Guardar Servicio"; });
-                }
-            } else { mostrarMensaje('Completa todos los campos'); }
-        }
-
-        function prepararEdicionServicio(id, nombre, precio, desc) {
-            document.getElementById('titulo-form-servicio').innerText = 'Modificar Servicio';
-            document.getElementById('editando-servicio-id').value = id; document.getElementById('nuevo-servicio-nombre').value = nombre;
-            document.getElementById('nuevo-servicio-precio').value = precio; document.getElementById('nuevo-servicio-desc').value = desc;
-            document.getElementById('btn-add-servicio').innerText = 'Actualizar Servicio'; document.getElementById('btn-cancelar-edicion').style.display = 'block';
-            document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function cancelarEdicionServicio() {
-            document.getElementById('titulo-form-servicio').innerText = 'Agregar Nuevo Servicio';
-            document.getElementById('editando-servicio-id').value = ''; document.getElementById('nuevo-servicio-nombre').value = '';
-            document.getElementById('nuevo-servicio-precio').value = ''; document.getElementById('nuevo-servicio-desc').value = '';
-            document.getElementById('btn-add-servicio').innerText = 'Guardar Servicio'; document.getElementById('btn-cancelar-edicion').style.display = 'none';
-        }
-
-        function eliminarServicio(idDocumento) { if(!db) return; if(confirm("¿Seguro de eliminar?")) { db.collection("servicios").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminado'); }); } }
-
-        // --- STREAMING_CHUNK:Funciones para Editor Web y Cambios de Imágenes en vivo... ---
-        function renderizarGaleriaAdmin() {
-            const container = document.getElementById('contenedor-galeria-admin');
-            if(!container) return; container.innerHTML = '';
-            if (estadoApp.galeria.length === 0) { container.innerHTML = '<p style="text-align:center; width:100%; color: #666;">No hay imágenes.</p>'; return; }
-
-            estadoApp.galeria.forEach(img => {
-                const urlEscapada = img.url.replace(/'/g, "\\'");
-                container.innerHTML += `
-                    <div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;">
-                        <div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div>
-                        <div style="padding: 15px; display: flex; gap: 8px; flex-direction: column; background: #fff;">
-                            <button onclick="prepararEdicionGaleria('${img.id}', '${urlEscapada}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar URL</button>
-                            <button onclick="eliminarImagenGaleria('${img.id}')" class="btn-accion btn-eliminar">Eliminar</button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        async function guardarImagenGaleria() {
-            if(!db || !storage) return;
-            const idEdicion = document.getElementById('editando-galeria-id').value;
-            const inputArchivo = document.getElementById('nueva-galeria-archivo');
-            const urlTexto = document.getElementById('nueva-galeria-url').value.trim();
-            const btn = document.getElementById('btn-add-galeria');
-            let urlFinal = urlTexto;
-
-            btn.innerText = "Procesando..."; btn.disabled = true;
-
-            try {
-                if (inputArchivo.files.length > 0) { btn.innerText = "Subiendo..."; urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'galeria'); }
-                if (urlFinal) {
-                    btn.innerText = "Guardando...";
-                    if (idEdicion) { await db.collection("galeria").doc(idEdicion).update({ url: urlFinal }); mostrarMensaje('Actualizado'); } 
-                    else { await db.collection("galeria").add({ url: urlFinal }); mostrarMensaje('Agregada'); }
-                    cancelarEdicionGaleria();
-                } else { mostrarMensaje('Selecciona foto o URL'); }
-            } catch (error) { mostrarMensaje('Error al guardar.'); } 
-            finally { btn.innerText = "Guardar Imagen"; btn.disabled = false; }
-        }
-
-        function prepararEdicionGaleria(id, url) {
-            document.getElementById('titulo-form-galeria').innerText = 'Modificar Imagen'; document.getElementById('editando-galeria-id').value = id;
-            document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = 'Actualizar Imagen';
-            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; document.getElementById('titulo-form-galeria').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function cancelarEdicionGaleria() {
-            document.getElementById('titulo-form-galeria').innerText = 'Agregar Nueva Imagen'; document.getElementById('editando-galeria-id').value = '';
-            document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; 
-            document.getElementById('btn-add-galeria').innerText = 'Guardar Imagen'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none';
-        }
-
-        function eliminarImagenGaleria(idDocumento) { if(!db) return; if(confirm("¿Seguro de eliminar?")) { db.collection("galeria").doc(idDocumento).delete().then(() => { mostrarMensaje('Eliminada'); }); } }
-
-        function toggleEdicionVisual(forzarApagado = false) {
-            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion;
-            const btn = document.getElementById('btn-toggle-edicion');
-            const elementosTexto = document.querySelectorAll('h1, p.intro-p');
-            const elementosImagen = document.querySelectorAll('.logo-img');
-
-            if (estadoApp.modoEdicion) {
-                btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
-                elementosTexto.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
-                elementosImagen.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
-            } else {
-                btn.innerText = 'Habilitar Edición Visual de Textos'; btn.style.background = 'var(--azul-acento)';
-                elementosTexto.forEach(el => { el.contentEditable = "false"; el.classList.remove('editando'); });
-                elementosImagen.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
+            const id = document.getElementById('editando-servicio-id').value; const datos = { nombre: document.getElementById('nuevo-servicio-nombre').value.trim(), precio: document.getElementById('nuevo-servicio-precio').value.trim(), desc: document.getElementById('nuevo-servicio-desc').value.trim() };
+            if (datos.nombre && datos.precio && datos.desc && db) {
+                id ? db.collection("servicios").doc(id).update(datos).then(cancelarEdicionServicio) : db.collection("servicios").add(datos).then(cancelarEdicionServicio);
             }
         }
+        function prepararEdicionServicio(id, nom, pre, des) {
+            document.getElementById('editando-servicio-id').value = id; document.getElementById('nuevo-servicio-nombre').value = nom; document.getElementById('nuevo-servicio-precio').value = pre; document.getElementById('nuevo-servicio-desc').value = des;
+            document.getElementById('btn-add-servicio').innerText = 'Actualizar'; document.getElementById('btn-cancelar-edicion').style.display = 'block'; document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
+        }
+        function cancelarEdicionServicio() {
+            ['editando-servicio-id', 'nuevo-servicio-nombre', 'nuevo-servicio-precio', 'nuevo-servicio-desc'].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('btn-add-servicio').innerText = 'Guardar'; document.getElementById('btn-cancelar-edicion').style.display = 'none';
+        }
+        function eliminarServicio(id) { if(db && confirm("¿Eliminar?")) db.collection("servicios").doc(id).delete(); }
 
-        function manejadorEdicionImagen(evento) {
-            if (!estadoApp.modoEdicion) return;
-            evento.preventDefault(); evento.stopPropagation();
-            elementoImagenActual = evento.currentTarget;
-            const inputUrl = document.getElementById('input-url-imagen');
-            if (elementoImagenActual.tagName === 'IMG') { inputUrl.value = elementoImagenActual.src; } 
-            else { let bgUrl = elementoImagenActual.style.backgroundImage; inputUrl.value = bgUrl.replace(/^url\(["']?/, '').replace(/["']?\)$/, ''); }
+        function renderizarGaleriaAdmin() {
+            const c = document.getElementById('contenedor-galeria-admin'); if(!c) return; c.innerHTML = '';
+            estadoApp.galeria.forEach(img => {
+                c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">Editar URL</button><button onclick="if(db && confirm('¿Eliminar?')) db.collection('galeria').doc('${img.id}').delete()" class="btn-accion btn-eliminar">Eliminar</button></div></div>`;
+            });
+        }
+        async function guardarImagenGaleria() {
+            const id = document.getElementById('editando-galeria-id').value; const file = document.getElementById('nueva-galeria-archivo').files[0]; let url = document.getElementById('nueva-galeria-url').value.trim();
+            const btn = document.getElementById('btn-add-galeria'); btn.disabled = true;
+            try {
+                if(file) url = await subirArchivoFirebase(file, 'galeria');
+                if(url) { id ? await db.collection("galeria").doc(id).update({url}) : await db.collection("galeria").add({url}); cancelarEdicionGaleria(); }
+            } catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
+        }
+        function prepararEdicionGaleria(id, url) { document.getElementById('editando-galeria-id').value = id; document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = 'Actualizar'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; }
+        function cancelarEdicionGaleria() { document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = 'Guardar'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
+
+        function toggleEdicionVisual(forzarApagado = false) {
+            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
+            const eT = document.querySelectorAll('h1, p.intro-p'); const eI = document.querySelectorAll('.logo-img');
+            if (estadoApp.modoEdicion) {
+                btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
+                eT.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
+                eI.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
+            } else {
+                btn.innerText = 'Habilitar Edición Visual de Textos'; btn.style.background = 'var(--azul-acento)';
+                eT.forEach(el => { el.contentEditable = "false"; el.classList.remove('editando'); });
+                eI.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
+            }
+        }
+        function manejadorEdicionImagen(e) {
+            if (!estadoApp.modoEdicion) return; e.preventDefault(); e.stopPropagation(); elementoImagenActual = e.currentTarget;
+            document.getElementById('input-url-imagen').value = elementoImagenActual.tagName === 'IMG' ? elementoImagenActual.src : elementoImagenActual.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
             document.getElementById('modalEdicionImagen').style.display = 'flex';
         }
-
-        function cerrarModalImagen() {
-            document.getElementById('modalEdicionImagen').style.display = 'none'; document.getElementById('input-archivo-imagen').value = '';
-            document.getElementById('input-url-imagen').value = ''; elementoImagenActual = null;
-        }
-
+        function cerrarModalImagen() { document.getElementById('modalEdicionImagen').style.display = 'none'; document.getElementById('input-archivo-imagen').value = ''; document.getElementById('input-url-imagen').value = ''; elementoImagenActual = null; }
+        
         async function guardarNuevaImagen() {
-            const inputArchivo = document.getElementById('input-archivo-imagen'); const urlTexto = document.getElementById('input-url-imagen').value.trim();
-            const btn = document.getElementById('btn-guardar-imagen-visual'); let urlFinal = urlTexto;
-
-            btn.innerText = "Procesando..."; btn.disabled = true;
-
+            const file = document.getElementById('input-archivo-imagen').files[0]; let url = document.getElementById('input-url-imagen').value.trim(); const btn = document.getElementById('btn-guardar-imagen-visual'); btn.disabled = true;
             try {
-                if (inputArchivo.files.length > 0) { btn.innerText = "Subiendo..."; urlFinal = await subirArchivoFirebase(inputArchivo.files[0], 'web_assets'); }
-                if (urlFinal && elementoImagenActual) {
-                    if (elementoImagenActual.tagName === 'IMG') { 
-                        elementoImagenActual.src = urlFinal;
-                        if(elementoImagenActual.id === 'logo-principal' && db) {
-                            await db.collection("configuracion").doc("general").set({ logoUrl: urlFinal }, { merge: true });
-                        }
-                    } else { elementoImagenActual.style.backgroundImage = `url('${urlFinal}')`; }
+                if (file) url = await subirArchivoFirebase(file, 'web_assets');
+                if (url && elementoImagenActual) {
+                    if (elementoImagenActual.tagName === 'IMG') { elementoImagenActual.src = url; if(elementoImagenActual.id === 'logo-principal' && db) await db.collection("configuracion").doc("general").set({ logoUrl: url }, { merge: true }); } 
+                    else { elementoImagenActual.style.backgroundImage = `url('${url}')`; }
                     cerrarModalImagen(); mostrarMensaje('Actualizada');
-                } else { mostrarMensaje('Selecciona foto o enlace'); }
-            } catch (error) { mostrarMensaje('Error al guardar.'); } 
-            finally { btn.innerText = "Guardar Cambios"; btn.disabled = false; }
+                }
+            } catch (e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
         }
 
-        // --- ARRANQUE INICIAL ---
-        window.onload = () => {
-            const hoy = new Date().toISOString().split('T')[0];
-            document.getElementById('fecha').setAttribute('min', hoy);
-        };
+        window.onload = () => document.getElementById('fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
     </script>
 </body>
 </html>
