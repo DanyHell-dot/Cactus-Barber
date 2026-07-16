@@ -381,7 +381,7 @@
                 <h3 style="color: var(--verde-cactus); font-size: 24px; margin-bottom: 15px;" data-i18n="exito-tit">¡Reserva Confirmada! 🎉</h3>
                 <p style="color: #555; font-size: 16px; margin-bottom: 25px;" id="texto-exito"></p>
                 <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);" data-i18n="btn-cal">📅 Agregar a Google Calendar</a>
-                <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);" data-i18n="btn-not">🔔 Recibir Notificación</button>
+                <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);" data-i18n="btn-not">🔔 Recordatorio en Celular</button>
                 <button type="button" onclick="reiniciarFormularioCita()" class="btn-admin" style="background: var(--verde-cactus); color: white; border: none; padding: 12px 25px;" data-i18n="btn-volver">Volver a agendar</button>
             </div>
         </div>
@@ -411,15 +411,6 @@
                     <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria" data-i18n="menu-galeria">📷 Gestionar Galería</a>
                     <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web" data-i18n="menu-web">🌐 Editor Web</a>
                     
-                    <div style="display: none; gap: 8px; margin-top: 25px; align-items: stretch; justify-content: space-between;" id="contenedor-botones-notif">
-                        <button onclick="activarNotificaciones()" class="btn-admin" style="background-color: var(--azul-acento); color: white; flex: 1; padding: 10px 5px; font-size: 11px;">
-                            🔔 <span data-i18n="btn-activar-noti">Activar Alertas</span>
-                        </button>
-                        <button onclick="desactivarNotificaciones()" id="btn-desactivar-noti-el" class="btn-admin" style="background-color: #d32f2f; color: white; flex: 1; padding: 10px 5px; font-size: 11px;">
-                            🔕 <span data-i18n="btn-desactivar-noti">Desactivar</span>
-                        </button>
-                    </div>
-
                     <a onclick="cerrarSesion()" style="margin-top: 25px; color: #ffcccc;" data-i18n="menu-salir">🚪 Cerrar Sesión</a>
                 </div>
             </div>
@@ -545,7 +536,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -557,14 +547,13 @@
             appId: "1:502779012185:web:483b1375f0e6a8291f7d48"
         };
 
-        let app = null; let db = null; let auth = null; let storage = null; let messaging = null;
+        let app = null; let db = null; let auth = null; let storage = null;
 
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
             storage = firebase.storage();
-            messaging = firebase.messaging();
         } catch(error) { console.error("Error al inicializar Firebase:", error); }
 
         const estadoApp = { usuarioActual: null, barberos: [], servicios: [], galeria: [], citas: [], modoEdicion: false };
@@ -588,7 +577,7 @@
                 'lbl-fec': '📆 Fecha:', 'lbl-hor': '🕒 Hora:', 'lbl-com': '📝 Comentarios (Opcional):',
                 'lbl-tel-ph': 'Tu número de celular', 'lbl-nom-ph': 'Ej. Juan Pérez', 'lbl-com-ph': 'Ej. Quiero un diseño en especial...',
                 'btn-conf': 'Confirmar Reserva', 'exito-tit': '¡Reserva Confirmada! 🎉', 'btn-cal': '📅 Agregar a Google Calendar',
-                'btn-not': '🔔 Recibir Notificación', 'btn-volver': 'Volver a agendar', 'hist-p': 'Ingresa tu celular para ver tus citas.',
+                'btn-not': '🔔 Recordatorio en Celular', 'btn-volver': 'Volver a agendar', 'hist-p': 'Ingresa tu celular para ver tus citas.',
                 'btn-buscar': '🔍 Buscar Citas', 'txt-ex-1': 'Te esperamos el', 'txt-ex-2': 'a las',
                 
                 'admin-panel': 'Panel de Control',
@@ -612,7 +601,6 @@
                 'btn-añadir': 'Añadir', 'btn-editar': 'Editar', 'btn-eliminar': 'Eliminar',
                 'btn-guardar-serv': 'Guardar Servicio', 'btn-guardar-img': 'Guardar Imagen',
                 'btn-cancelar': 'Cancelar', 'btn-cal-admin': '📅 Calendario', 'btn-editar-url': 'Cambiar',
-                'btn-activar-noti': 'Activar Alertas', 'btn-desactivar-noti': 'Desactivar',
                 
                 'ph-barbero': 'Nombre del barbero', 'txt-sin-citas': 'No hay citas programadas.',
                 'txt-sin-serv': 'No hay servicios registrados.',
@@ -628,7 +616,7 @@
                 'lbl-fec': '📆 Date:', 'lbl-hor': '🕒 Time:', 'lbl-com': '📝 Comments (Optional):',
                 'lbl-tel-ph': 'Your mobile number', 'lbl-nom-ph': 'Ex. John Doe', 'lbl-com-ph': 'Ex. I want a specific fade...',
                 'btn-conf': 'Confirm Booking', 'exito-tit': 'Booking Confirmed! 🎉', 'btn-cal': '📅 Add to Google Calendar',
-                'btn-not': '🔔 Get Notification', 'btn-volver': 'Book another', 'hist-p': 'Enter your mobile to see your bookings.',
+                'btn-not': '🔔 Get Reminder on Phone', 'btn-volver': 'Book another', 'hist-p': 'Enter your mobile to see your bookings.',
                 'btn-buscar': '🔍 Find Bookings', 'txt-ex-1': 'See you on', 'txt-ex-2': 'at',
                 
                 'admin-panel': 'Control Panel',
@@ -652,7 +640,6 @@
                 'btn-añadir': 'Add', 'btn-editar': 'Edit', 'btn-eliminar': 'Delete',
                 'btn-guardar-serv': 'Save Service', 'btn-guardar-img': 'Save Image',
                 'btn-cancelar': 'Cancel', 'btn-cal-admin': '📅 Calendar', 'btn-editar-url': 'Change',
-                'btn-activar-noti': 'Enable Alerts', 'btn-desactivar-noti': 'Disable',
                 
                 'ph-barbero': 'Barber Name', 'txt-sin-citas': 'No scheduled bookings.',
                 'txt-sin-serv': 'No registered services.',
@@ -895,14 +882,11 @@
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
 
-                // --- NUEVO: CREAR ENLACE DE WHATSAPP PARA EL CLIENTE ---
-                const telefonoBarberia = "52322XXXXXXX"; // PON AQUÍ TU NÚMERO (con el 52 de México)
-                
+                // --- ENLACE DE WHATSAPP PARA EL CLIENTE ---
+                const telefonoBarberia = "52322XXXXXXX"; // Cambiar por tu número de WhatsApp
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
-                
                 const urlWhatsapp = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
                 
-                // Agregamos el botón de WhatsApp a la pantalla de éxito dinámicamente
                 let btnWhatsApp = document.getElementById('btn-whatsapp-confirm');
                 if(!btnWhatsApp) {
                     btnWhatsApp = document.createElement('a');
@@ -910,16 +894,48 @@
                     btnWhatsApp.className = 'btn-cita';
                     btnWhatsApp.style = 'width: 100%; margin-bottom: 15px; background-color: #25D366; color: white; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);';
                     btnWhatsApp.target = '_blank';
-                    
-                    // Insertarlo antes del botón de calendario
                     const btnCalendario = document.getElementById('btn-add-calendar');
                     btnCalendario.parentNode.insertBefore(btnWhatsApp, btnCalendario);
                 }
                 btnWhatsApp.href = urlWhatsapp;
                 btnWhatsApp.innerHTML = '💬 Confirmar por WhatsApp';
-                // ---------------------------------------------------------
+
+                // --- NOTIFICACIÓN AUTOMÁTICA A TELEGRAM ---
+                enviarNotificacionTelegram(cita);
 
             }).finally(() => { btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false; });
+        }
+
+        // --- FUNCIÓN DE ALERTA A TELEGRAM ---
+        async function enviarNotificacionTelegram(cita) {
+            const TELEGRAM_BOT_TOKEN = '8824032039:AAFXI4ChtVbyqFASAQYxyp72LaTUgH1gEKY'; 
+            const TELEGRAM_CHAT_ID = '8821682993'; 
+
+            const mensajeTelegram = `🚨 *¡Nueva Cita Agendada!* 🚨\n\n` +
+                                     `👤 *Cliente:* ${cita.nombre}\n` +
+                                     `📞 *Teléfono:* ${cita.telefono}\n` +
+                                     `💈 *Servicio:* ${cita.servicio} (${cita.precio})\n` +
+                                     `👨‍🔧 *Barbero:* ${cita.barbero}\n` +
+                                     `📅 *Fecha:* ${cita.fecha}\n` +
+                                     `🕒 *Hora:* ${cita.hora}\n` +
+                                     `📝 *Notas:* ${cita.comentarios || 'Ninguna'}`;
+
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: mensajeTelegram,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                console.log('Notificación de Telegram enviada con éxito.');
+            } catch (error) {
+                console.error('Error al enviar a Telegram:', error);
+            }
         }
 
         async function mostrarMisCitas() {
@@ -996,7 +1012,6 @@
             document.getElementById('admin-usuario-info').innerText = `${txt['admin-rol']} ${rol.toUpperCase()}`;
             ['barberos', 'servicios', 'galeria'].forEach(t => document.getElementById(`menu-tab-${t}`).style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none');
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
-            document.getElementById('contenedor-botones-notif').style.display = (rol === 'superadmin') ? 'flex' : 'none';
             
             cambiarTabAdmin('tab-citas'); renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
         }
@@ -1127,71 +1142,6 @@
                     cerrarModalImagen(); mostrarMensaje('Actualizada');
                 }
             } catch (e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
-        }
-
-        async function activarNotificaciones() {
-            if (!messaging) { mostrarMensaje("Mensajería no soportada en este entorno."); return; }
-            try {
-                const permission = await Notification.requestPermission();
-if (permission === 'granted') {
-    // 1. Forzamos al navegador a buscar y registrar el archivo manualmente
-    const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-    
-    // 2. Generamos el token obligando a usar ese registro activo
-    const token = await messaging.getToken({ 
-        vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI',
-        serviceWorkerRegistration: registration 
-    });
-                    
-                    if (token && db) {
-                        await db.collection('admin_tokens').doc('dispositivo_principal').set({
-                            token: token,
-                            fecha_registro: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                        mostrarMensaje(idiomaActual === 'es' ? '¡Alertas activadas en este equipo!' : 'Alerts enabled on this device!');
-                    } else {
-                        mostrarMensaje(idiomaActual === 'es' ? 'Error al generar el acceso.' : 'Error generating access.');
-                    }
-                } else {
-                    mostrarMensaje(idiomaActual === 'es' ? 'Permiso denegado.' : 'Permission denied.');
-                }
-            } catch (error) {
-                console.error('Error configurando notificaciones:', error);
-                mostrarMensaje(idiomaActual === 'es' ? 'Error al activar. Revisa la consola.' : 'Error enabling. Check console.');
-            }
-        }
-
-        async function desactivarNotificaciones() {
-            if (!messaging) return;
-            const btnDesactivar = document.getElementById('btn-desactivar-noti-el');
-            if(btnDesactivar) btnDesactivar.innerHTML = "...";
-
-            try {
-                if (db) await db.collection('admin_tokens').doc('dispositivo_principal').delete();
-                
-                const tokenActual = await messaging.getToken({ 
-                    vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
-                });
-                
-                if (tokenActual) await messaging.deleteToken();
-                
-                if(btnDesactivar) btnDesactivar.innerHTML = `🔕 <span data-i18n="btn-desactivar-noti">${textosUI[idiomaActual]['btn-desactivar-noti']}</span>`;
-                mostrarMensaje(idiomaActual === 'es' ? 'Alertas desactivadas.' : 'Alerts disabled.');
-                
-            } catch (error) {
-                console.error('Error desactivando notificaciones:', error);
-                mostrarMensaje(idiomaActual === 'es' ? 'Error al desactivar.' : 'Error disabling.');
-                if(btnDesactivar) btnDesactivar.innerHTML = `🔕 <span data-i18n="btn-desactivar-noti">${textosUI[idiomaActual]['btn-desactivar-noti']}</span>`;
-            }
-        }
-
-        if (messaging) {
-            messaging.onMessage((payload) => {
-                const titulo = payload.notification?.title || '¡Nueva Cita!';
-                const cuerpo = payload.notification?.body || 'Revisa tu panel de administración.';
-                alert(`🔔 ${titulo}\n${cuerpo}`);
-                if (estadoApp.usuarioActual) renderizarTablaCitas();
-            });
         }
 
         window.onload = () => { 
