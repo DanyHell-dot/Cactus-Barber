@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-       <link rel="icon" type="image/png" href="https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg">
+    <link rel="icon" type="image/png" href="https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbería Cactus</title>
@@ -410,7 +410,17 @@
                     <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios" data-i18n="menu-servicios">💈 Gestionar Servicios</a>
                     <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria" data-i18n="menu-galeria">📷 Gestionar Galería</a>
                     <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web" data-i18n="menu-web">🌐 Editor Web</a>
-                    <a onclick="cerrarSesion()" style="margin-top: 30px; color: #ffcccc;" data-i18n="menu-salir">🚪 Cerrar Sesión</a>
+                    
+                    <div style="display: none; gap: 8px; margin-top: 25px; align-items: stretch; justify-content: space-between;" id="contenedor-botones-notif">
+                        <button onclick="activarNotificaciones()" class="btn-admin" style="background-color: var(--azul-acento); color: white; flex: 1; padding: 10px 5px; font-size: 11px;">
+                            🔔 <span data-i18n="btn-activar-noti">Activar Alertas</span>
+                        </button>
+                        <button onclick="desactivarNotificaciones()" id="btn-desactivar-noti-el" class="btn-admin" style="background-color: #d32f2f; color: white; flex: 1; padding: 10px 5px; font-size: 11px;">
+                            🔕 <span data-i18n="btn-desactivar-noti">Desactivar</span>
+                        </button>
+                    </div>
+
+                    <a onclick="cerrarSesion()" style="margin-top: 25px; color: #ffcccc;" data-i18n="menu-salir">🚪 Cerrar Sesión</a>
                 </div>
             </div>
             <div class="admin-content">
@@ -535,6 +545,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-messaging-compat.js"></script>
 
     <script>
         const firebaseConfig = {
@@ -546,13 +557,14 @@
             appId: "1:502779012185:web:483b1375f0e6a8291f7d48"
         };
 
-        let app = null; let db = null; let auth = null; let storage = null;
+        let app = null; let db = null; let auth = null; let storage = null; let messaging = null;
 
         try {
             app = firebase.initializeApp(firebaseConfig);
             db = firebase.firestore();
             auth = firebase.auth();
             storage = firebase.storage();
+            messaging = firebase.messaging();
         } catch(error) { console.error("Error al inicializar Firebase:", error); }
 
         const estadoApp = { usuarioActual: null, barberos: [], servicios: [], galeria: [], citas: [], modoEdicion: false };
@@ -579,7 +591,6 @@
                 'btn-not': '🔔 Recibir Notificación', 'btn-volver': 'Volver a agendar', 'hist-p': 'Ingresa tu celular para ver tus citas.',
                 'btn-buscar': '🔍 Buscar Citas', 'txt-ex-1': 'Te esperamos el', 'txt-ex-2': 'a las',
                 
-                // PANEL ADMIN TRADUCCIONES FALTANTES
                 'admin-panel': 'Panel de Control',
                 'admin-rol': 'Rol:',
                 'menu-citas': '📅 Ver Citas',
@@ -601,6 +612,7 @@
                 'btn-añadir': 'Añadir', 'btn-editar': 'Editar', 'btn-eliminar': 'Eliminar',
                 'btn-guardar-serv': 'Guardar Servicio', 'btn-guardar-img': 'Guardar Imagen',
                 'btn-cancelar': 'Cancelar', 'btn-cal-admin': '📅 Calendario', 'btn-editar-url': 'Cambiar',
+                'btn-activar-noti': 'Activar Alertas', 'btn-desactivar-noti': 'Desactivar',
                 
                 'ph-barbero': 'Nombre del barbero', 'txt-sin-citas': 'No hay citas programadas.',
                 'txt-sin-serv': 'No hay servicios registrados.',
@@ -619,7 +631,6 @@
                 'btn-not': '🔔 Get Notification', 'btn-volver': 'Book another', 'hist-p': 'Enter your mobile to see your bookings.',
                 'btn-buscar': '🔍 Find Bookings', 'txt-ex-1': 'See you on', 'txt-ex-2': 'at',
                 
-                // PANEL ADMIN TRADUCCIONES FALTANTES
                 'admin-panel': 'Control Panel',
                 'admin-rol': 'Role:',
                 'menu-citas': '📅 View Bookings',
@@ -641,6 +652,7 @@
                 'btn-añadir': 'Add', 'btn-editar': 'Edit', 'btn-eliminar': 'Delete',
                 'btn-guardar-serv': 'Save Service', 'btn-guardar-img': 'Save Image',
                 'btn-cancelar': 'Cancel', 'btn-cal-admin': '📅 Calendar', 'btn-editar-url': 'Change',
+                'btn-activar-noti': 'Enable Alerts', 'btn-desactivar-noti': 'Disable',
                 
                 'ph-barbero': 'Barber Name', 'txt-sin-citas': 'No scheduled bookings.',
                 'txt-sin-serv': 'No registered services.',
@@ -653,7 +665,6 @@
             document.getElementById('texto-btn-idioma').innerText = idiomaActual === 'es' ? 'EN' : 'ES';
             const txt = textosUI[idiomaActual];
             
-            // Traducir estáticos
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const clave = el.getAttribute('data-i18n');
                 if (txt[clave]) el.innerText = txt[clave];
@@ -663,13 +674,11 @@
                 if (txt[clave]) el.placeholder = txt[clave];
             });
             
-            // Actualizar el mensaje de éxito si está visible
             const pExito = document.getElementById('pantalla-exito');
             if(pExito.style.display === 'block'){
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${pExito.dataset.fecha}</strong> ${txt['txt-ex-2']} <strong>${pExito.dataset.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
             }
             
-            // Re-renderizar dinámicos
             renderizarServiciosPublicos();
             if(estadoApp.usuarioActual) {
                 renderizarTablaCitas();
@@ -885,6 +894,31 @@
                 const txt = textosUI[idiomaActual];
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
+
+                // --- NUEVO: CREAR ENLACE DE WHATSAPP PARA EL CLIENTE ---
+                const telefonoBarberia = "52322XXXXXXX"; // PON AQUÍ TU NÚMERO (con el 52 de México)
+                
+                const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
+                
+                const urlWhatsapp = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
+                
+                // Agregamos el botón de WhatsApp a la pantalla de éxito dinámicamente
+                let btnWhatsApp = document.getElementById('btn-whatsapp-confirm');
+                if(!btnWhatsApp) {
+                    btnWhatsApp = document.createElement('a');
+                    btnWhatsApp.id = 'btn-whatsapp-confirm';
+                    btnWhatsApp.className = 'btn-cita';
+                    btnWhatsApp.style = 'width: 100%; margin-bottom: 15px; background-color: #25D366; color: white; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);';
+                    btnWhatsApp.target = '_blank';
+                    
+                    // Insertarlo antes del botón de calendario
+                    const btnCalendario = document.getElementById('btn-add-calendar');
+                    btnCalendario.parentNode.insertBefore(btnWhatsApp, btnCalendario);
+                }
+                btnWhatsApp.href = urlWhatsapp;
+                btnWhatsApp.innerHTML = '💬 Confirmar por WhatsApp';
+                // ---------------------------------------------------------
+
             }).finally(() => { btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false; });
         }
 
@@ -962,6 +996,8 @@
             document.getElementById('admin-usuario-info').innerText = `${txt['admin-rol']} ${rol.toUpperCase()}`;
             ['barberos', 'servicios', 'galeria'].forEach(t => document.getElementById(`menu-tab-${t}`).style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none');
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
+            document.getElementById('contenedor-botones-notif').style.display = (rol === 'superadmin') ? 'flex' : 'none';
+            
             cambiarTabAdmin('tab-citas'); renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
         }
 
@@ -1091,6 +1127,66 @@
                     cerrarModalImagen(); mostrarMensaje('Actualizada');
                 }
             } catch (e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
+        }
+
+        async function activarNotificaciones() {
+            if (!messaging) { mostrarMensaje("Mensajería no soportada en este entorno."); return; }
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const token = await messaging.getToken({ 
+                        vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
+                    });
+                    
+                    if (token && db) {
+                        await db.collection('admin_tokens').doc('dispositivo_principal').set({
+                            token: token,
+                            fecha_registro: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                        mostrarMensaje(idiomaActual === 'es' ? '¡Alertas activadas en este equipo!' : 'Alerts enabled on this device!');
+                    } else {
+                        mostrarMensaje(idiomaActual === 'es' ? 'Error al generar el acceso.' : 'Error generating access.');
+                    }
+                } else {
+                    mostrarMensaje(idiomaActual === 'es' ? 'Permiso denegado.' : 'Permission denied.');
+                }
+            } catch (error) {
+                console.error('Error configurando notificaciones:', error);
+                mostrarMensaje(idiomaActual === 'es' ? 'Error al activar. Revisa la consola.' : 'Error enabling. Check console.');
+            }
+        }
+
+        async function desactivarNotificaciones() {
+            if (!messaging) return;
+            const btnDesactivar = document.getElementById('btn-desactivar-noti-el');
+            if(btnDesactivar) btnDesactivar.innerHTML = "...";
+
+            try {
+                if (db) await db.collection('admin_tokens').doc('dispositivo_principal').delete();
+                
+                const tokenActual = await messaging.getToken({ 
+                    vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
+                });
+                
+                if (tokenActual) await messaging.deleteToken();
+                
+                if(btnDesactivar) btnDesactivar.innerHTML = `🔕 <span data-i18n="btn-desactivar-noti">${textosUI[idiomaActual]['btn-desactivar-noti']}</span>`;
+                mostrarMensaje(idiomaActual === 'es' ? 'Alertas desactivadas.' : 'Alerts disabled.');
+                
+            } catch (error) {
+                console.error('Error desactivando notificaciones:', error);
+                mostrarMensaje(idiomaActual === 'es' ? 'Error al desactivar.' : 'Error disabling.');
+                if(btnDesactivar) btnDesactivar.innerHTML = `🔕 <span data-i18n="btn-desactivar-noti">${textosUI[idiomaActual]['btn-desactivar-noti']}</span>`;
+            }
+        }
+
+        if (messaging) {
+            messaging.onMessage((payload) => {
+                const titulo = payload.notification?.title || '¡Nueva Cita!';
+                const cuerpo = payload.notification?.body || 'Revisa tu panel de administración.';
+                alert(`🔔 ${titulo}\n${cuerpo}`);
+                if (estadoApp.usuarioActual) renderizarTablaCitas();
+            });
         }
 
         window.onload = () => { 
