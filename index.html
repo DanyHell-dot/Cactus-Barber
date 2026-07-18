@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Barbería Cactus</title>
+    
     <style>
         :root {
             --verde-cactus: #4E6E5D;
@@ -57,6 +58,24 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .membresias-contenedor { margin-top: 80px; text-align: center; border-top: 2px dashed rgba(78, 110, 93, 0.3); padding-top: 50px; }
+        .membresias-header { margin-bottom: 40px; }
+        .membresias-header h3 { color: #d4af37; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .membresias-header p { color: var(--texto-oscuro); font-weight: bold; font-size: 18px; }
+        .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
+        .img-membresia-promo:hover { transform: scale(1.02); }
+        .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
+        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; }
+        .tarjeta-membresia.pro { border-color: #d4af37; }
+        .tarjeta-membresia h4 { font-size: 26px; color: #d4af37; margin-bottom: 25px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; letter-spacing: 1px;}
+        .tarjeta-membresia ul { list-style: none; margin-bottom: 30px; }
+        .tarjeta-membresia ul li { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.4; color: #eee; }
+        .precio-membresia { text-align: center; font-size: 36px; font-weight: bold; color: #d4af37; margin-bottom: 25px; }
+        .precio-membresia span { font-size: 14px; font-weight: normal; color: #aaa; display: block; margin-top: 5px;}
+        .badge-proximamente { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid #d4af37; font-weight: bold; text-align: center; padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; cursor: not-allowed; }
+        .tarjeta-membresia.pro::before { content: 'MÁS POPULAR'; position: absolute; top: 25px; right: -35px; background: #d4af37; color: #000; font-size: 11px; font-weight: bold; padding: 6px 40px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
 
         header {
             background: linear-gradient(to bottom, #3A5346, var(--verde-cactus));
@@ -332,6 +351,40 @@
         <div class="grid-servicios" id="contenedor-servicios-publico">
             <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando servicios...</p>
         </div>
+
+        <div class="membresias-contenedor reveal">
+            <div class="membresias-header">
+                <h3 class="edit-txt" data-i18n="mem-h3">Membresías Cactus Community</h3>
+                <p class="edit-txt" data-i18n="mem-p">Tu círculo exclusivo de estilo</p>
+            </div>
+            
+            <img src="https://placehold.co/800x400/1A251E/d4af37?text=Membresias+Cactus+Community" alt="Membresías Promo" class="img-membresia-promo edit-img">
+
+            <div class="grid-membresias">
+                <div class="tarjeta-membresia">
+                    <h4 class="edit-txt">CACTUS LITE</h4>
+                    <ul>
+                        <li>✂️ <span class="edit-txt">Cortes Ilimitados (Clásico o Desvanecido)</span></li>
+                        <li>🍸 <span class="edit-txt">Bebida de Cortesía (cada visita)</span></li>
+                        <li>👥 <span class="edit-txt">Compartible (Máx. 4 visitas/mes)</span></li>
+                    </ul>
+                    <div class="precio-membresia edit-txt">$650 <span>MXN / MES</span></div>
+                    <div class="badge-proximamente" data-i18n="mem-prox">PRÓXIMAMENTE</div>
+                </div>
+
+                <div class="tarjeta-membresia pro">
+                    <h4 class="edit-txt">CACTUS PRO</h4>
+                    <ul>
+                        <li>✂️ <span class="edit-txt">Cortes Ilimitados</span></li>
+                        <li>🧔 <span class="edit-txt">Incluye Servicio de Barba y Ceja</span></li>
+                        <li>🍸 <span class="edit-txt">Bebida de Cortesía (cada visita)</span></li>
+                        <li>👥 <span class="edit-txt">Compartible (Máx. 4 visitas/mes)</span></li>
+                    </ul>
+                    <div class="precio-membresia edit-txt">$950 <span>MXN / MES</span></div>
+                    <div class="badge-proximamente" data-i18n="mem-prox">PRÓXIMAMENTE</div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="citas" class="galeria-contenedor pagina">
@@ -380,8 +433,8 @@
             <div id="pantalla-exito" style="display:none; text-align:center; padding: 20px 0;">
                 <h3 style="color: var(--verde-cactus); font-size: 24px; margin-bottom: 15px;" data-i18n="exito-tit">¡Reserva Confirmada! 🎉</h3>
                 <p style="color: #555; font-size: 16px; margin-bottom: 25px;" id="texto-exito"></p>
+                <a id="btn-whatsapp-confirm" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #25D366; color: white; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);">💬 Confirmar por WhatsApp</a>
                 <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);" data-i18n="btn-cal">📅 Agregar a Google Calendar</a>
-                <button type="button" onclick="activarNotificacionLocal()" class="btn-cita" style="width: 100%; margin-bottom: 25px; background-color: #F4B400; color: #1A251E; box-shadow: 0 4px 15px rgba(244, 180, 0, 0.4);" data-i18n="btn-not">🔔 Recordatorio en Celular</button>
                 <button type="button" onclick="reiniciarFormularioCita()" class="btn-admin" style="background: var(--verde-cactus); color: white; border: none; padding: 12px 25px;" data-i18n="btn-volver">Volver a agendar</button>
             </div>
         </div>
@@ -410,10 +463,10 @@
                     <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios" data-i18n="menu-servicios">💈 Gestionar Servicios</a>
                     <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria" data-i18n="menu-galeria">📷 Gestionar Galería</a>
                     <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web" data-i18n="menu-web">🌐 Editor Web</a>
-                    
                     <a onclick="cerrarSesion()" style="margin-top: 25px; color: #ffcccc;" data-i18n="menu-salir">🚪 Cerrar Sesión</a>
                 </div>
             </div>
+            
             <div class="admin-content">
                 <div id="tab-citas">
                     <h2 style="color: var(--verde-cactus);" data-i18n="tit-citas">Citas Programadas</h2>
@@ -435,9 +488,32 @@
 
                 <div id="tab-barberos" style="display: none;">
                     <h2 style="color: var(--verde-cactus);" data-i18n="tit-barberos">Nuestros Barberos</h2>
-                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-                        <input type="text" id="nuevo-barbero" data-i18n-ph="ph-barbero" placeholder="Nombre del barbero" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
-                        <button onclick="agregarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px;" data-i18n="btn-añadir">Añadir</button>
+                    <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                        <input type="hidden" id="editando-barbero-id" value="">
+                        <input type="text" id="nuevo-barbero" data-i18n-ph="ph-barbero" placeholder="Nombre del barbero" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px;">
+                        
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 120px;">
+                                <label style="font-size: 12px; color: var(--verde-cactus); font-weight: bold;">Hora Inicio:</label>
+                                <select id="nuevo-barbero-inicio" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                                    <option value="7">7:00 AM</option><option value="8">8:00 AM</option><option value="9">9:00 AM</option><option value="10" selected>10:00 AM</option>
+                                    <option value="11">11:00 AM</option><option value="12">12:00 PM</option><option value="13">1:00 PM</option>
+                                    <option value="14">2:00 PM</option><option value="15">3:00 PM</option>
+                                </select>
+                            </div>
+                            <div style="flex: 1; min-width: 120px;">
+                                <label style="font-size: 12px; color: var(--verde-cactus); font-weight: bold;">Hora Fin:</label>
+                                <select id="nuevo-barbero-fin" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
+                                    <option value="14">2:00 PM</option><option value="15">3:00 PM</option><option value="16">4:00 PM</option>
+                                    <option value="17">5:00 PM</option><option value="18">6:00 PM</option><option value="19" selected>7:00 PM</option>
+                                    <option value="20">8:00 PM</option><option value="21">9:00 PM</option><option value="22">10:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="btn-add-barbero" onclick="guardarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;" data-i18n="btn-añadir">Guardar Barbero</button>
+                            <button id="btn-cancelar-edicion-barbero" onclick="cancelarEdicionBarbero()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;" data-i18n="btn-cancelar">Cancelar</button>
+                        </div>
                     </div>
                     <ul id="lista-barberos" style="list-style: none;"></ul>
                 </div>
@@ -567,38 +643,32 @@
 
         let idiomaActual = 'es';
         const textosUI = {
-            'es': {
-                'nav-inicio': 'Inicio', 'nav-servicios': 'Servicios', 'nav-citas': 'Agendar Cita', 'nav-mis-citas': '★ Mis Citas',
-                'intro-h1': 'Tu estilo, nuestra pasión', 'intro-p': 'Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.',
-                'btn-intro': 'Programar cita', 'galeria-h2': 'Nuestros Trabajos', 'ubicacion-h2': 'Visítanos',
-                'btn-mapa': 'Abrir en Google Maps', 'servicios-h2': 'Nuestros Servicios', 'citas-h2': 'Reserva tu Espacio',
-                'citas-p': 'Completa el formulario para agendar tu próxima visita.', 'lbl-tel': '📞 Teléfono (Celular):',
+        'es': {
+            'nav-inicio': 'Inicio', 'nav-servicios': 'Servicios', 'nav-citas': 'Agendar Cita', 'nav-mis-citas': '★ Mis Citas',
+            'intro-h1': 'Tu estilo, nuestra pasión', 'intro-p': 'Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.',
+            'btn-intro': 'Programar cita', 'galeria-h2': 'Nuestros Trabajos', 'ubicacion-h2': 'Visítanos',
+            'btn-mapa': 'Abrir en Google Maps', 'servicios-h2': 'Nuestros Servicios', 'citas-h2': 'Reserva tu Espacio',
+            'mem-h3': 'Membresías Cactus Community', 'mem-p': 'Tu círculo exclusivo de estilo', 'mem-prox': 'PRÓXIMAMENTE',
+            'citas-p': 'Completa el formulario para agendar tu próxima visita.', 'lbl-tel': '📞 Teléfono (Celular):',
                 'lbl-nom': '👤 Nombre Completo:', 'lbl-serv': '💈 Servicio a realizar:', 'lbl-barb': '👨‍🔧 Selecciona tu Barbero:',
                 'lbl-fec': '📆 Fecha:', 'lbl-hor': '🕒 Hora:', 'lbl-com': '📝 Comentarios (Opcional):',
                 'lbl-tel-ph': 'Tu número de celular', 'lbl-nom-ph': 'Ej. Juan Pérez', 'lbl-com-ph': 'Ej. Quiero un diseño en especial...',
                 'btn-conf': 'Confirmar Reserva', 'exito-tit': '¡Reserva Confirmada! 🎉', 'btn-cal': '📅 Agregar a Google Calendar',
-                'btn-not': '🔔 Recordatorio en Celular', 'btn-volver': 'Volver a agendar', 'hist-p': 'Ingresa tu celular para ver tus citas.',
+                'btn-volver': 'Volver a agendar', 'hist-p': 'Ingresa tu celular para ver tus citas.',
                 'btn-buscar': '🔍 Buscar Citas', 'txt-ex-1': 'Te esperamos el', 'txt-ex-2': 'a las',
                 
-                'admin-panel': 'Panel de Control',
-                'admin-rol': 'Rol:',
-                'menu-citas': '📅 Ver Citas',
-                'menu-barberos': '✂️ Gestionar Barberos',
-                'menu-servicios': '💈 Gestionar Servicios',
-                'menu-galeria': '📷 Gestionar Galería',
-                'menu-web': '🌐 Editor Web',
-                'menu-salir': '🚪 Cerrar Sesión',
+                'admin-panel': 'Panel de Control', 'admin-rol': 'Rol:',
+                'menu-citas': '📅 Ver Citas', 'menu-barberos': '✂️ Gestionar Barberos',
+                'menu-servicios': '💈 Gestionar Servicios', 'menu-galeria': '📷 Gestionar Galería',
+                'menu-web': '🌐 Editor Web', 'menu-salir': '🚪 Cerrar Sesión',
                 
-                'tit-citas': 'Citas Programadas',
-                'tit-barberos': 'Nuestros Barberos',
-                'tit-servicios': 'Catálogo de Servicios',
-                'tit-galeria': 'Nuestros Trabajos (Galería)',
-                'tit-web': 'Editor de Página',
+                'tit-citas': 'Citas Programadas', 'tit-barberos': 'Nuestros Barberos',
+                'tit-servicios': 'Catálogo de Servicios', 'tit-galeria': 'Nuestros Trabajos (Galería)', 'tit-web': 'Editor de Página',
                 
                 'th-fec': 'Fecha y Hora', 'th-cli': 'Cliente', 'th-ser': 'Servicio y Precio', 'th-bar': 'Barbero', 'th-acc': 'Acciones',
                 'th-des': 'Descripción', 'th-pre': 'Precio',
                 
-                'btn-añadir': 'Añadir', 'btn-editar': 'Editar', 'btn-eliminar': 'Eliminar',
+                'btn-añadir': 'Guardar Barbero', 'btn-editar': 'Editar', 'btn-eliminar': 'Eliminar',
                 'btn-guardar-serv': 'Guardar Servicio', 'btn-guardar-img': 'Guardar Imagen',
                 'btn-cancelar': 'Cancelar', 'btn-cal-admin': '📅 Calendario', 'btn-editar-url': 'Cambiar',
                 
@@ -607,37 +677,31 @@
                 'opt-sin-barb': 'Cargando barberos...', 'opt-sel-barb': 'Cargando barberos...'
             },
             'en': {
-                'nav-inicio': 'Home', 'nav-servicios': 'Services', 'nav-citas': 'Book Now', 'nav-mis-citas': '★ My Bookings',
-                'intro-h1': 'Your style, our passion', 'intro-p': 'Welcome to the Cactus experience. We are experts in taking care of your image and taking your style to the next level.',
-                'btn-intro': 'Book Appointment', 'galeria-h2': 'Our Work', 'ubicacion-h2': 'Visit Us',
-                'btn-mapa': 'Open in Google Maps', 'servicios-h2': 'Our Services', 'citas-h2': 'Reserve Your Spot',
-                'citas-p': 'Fill out the form to schedule your next visit.', 'lbl-tel': '📞 Phone (Mobile):',
+            'nav-inicio': 'Home', 'nav-servicios': 'Services', 'nav-citas': 'Book Now', 'nav-mis-citas': '★ My Bookings',
+            'intro-h1': 'Your style, our passion', 'intro-p': 'Welcome to the Cactus experience. We are experts in taking care of your image and taking your style to the next level.',
+            'btn-intro': 'Book Appointment', 'galeria-h2': 'Our Work', 'ubicacion-h2': 'Visit Us',
+            'btn-mapa': 'Open in Google Maps', 'servicios-h2': 'Our Services', 'citas-h2': 'Reserve Your Spot',
+            'mem-h3': 'Cactus Community Memberships', 'mem-p': 'Your exclusive circle of style', 'mem-prox': 'COMING SOON',
+            'citas-p': 'Fill out the form to schedule your next visit.', 'lbl-tel': '📞 Phone (Mobile):',
                 'lbl-nom': '👤 Full Name:', 'lbl-serv': '💈 Select Service:', 'lbl-barb': '👨‍🔧 Select Barber:',
                 'lbl-fec': '📆 Date:', 'lbl-hor': '🕒 Time:', 'lbl-com': '📝 Comments (Optional):',
                 'lbl-tel-ph': 'Your mobile number', 'lbl-nom-ph': 'Ex. John Doe', 'lbl-com-ph': 'Ex. I want a specific fade...',
                 'btn-conf': 'Confirm Booking', 'exito-tit': 'Booking Confirmed! 🎉', 'btn-cal': '📅 Add to Google Calendar',
-                'btn-not': '🔔 Get Reminder on Phone', 'btn-volver': 'Book another', 'hist-p': 'Enter your mobile to see your bookings.',
+                'btn-volver': 'Book another', 'hist-p': 'Enter your mobile to see your bookings.',
                 'btn-buscar': '🔍 Find Bookings', 'txt-ex-1': 'See you on', 'txt-ex-2': 'at',
                 
-                'admin-panel': 'Control Panel',
-                'admin-rol': 'Role:',
-                'menu-citas': '📅 View Bookings',
-                'menu-barberos': '✂️ Manage Barbers',
-                'menu-servicios': '💈 Manage Services',
-                'menu-galeria': '📷 Manage Gallery',
-                'menu-web': '🌐 Web Editor',
-                'menu-salir': '🚪 Logout',
+                'admin-panel': 'Control Panel', 'admin-rol': 'Role:',
+                'menu-citas': '📅 View Bookings', 'menu-barberos': '✂️ Manage Barbers',
+                'menu-servicios': '💈 Manage Services', 'menu-galeria': '📷 Manage Gallery',
+                'menu-web': '🌐 Web Editor', 'menu-salir': '🚪 Logout',
                 
-                'tit-citas': 'Scheduled Bookings',
-                'tit-barberos': 'Our Barbers',
-                'tit-servicios': 'Service Catalog',
-                'tit-galeria': 'Our Work (Gallery)',
-                'tit-web': 'Page Editor',
+                'tit-citas': 'Scheduled Bookings', 'tit-barberos': 'Our Barbers',
+                'tit-servicios': 'Service Catalog', 'tit-galeria': 'Our Work (Gallery)', 'tit-web': 'Page Editor',
                 
                 'th-fec': 'Date and Time', 'th-cli': 'Client', 'th-ser': 'Service and Price', 'th-bar': 'Barber', 'th-acc': 'Actions',
                 'th-des': 'Description', 'th-pre': 'Price',
                 
-                'btn-añadir': 'Add', 'btn-editar': 'Edit', 'btn-eliminar': 'Delete',
+                'btn-añadir': 'Save Barber', 'btn-editar': 'Edit', 'btn-eliminar': 'Delete',
                 'btn-guardar-serv': 'Save Service', 'btn-guardar-img': 'Save Image',
                 'btn-cancelar': 'Cancel', 'btn-cal-admin': '📅 Calendar', 'btn-editar-url': 'Change',
                 
@@ -668,34 +732,21 @@
             
             renderizarServiciosPublicos();
             if(estadoApp.usuarioActual) {
-                renderizarTablaCitas();
-                renderizarListaBarberos();
-                renderizarTablaServiciosAdmin();
-                renderizarGaleriaAdmin();
-                configurarPanelAdmin();
+                renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
             }
         }
 
         function activarAnimacionesScroll() {
             const observador = new IntersectionObserver((entradas) => {
-                entradas.forEach(entrada => {
-                    if (entrada.isIntersecting) {
-                        entrada.target.classList.add('visible');
-                    }
-                });
+                entradas.forEach(entrada => { if (entrada.isIntersecting) entrada.target.classList.add('visible'); });
             }, { threshold: 0.1 });
-            
-            document.querySelectorAll('.reveal').forEach(el => {
-                el.classList.remove('visible'); 
-                observador.observe(el);
-            });
+            document.querySelectorAll('.reveal').forEach(el => { el.classList.remove('visible'); observador.observe(el); });
         }
 
         function navegar(idPagina) {
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
-            window.scrollTo(0, 0);
-            setTimeout(activarAnimacionesScroll, 50);
+            window.scrollTo(0, 0); setTimeout(activarAnimacionesScroll, 50);
         }
 
         let timeoutNotificacion;
@@ -709,6 +760,7 @@
         window.addEventListener('scroll', () => { document.getElementById('fondoAnimado').style.backgroundPosition = `0px ${window.scrollY * 0.8}px`; });
         function abrirLightbox(url) { if (!estadoApp.modoEdicion) { document.getElementById('lightbox-img').src = url; document.getElementById('lightbox').classList.add('mostrar'); } }
         function cerrarLightbox() { document.getElementById('lightbox').classList.remove('mostrar'); }
+
         async function subirArchivoFirebase(archivo, carpeta) {
             const nombreUnico = Date.now() + '_' + archivo.name;
             const ref = storage.ref().child(carpeta + '/' + nombreUnico);
@@ -718,10 +770,7 @@
         function iniciarEscuchaConfiguracion() {
             if(!db) return;
             db.collection("configuracion").doc("general").onSnapshot((doc) => {
-                if (doc.exists && doc.data().logoUrl) {
-                    const logoEl = document.getElementById('logo-principal');
-                    if (logoEl) logoEl.src = doc.data().logoUrl;
-                }
+                if (doc.exists && doc.data().logoUrl) { const logoEl = document.getElementById('logo-principal'); if (logoEl) logoEl.src = doc.data().logoUrl; }
             });
         }
         
@@ -729,8 +778,16 @@
             if(!db) return;
             db.collection("barberos").onSnapshot((snapshot) => {
                 estadoApp.barberos = [];
-                snapshot.forEach(doc => { estadoApp.barberos.push({ id: doc.id, nombre: doc.data().nombre }); });
-                renderizarListaBarberos(); cargarHorarios();
+                snapshot.forEach(doc => { 
+                    const data = doc.data();
+                    estadoApp.barberos.push({ 
+                        id: doc.id, 
+                        nombre: data.nombre,
+                        inicio: data.inicio || 10, 
+                        fin: data.fin || 19 
+                    }); 
+                });
+                renderizarListaBarberos(); 
             });
         }
 
@@ -739,8 +796,7 @@
             db.collection("servicios").onSnapshot((snapshot) => {
                 estadoApp.servicios = [];
                 snapshot.forEach(doc => { estadoApp.servicios.push({ id: doc.id, ...doc.data() }); });
-                renderizarServiciosPublicos();
-                if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
+                renderizarServiciosPublicos(); if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
             });
         }
 
@@ -768,7 +824,6 @@
             const selectCitas = document.getElementById('servicioSelect');
             if(!grid || !selectCitas) return;
             grid.innerHTML = ''; 
-            
             const textoCargando = idiomaActual === 'es' ? 'Selecciona un servicio...' : 'Select a service...';
             selectCitas.innerHTML = `<option value="" disabled selected>${textoCargando}</option>`;
             
@@ -781,25 +836,18 @@
                         <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${nombreMostrar}</h3>
                         <p class="${estadoApp.modoEdicion ? 'editando' : ''}">${descMostrar}</p>
                         <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
-                    </div>
-                `;
+                    </div>`;
                 
-                const opt = document.createElement('option');
-                opt.value = s.nombre; 
-                opt.setAttribute('data-precio', s.precio);
-                opt.textContent = `${nombreMostrar} - ${s.precio}`;
-                selectCitas.appendChild(opt);
+                const opt = document.createElement('option'); opt.value = s.nombre; opt.setAttribute('data-precio', s.precio);
+                opt.textContent = `${nombreMostrar} - ${s.precio}`; selectCitas.appendChild(opt);
             });
             if(estadoApp.modoEdicion) { grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); }
             setTimeout(activarAnimacionesScroll, 100);
         }
 
         function renderizarGaleriaPublica() {
-            const grid = document.getElementById('contenedor-galeria-publico');
-            grid.innerHTML = '';
-            estadoApp.galeria.forEach((img, index) => {
-                grid.innerHTML += `<div class="foto-galeria cascada ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}'); animation-delay: ${index * 100}ms" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`;
-            });
+            const grid = document.getElementById('contenedor-galeria-publico'); grid.innerHTML = '';
+            estadoApp.galeria.forEach((img, index) => { grid.innerHTML += `<div class="foto-galeria cascada ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}'); animation-delay: ${index * 100}ms" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`; });
             setTimeout(activarAnimacionesScroll, 100);
         }
 
@@ -817,18 +865,58 @@
             } catch(error) { console.error(error); }
         }
 
-        function cargarHorarios() {
-            const fecha = document.getElementById('fecha').value; const barbero = document.getElementById('barbero').value;
+        function formatearHoraStr(horaInt) {
+            const ampm = horaInt >= 12 ? 'PM' : 'AM';
+            const h = horaInt > 12 ? horaInt - 12 : horaInt;
+            return `${h}:00 ${ampm}`;
+        }
+
+        async function cargarHorarios() {
+            const fecha = document.getElementById('fecha').value; 
+            const selectBarbero = document.getElementById('barbero');
+            const nombreBarbero = selectBarbero.value;
             const selectHora = document.getElementById('hora');
-            if (!fecha || !barbero) return;
-            selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
-            const numMagico = (fecha.charCodeAt(fecha.length - 1) + barbero.charCodeAt(0)) % 3;
-            for(let i = 10; i <= 19; i++) {
-                const horaStr = `${i > 12 ? i - 12 : i}:00 ${i >= 12 ? 'PM' : 'AM'}`;
-                const opt = document.createElement('option');
-                if ((i + numMagico) % 4 === 0) { opt.text = `${horaStr} (No disponible)`; opt.disabled = true; } 
-                else { opt.value = horaStr; opt.text = horaStr; }
-                selectHora.appendChild(opt);
+            
+            if (!fecha || !nombreBarbero) return;
+            selectHora.innerHTML = '<option value="" disabled selected>Consultando disponibilidad...</option>';
+
+            const barberoSeleccionado = estadoApp.barberos.find(b => b.nombre === nombreBarbero);
+            if (!barberoSeleccionado) {
+                selectHora.innerHTML = '<option value="" disabled selected>Error: Barbero no encontrado</option>';
+                return;
+            }
+
+            const horaInicio = barberoSeleccionado.inicio || 10;
+            const horaFin = barberoSeleccionado.fin || 19;
+            
+            try {
+                const snapshot = await db.collection("citas")
+                    .where("fecha", "==", fecha)
+                    .where("barbero", "==", nombreBarbero)
+                    .get();
+
+                const horasOcupadas = [];
+                snapshot.forEach(doc => { horasOcupadas.push(doc.data().hora); });
+
+                selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
+                
+                for(let i = horaInicio; i <= horaFin; i++) {
+                    const horaStr = formatearHoraStr(i);
+                    const opt = document.createElement('option');
+                    
+                    if (horasOcupadas.includes(horaStr)) {
+                        opt.text = `${horaStr} (Ocupado)`;
+                        opt.disabled = true;
+                        opt.style.color = '#d32f2f';
+                    } else {
+                        opt.value = horaStr;
+                        opt.text = horaStr;
+                    }
+                    selectHora.appendChild(opt);
+                }
+            } catch (error) {
+                console.error("Error al cargar disponibilidad:", error);
+                mostrarMensaje("Error al consultar horarios.");
             }
         }
 
@@ -841,39 +929,55 @@
             return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Corte Barbería Cactus')}&dates=${fechaL}T${hInicio}/${fechaL}T${hFin}&details=${det}&location=${encodeURIComponent('Barbería Cactus, Puerto Vallarta')}`;
         }
 
-        function activarNotificacionLocal() {
-            const btn = document.getElementById('pantalla-exito');
-            if (!("Notification" in window)) { mostrarMensaje("Notificaciones no soportadas."); return; }
-            Notification.requestPermission().then(perm => {
-                if (perm === "granted") { new Notification("💈 Barbería Cactus", { body: `Cita: ${btn.dataset.fecha} a las ${btn.dataset.hora}` }); mostrarMensaje("Notificación programada."); }
-            });
-        }
-
         function reiniciarFormularioCita() {
             document.getElementById('formCita').reset(); document.getElementById('hora').innerHTML = '<option value="" disabled selected>Selecciona Fecha y Barbero</option>';
             document.getElementById('pantalla-exito').style.display = 'none'; document.getElementById('formCita').style.display = 'block';
         }
 
-        function procesarCita(evento) {
-            evento.preventDefault(); if(!db) return;
-            const btn = document.getElementById('btn-submit-cita'); btn.innerText = "..."; btn.disabled = true;
+        async function procesarCita(evento) {
+            evento.preventDefault(); 
+            if(!db) return;
+            const btn = document.getElementById('btn-submit-cita'); 
+            btn.innerText = "..."; 
+            btn.disabled = true;
             
-            const selectServicio = document.getElementById('servicioSelect');
-            const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+            const fechaSelect = document.getElementById('fecha').value;
+            const horaSelect = document.getElementById('hora').value;
+            const barberoSelect = document.getElementById('barbero').value;
+            
+            try {
+                // Doble validación anti-choques (Fracción de segundo)
+                const checkSnap = await db.collection("citas")
+                    .where("fecha", "==", fechaSelect)
+                    .where("hora", "==", horaSelect)
+                    .where("barbero", "==", barberoSelect)
+                    .get();
 
-            const cita = {
-                nombre: document.getElementById('nombre').value.trim(),
-                telefono: document.getElementById('telefono').value.trim(),
-                barbero: document.getElementById('barbero').value,
-                fecha: document.getElementById('fecha').value,
-                hora: document.getElementById('hora').value,
-                servicio: selectServicio.value,
-                precio: precioSeleccionado, 
-                comentarios: document.getElementById('comentarios').value,
-                fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            
-            db.collection("citas").add(cita).then(() => {
+                if (!checkSnap.empty) {
+                    mostrarMensaje(idiomaActual === 'es' ? "¡Uy! Alguien acaba de ganar ese horario. Elige otro." : "Time slot just taken. Please choose another.");
+                    await cargarHorarios(); 
+                    btn.innerText = textosUI[idiomaActual]['btn-conf']; 
+                    btn.disabled = false;
+                    return; 
+                }
+
+                const selectServicio = document.getElementById('servicioSelect');
+                const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+
+                const cita = {
+                    nombre: document.getElementById('nombre').value.trim(),
+                    telefono: document.getElementById('telefono').value.trim(),
+                    barbero: barberoSelect,
+                    fecha: fechaSelect,
+                    hora: horaSelect,
+                    servicio: selectServicio.value,
+                    precio: precioSeleccionado, 
+                    comentarios: document.getElementById('comentarios').value,
+                    fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
+                };
+                
+                await db.collection("citas").add(cita);
+                
                 document.getElementById('formCita').style.display = 'none';
                 const pExito = document.getElementById('pantalla-exito'); pExito.style.display = 'block';
                 pExito.dataset.fecha = cita.fecha; pExito.dataset.hora = cita.hora;
@@ -882,35 +986,28 @@
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
 
-                // --- ENLACE DE WHATSAPP PARA EL CLIENTE ---
-                const telefonoBarberia = "52322XXXXXXX"; // Cambiar por tu número de WhatsApp
+                // Configurar enlace de WhatsApp
+                const telefonoBarberia = "52322XXXXXXX"; 
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
-                const urlWhatsapp = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
-                
-                let btnWhatsApp = document.getElementById('btn-whatsapp-confirm');
-                if(!btnWhatsApp) {
-                    btnWhatsApp = document.createElement('a');
-                    btnWhatsApp.id = 'btn-whatsapp-confirm';
-                    btnWhatsApp.className = 'btn-cita';
-                    btnWhatsApp.style = 'width: 100%; margin-bottom: 15px; background-color: #25D366; color: white; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);';
-                    btnWhatsApp.target = '_blank';
-                    const btnCalendario = document.getElementById('btn-add-calendar');
-                    btnCalendario.parentNode.insertBefore(btnWhatsApp, btnCalendario);
-                }
-                btnWhatsApp.href = urlWhatsapp;
-                btnWhatsApp.innerHTML = '💬 Confirmar por WhatsApp';
+                document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
-                // --- NOTIFICACIÓN AUTOMÁTICA A TELEGRAM ---
+                // Llamada a Telegram
                 enviarNotificacionTelegram(cita);
 
-            }).finally(() => { btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false; });
+            } catch (error) {
+                console.error("Error al agendar:", error);
+                mostrarMensaje("Error de conexión. Intenta de nuevo.");
+            } finally {
+                btn.innerText = textosUI[idiomaActual]['btn-conf']; 
+                btn.disabled = false;
+            }
         }
 
-        // --- FUNCIÓN DE ALERTA A TELEGRAM ---
         async function enviarNotificacionTelegram(cita) {
             const TELEGRAM_BOT_TOKEN = '8824032039:AAFXI4ChtVbyqFASAQYxyp72LaTUgH1gEKY'; 
             const TELEGRAM_CHAT_ID = '8821682993'; 
 
+            const notas = cita.comentarios ? cita.comentarios : 'Ninguna';
             const mensajeTelegram = `🚨 *¡Nueva Cita Agendada!* 🚨\n\n` +
                                      `👤 *Cliente:* ${cita.nombre}\n` +
                                      `📞 *Teléfono:* ${cita.telefono}\n` +
@@ -918,7 +1015,7 @@
                                      `👨‍🔧 *Barbero:* ${cita.barbero}\n` +
                                      `📅 *Fecha:* ${cita.fecha}\n` +
                                      `🕒 *Hora:* ${cita.hora}\n` +
-                                     `📝 *Notas:* ${cita.comentarios || 'Ninguna'}`;
+                                     `📝 *Notas:* ${notas}`;
 
             const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
 
@@ -926,13 +1023,8 @@
                 await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: mensajeTelegram,
-                        parse_mode: 'Markdown'
-                    })
+                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: mensajeTelegram, parse_mode: 'Markdown' })
                 });
-                console.log('Notificación de Telegram enviada con éxito.');
             } catch (error) {
                 console.error('Error al enviar a Telegram:', error);
             }
@@ -976,7 +1068,6 @@
             try {
                 const snapshot = await db.collection("citas").where("fecha", "<", fechaLimite).get();
                 let borradas = 0; snapshot.forEach(doc => { db.collection("citas").doc(doc.id).delete(); borradas++; });
-                if (borradas > 0) console.log(`Limpieza: ${borradas} citas antiguas eliminadas.`);
             } catch (error) { console.error("Error al limpiar:", error); }
         }
 
@@ -1038,8 +1129,7 @@
                     <td style="display: flex; gap: 5px; flex-wrap: wrap;">
                         <a href="${generarEnlaceCalendario(cita)}" target="_blank" class="btn-accion btn-calendario">${txt['btn-cal-admin']}</a>
                         ${(estadoApp.usuarioActual.rol !== 'barbero') ? `<button onclick="eliminarCitaId('${cita.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button>` : ''}
-                    </td>
-                `;
+                    </td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -1049,15 +1139,71 @@
             const ul = document.getElementById('lista-barberos'); const selectCitas = document.getElementById('barbero');
             const txt = textosUI[idiomaActual];
             if(ul) ul.innerHTML = ''; selectCitas.innerHTML = estadoApp.barberos.length === 0 ? `<option value="" disabled selected>${txt['opt-sin-barb']}</option>` : `<option value="" disabled selected>${txt['opt-sel-barb']}</option>`;
+            
             estadoApp.barberos.forEach(b => {
-                if(ul) { ul.innerHTML += `<li style="padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between;"><span>${b.nombre}</span> <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></li>`; }
+                if(ul) { 
+                    const nomE = b.nombre.replace(/'/g, "\\'");
+                    ul.innerHTML += `
+                        <li style="background: #fff; padding:15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display:flex; justify-content:space-between; align-items: center;">
+                            <div>
+                                <strong style="color: var(--verde-cactus); font-size: 16px;">${b.nombre}</strong><br>
+                                <small style="color: #666;">🕒 ${formatearHoraStr(b.inicio)} a ${formatearHoraStr(b.fin)}</small>
+                            </div> 
+                            <div style="display: flex; gap: 5px;">
+                                <button onclick="prepararEdicionBarbero('${b.id}', '${nomE}', ${b.inicio}, ${b.fin})" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button>
+                                <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button>
+                            </div>
+                        </li>`; 
+                }
                 const opt = document.createElement('option'); opt.value = b.nombre; opt.textContent = b.nombre; selectCitas.appendChild(opt);
             });
         }
-        function agregarBarbero() {
+
+        function guardarBarbero() {
+            const id = document.getElementById('editando-barbero-id').value;
             const nom = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
-            if (nom && db) db.collection("barberos").add({ nombre: nom }).then(() => document.getElementById('nuevo-barbero').value = '');
+            const inicio = parseInt(document.getElementById('nuevo-barbero-inicio').value);
+            const fin = parseInt(document.getElementById('nuevo-barbero-fin').value);
+
+            if (nom && db) {
+                if(inicio >= fin) {
+                    mostrarMensaje(idiomaActual === 'es' ? "La hora de inicio debe ser antes del fin." : "Start time must be earlier.");
+                    return;
+                }
+                
+                const datos = { nombre: nom, inicio: inicio, fin: fin };
+                
+                if (id) {
+                    db.collection("barberos").doc(id).update(datos).then(() => {
+                        cancelarEdicionBarbero(); mostrarMensaje(idiomaActual === 'es' ? "Actualizado." : "Updated.");
+                    });
+                } else {
+                    db.collection("barberos").add(datos).then(() => {
+                        cancelarEdicionBarbero(); mostrarMensaje(idiomaActual === 'es' ? "Agregado." : "Added.");
+                    });
+                }
+            }
         }
+
+        function prepararEdicionBarbero(id, nom, inicio, fin) {
+            document.getElementById('editando-barbero-id').value = id;
+            document.getElementById('nuevo-barbero').value = nom;
+            document.getElementById('nuevo-barbero-inicio').value = inicio;
+            document.getElementById('nuevo-barbero-fin').value = fin;
+            document.getElementById('btn-add-barbero').innerText = idiomaActual === 'es' ? 'Actualizar Barbero' : 'Update Barber';
+            document.getElementById('btn-cancelar-edicion-barbero').style.display = 'block';
+            document.getElementById('nuevo-barbero').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function cancelarEdicionBarbero() {
+            document.getElementById('editando-barbero-id').value = '';
+            document.getElementById('nuevo-barbero').value = '';
+            document.getElementById('nuevo-barbero-inicio').value = '10';
+            document.getElementById('nuevo-barbero-fin').value = '19';
+            document.getElementById('btn-add-barbero').innerText = textosUI[idiomaActual]['btn-añadir'];
+            document.getElementById('btn-cancelar-edicion-barbero').style.display = 'none';
+        }
+
         function eliminarBarbero(id) { if(db && confirm("¿Eliminar barbero?")) db.collection("barberos").doc(id).delete(); }
 
         function renderizarTablaServiciosAdmin() {
@@ -1082,19 +1228,15 @@
             if (datos.nombre && datos.precio && datos.desc && db) { id ? db.collection("servicios").doc(id).update(datos).then(cancelarEdicionServicio) : db.collection("servicios").add(datos).then(cancelarEdicionServicio); }
         }
         function prepararEdicionServicio(id, nom, pre, des, nomEn, desEn) {
-            const txt = textosUI[idiomaActual];
-            document.getElementById('editando-servicio-id').value = id; 
-            document.getElementById('nuevo-servicio-nombre').value = nom; 
-            document.getElementById('nuevo-servicio-nombre-en').value = nomEn || '';
-            document.getElementById('nuevo-servicio-precio').value = pre; 
-            document.getElementById('nuevo-servicio-desc').value = des;
-            document.getElementById('nuevo-servicio-desc-en').value = desEn || '';
-            document.getElementById('btn-add-servicio').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; document.getElementById('btn-cancelar-edicion').style.display = 'block'; document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('editando-servicio-id').value = id; document.getElementById('nuevo-servicio-nombre').value = nom; 
+            document.getElementById('nuevo-servicio-nombre-en').value = nomEn || ''; document.getElementById('nuevo-servicio-precio').value = pre; 
+            document.getElementById('nuevo-servicio-desc').value = des; document.getElementById('nuevo-servicio-desc-en').value = desEn || '';
+            document.getElementById('btn-add-servicio').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; 
+            document.getElementById('btn-cancelar-edicion').style.display = 'block'; document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
         }
         function cancelarEdicionServicio() {
-            const txt = textosUI[idiomaActual];
             ['editando-servicio-id', 'nuevo-servicio-nombre', 'nuevo-servicio-nombre-en', 'nuevo-servicio-precio', 'nuevo-servicio-desc', 'nuevo-servicio-desc-en'].forEach(id => document.getElementById(id).value = '');
-            document.getElementById('btn-add-servicio').innerText = txt['btn-guardar-serv']; document.getElementById('btn-cancelar-edicion').style.display = 'none';
+            document.getElementById('btn-add-servicio').innerText = textosUI[idiomaActual]['btn-guardar-serv']; document.getElementById('btn-cancelar-edicion').style.display = 'none';
         }
         function eliminarServicio(id) { if(db && confirm("¿Eliminar?")) db.collection("servicios").doc(id).delete(); }
 
@@ -1110,13 +1252,15 @@
             catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
         }
         function prepararEdicionGaleria(id, url) { document.getElementById('editando-galeria-id').value = id; document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; }
-        function cancelarEdicionGaleria() { const txt = textosUI[idiomaActual]; document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = txt['btn-guardar-img']; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
+        function cancelarEdicionGaleria() { document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = textosUI[idiomaActual]['btn-guardar-img']; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
 
         function toggleEdicionVisual(forzarApagado = false) {
-            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
-            const eT = document.querySelectorAll('h1, p.intro-p'); const eI = document.querySelectorAll('.logo-img');
-            if (estadoApp.modoEdicion) {
-                btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
+        estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
+        const eT = document.querySelectorAll('h1, p.intro-p, .edit-txt'); 
+        const eI = document.querySelectorAll('.logo-img, .edit-img');
+        
+        if (estadoApp.modoEdicion) {
+            btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
                 eT.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
                 eI.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
             } else {
