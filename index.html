@@ -93,123 +93,36 @@
             border-bottom: 3px solid var(--verde-olivo);
         }
 
-        .logo-img {
-            height: 80px; 
-            width: auto;
-            border-radius: 8px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-            transition: transform 0.3s ease;
-        }
+        .logo-img { height: 80px; width: auto; border-radius: 8px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); transition: transform 0.3s ease; }
         .logo-img:hover { transform: scale(1.05); }
 
-        nav {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap; 
-            justify-content: center;
-        }
+        nav { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; justify-content: center; }
+        nav a { color: var(--texto-claro); text-decoration: none; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; transition: all 0.3s; cursor: pointer; padding-bottom: 5px; border-bottom: 2px solid transparent; opacity: 0.9; }
+        nav a:hover { color: #fff; opacity: 1; border-bottom: 2px solid var(--azul-acento); transform: translateY(-2px); }
 
-        nav a {
-            color: var(--texto-claro);
-            text-decoration: none;
-            font-size: 13px;
-            text-transform: uppercase; 
-            letter-spacing: 2px; 
-            font-weight: 600;
-            transition: all 0.3s;
-            cursor: pointer;
-            padding-bottom: 5px;
-            border-bottom: 2px solid transparent;
-            opacity: 0.9;
-        }
-        nav a:hover {
-            color: #fff;
-            opacity: 1;
-            border-bottom: 2px solid var(--azul-acento);
-            transform: translateY(-2px);
-        }
-
-        .btn-admin, .btn-idioma {
-            background-color: rgba(255,255,255,0.05);
-            color: var(--texto-claro);
-            border: 1px solid rgba(255,255,255,0.3);
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .btn-admin:hover, .btn-idioma:hover {
-            background-color: var(--azul-acento);
-            border-color: var(--azul-acento);
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
-            transform: translateY(-2px);
-        }
-        
-        .btn-idioma {
-            background-color: transparent;
-            border: 1px solid rgba(255,255,255,0.5);
-            padding: 6px 12px;
-            font-size: 12px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
+        .btn-admin, .btn-idioma { background-color: rgba(255,255,255,0.05); color: var(--texto-claro); border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; border-radius: 30px; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+        .btn-admin:hover, .btn-idioma:hover { background-color: var(--azul-acento); border-color: var(--azul-acento); box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4); transform: translateY(-2px); }
+        .btn-idioma { background-color: transparent; border: 1px solid rgba(255,255,255,0.5); padding: 6px 12px; font-size: 12px; display: flex; align-items: center; gap: 5px; }
 
         .pagina { display: none; animation: aparecer 0.4s ease-out; }
         .pagina.activa { display: block; }
 
-        .intro {
-            text-align: center;
-            padding: 60px 20px;
-            background: linear-gradient(135deg, var(--verde-cactus), var(--verde-olivo));
-            color: var(--texto-claro);
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
-
+        .intro { text-align: center; padding: 60px 20px; background: linear-gradient(135deg, var(--verde-cactus), var(--verde-olivo)); color: var(--texto-claro); border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
         .intro h1 { font-size: 36px; margin-bottom: 15px; }
         .intro p.intro-p { font-size: 16px; margin-bottom: 35px; opacity: 0.9; max-width: 600px; margin: 0 auto 35px auto; }
 
-        .btn-cita {
-            background-color: var(--azul-acento);
-            color: var(--texto-claro);
-            border: none;
-            padding: 16px 40px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
+        .btn-cita { background-color: var(--azul-acento); color: var(--texto-claro); border: none; padding: 16px 40px; font-size: 18px; font-weight: bold; border-radius: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4); transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; display: inline-block; }
         .btn-cita:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(74, 144, 226, 0.6); }
 
         .galeria-contenedor { padding: 50px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
         .galeria-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
         .galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
-        .foto-galeria {
-            background-color: #ddd; height: 200px; border-radius: 12px;
-            background-size: cover; background-position: center;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer;
-        }
+        .foto-galeria { background-color: #ddd; height: 200px; border-radius: 12px; background-size: cover; background-position: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer; }
         .foto-galeria:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
         .ubicacion-contenedor { padding: 20px 20px 60px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
         .ubicacion-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
-        .tarjeta-ubicacion {
-            background: #fff; padding: 30px; border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 5px solid var(--verde-olivo); max-width: 600px; margin: 0 auto;
-        }
+        .tarjeta-ubicacion { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-bottom: 5px solid var(--verde-olivo); max-width: 600px; margin: 0 auto; }
         .tarjeta-ubicacion h3 { color: var(--texto-oscuro); margin-bottom: 15px; font-size: 22px; }
         .tarjeta-ubicacion p { color: #555; font-size: 16px; line-height: 1.6; margin-bottom: 25px; }
         .btn-mapa { background-color: var(--verde-olivo); padding: 12px 30px; font-size: 16px; }
@@ -218,54 +131,26 @@
         .servicios-contenedor { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
         .servicios-contenedor h2 { text-align: center; color: var(--verde-cactus); font-size: 32px; margin-bottom: 40px; }
         .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .tarjeta-servicio {
-            background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s;
-        }
+        .tarjeta-servicio { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s; }
         .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); }
         .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
         .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
-        .precio-servicio {
-            display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento);
-            font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3);
-        }
+        .precio-servicio { display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento); font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3); }
 
-        .form-citas {
-            background: #fff; padding: 30px; border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left;
-        }
+        .form-citas { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left; }
         .grupo-form { margin-bottom: 20px; }
         .grupo-form label { display: block; margin-bottom: 8px; color: var(--verde-cactus); font-weight: bold; font-size: 14px; }
-        .grupo-form input, .grupo-form select, .grupo-form textarea {
-            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px;
-            font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s;
-        }
+        .grupo-form input, .grupo-form select, .grupo-form textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s; }
         .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus { border-color: var(--azul-acento); }
 
-        .lightbox-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s ease;
-        }
+        .lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
         .lightbox-overlay.mostrar { display: flex; opacity: 1; }
-        .lightbox-img {
-            max-width: 90%; max-height: 90%; border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0,0,0,0.5); transform: scale(0.8);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .lightbox-img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.5); transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .lightbox-overlay.mostrar .lightbox-img { transform: scale(1); }
-        .lightbox-cerrar {
-            position: absolute; top: 20px; right: 30px; color: white;
-            font-size: 40px; cursor: pointer; user-select: none; transition: color 0.3s;
-        }
+        .lightbox-cerrar { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; user-select: none; transition: color 0.3s; }
         .lightbox-cerrar:hover { color: #ea4335; }
 
-        #notificacion {
-            position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%);
-            background-color: var(--texto-oscuro); color: var(--texto-claro); padding: 15px 25px;
-            border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: bottom 0.4s ease-out;
-            z-index: 1000; font-size: 14px; text-align: center; min-width: 300px;
-        }
+        #notificacion { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background-color: var(--texto-oscuro); color: var(--texto-claro); padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: bottom 0.4s ease-out; z-index: 1000; font-size: 14px; text-align: center; min-width: 300px; }
         #notificacion.mostrar { bottom: 30px; }
 
         .admin-layout { display: flex; min-height: 80vh; background: #fff; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin: 20px; overflow: hidden; flex-wrap: wrap; }
@@ -286,10 +171,7 @@
         .btn-eliminar { background: #d32f2f; }
         .btn-editar-web { background: var(--azul-acento); font-size: 16px; padding: 15px; }
 
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px);
-        }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-login { background: var(--texto-claro); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
         .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
         .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
@@ -311,7 +193,7 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img" id="logo-principal">
+        <img src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='50' viewBox='0 0 150 50'%3E%3Crect fill='%234E6E5D' width='150' height='50' rx='8'/%3E%3Ctext fill='%23FFFFFF' font-family='sans-serif' font-size='16' font-weight='bold' x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle'%3ECACTUS LOGO%3C/text%3E%3C/svg%3E" alt="Logo Cactus Barbería" class="logo-img edit-img" id="logo-principal">
         <nav>
             <a onclick="navegar('inicio')" data-i18n="nav-inicio">Inicio</a>
             <a onclick="navegar('servicios')" data-i18n="nav-servicios">Servicios</a>
@@ -324,30 +206,30 @@
 
     <section id="inicio" class="pagina activa">
         <div class="intro reveal">
-            <h1 data-i18n="intro-h1">Tu estilo, nuestra pasión</h1>
-            <p class="intro-p" data-i18n="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
+            <h1 class="edit-txt" data-i18n="intro-h1">Tu estilo, nuestra pasión</h1>
+            <p class="intro-p edit-txt" data-i18n="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
             <button class="btn-cita" onclick="navegar('citas')" data-i18n="btn-intro">Programar cita</button>
         </div>
 
         <div class="galeria-contenedor reveal">
-            <h2 data-i18n="galeria-h2">Nuestros Trabajos</h2>
+            <h2 class="edit-txt" data-i18n="galeria-h2">Nuestros Trabajos</h2>
             <div class="galeria" id="contenedor-galeria-publico">
                 <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando galería...</p>
             </div>
         </div>
 
         <div class="ubicacion-contenedor reveal">
-            <h2 data-i18n="ubicacion-h2">Visítanos</h2>
+            <h2 class="edit-txt" data-i18n="ubicacion-h2">Visítanos</h2>
             <div class="tarjeta-ubicacion">
-                <h3>📍 Barbería Cactus</h3>
-                <p>Lomas del Coapinole, 48290<br>Puerto Vallarta, Jal.</p>
+                <h3 class="edit-txt">📍 Barbería Cactus</h3>
+                <p class="edit-txt">Lomas del Coapinole, 48290<br>Puerto Vallarta, Jal.</p>
                 <a href="https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6" target="_blank" class="btn-cita btn-mapa" data-i18n="btn-mapa">Abrir en Google Maps</a>
             </div>
         </div>
     </section>
 
     <section id="servicios" class="servicios-contenedor pagina">
-        <h2 class="reveal" data-i18n="servicios-h2">Nuestros Servicios</h2>
+        <h2 class="reveal edit-txt" data-i18n="servicios-h2">Nuestros Servicios</h2>
         <div class="grid-servicios" id="contenedor-servicios-publico">
             <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando servicios...</p>
         </div>
@@ -388,8 +270,8 @@
     </section>
 
     <section id="citas" class="galeria-contenedor pagina">
-        <h2 class="reveal" data-i18n="citas-h2">Reserva tu Espacio</h2>
-        <p class="reveal" style="margin-bottom: 30px;" data-i18n="citas-p">Completa el formulario para agendar tu próxima visita.</p>
+        <h2 class="reveal edit-txt" data-i18n="citas-h2">Reserva tu Espacio</h2>
+        <p class="reveal edit-txt" style="margin-bottom: 30px;" data-i18n="citas-p">Completa el formulario para agendar tu próxima visita.</p>
         
         <div class="form-citas reveal">
             <form id="formCita" onsubmit="procesarCita(event)">
@@ -441,8 +323,8 @@
     </section>
 
     <section id="mis-citas" class="galeria-contenedor pagina">
-        <h2 class="reveal" data-i18n="nav-mis-citas">Historial de Citas</h2>
-        <p class="reveal" style="margin-bottom: 30px;" data-i18n="hist-p">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
+        <h2 class="reveal edit-txt" data-i18n="nav-mis-citas">Historial de Citas</h2>
+        <p class="reveal edit-txt" style="margin-bottom: 30px;" data-i18n="hist-p">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
         <div class="form-citas reveal" style="text-align: center;">
             <div class="grupo-form">
                 <input type="tel" id="telefono-buscar" data-i18n-ph="lbl-tel-ph" placeholder="Tu número de celular..." style="text-align: center; margin-bottom: 15px;">
@@ -643,13 +525,13 @@
 
         let idiomaActual = 'es';
         const textosUI = {
-        'es': {
-            'nav-inicio': 'Inicio', 'nav-servicios': 'Servicios', 'nav-citas': 'Agendar Cita', 'nav-mis-citas': '★ Mis Citas',
-            'intro-h1': 'Tu estilo, nuestra pasión', 'intro-p': 'Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.',
-            'btn-intro': 'Programar cita', 'galeria-h2': 'Nuestros Trabajos', 'ubicacion-h2': 'Visítanos',
-            'btn-mapa': 'Abrir en Google Maps', 'servicios-h2': 'Nuestros Servicios', 'citas-h2': 'Reserva tu Espacio',
-            'mem-h3': 'Membresías Cactus Community', 'mem-p': 'Tu círculo exclusivo de estilo', 'mem-prox': 'PRÓXIMAMENTE',
-            'citas-p': 'Completa el formulario para agendar tu próxima visita.', 'lbl-tel': '📞 Teléfono (Celular):',
+            'es': {
+                'nav-inicio': 'Inicio', 'nav-servicios': 'Servicios', 'nav-citas': 'Agendar Cita', 'nav-mis-citas': '★ Mis Citas',
+                'intro-h1': 'Tu estilo, nuestra pasión', 'intro-p': 'Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.',
+                'btn-intro': 'Programar cita', 'galeria-h2': 'Nuestros Trabajos', 'ubicacion-h2': 'Visítanos',
+                'btn-mapa': 'Abrir en Google Maps', 'servicios-h2': 'Nuestros Servicios', 'citas-h2': 'Reserva tu Espacio',
+                'mem-h3': 'Membresías Cactus Community', 'mem-p': 'Tu círculo exclusivo de estilo', 'mem-prox': 'PRÓXIMAMENTE',
+                'citas-p': 'Completa el formulario para agendar tu próxima visita.', 'lbl-tel': '📞 Teléfono (Celular):',
                 'lbl-nom': '👤 Nombre Completo:', 'lbl-serv': '💈 Servicio a realizar:', 'lbl-barb': '👨‍🔧 Selecciona tu Barbero:',
                 'lbl-fec': '📆 Fecha:', 'lbl-hor': '🕒 Hora:', 'lbl-com': '📝 Comentarios (Opcional):',
                 'lbl-tel-ph': 'Tu número de celular', 'lbl-nom-ph': 'Ej. Juan Pérez', 'lbl-com-ph': 'Ej. Quiero un diseño en especial...',
@@ -677,12 +559,12 @@
                 'opt-sin-barb': 'Cargando barberos...', 'opt-sel-barb': 'Cargando barberos...'
             },
             'en': {
-            'nav-inicio': 'Home', 'nav-servicios': 'Services', 'nav-citas': 'Book Now', 'nav-mis-citas': '★ My Bookings',
-            'intro-h1': 'Your style, our passion', 'intro-p': 'Welcome to the Cactus experience. We are experts in taking care of your image and taking your style to the next level.',
-            'btn-intro': 'Book Appointment', 'galeria-h2': 'Our Work', 'ubicacion-h2': 'Visit Us',
-            'btn-mapa': 'Open in Google Maps', 'servicios-h2': 'Our Services', 'citas-h2': 'Reserve Your Spot',
-            'mem-h3': 'Cactus Community Memberships', 'mem-p': 'Your exclusive circle of style', 'mem-prox': 'COMING SOON',
-            'citas-p': 'Fill out the form to schedule your next visit.', 'lbl-tel': '📞 Phone (Mobile):',
+                'nav-inicio': 'Home', 'nav-servicios': 'Services', 'nav-citas': 'Book Now', 'nav-mis-citas': '★ My Bookings',
+                'intro-h1': 'Your style, our passion', 'intro-p': 'Welcome to the Cactus experience. We are experts in taking care of your image and taking your style to the next level.',
+                'btn-intro': 'Book Appointment', 'galeria-h2': 'Our Work', 'ubicacion-h2': 'Visit Us',
+                'btn-mapa': 'Open in Google Maps', 'servicios-h2': 'Our Services', 'citas-h2': 'Reserve Your Spot',
+                'mem-h3': 'Cactus Community Memberships', 'mem-p': 'Your exclusive circle of style', 'mem-prox': 'COMING SOON',
+                'citas-p': 'Fill out the form to schedule your next visit.', 'lbl-tel': '📞 Phone (Mobile):',
                 'lbl-nom': '👤 Full Name:', 'lbl-serv': '💈 Select Service:', 'lbl-barb': '👨‍🔧 Select Barber:',
                 'lbl-fec': '📆 Date:', 'lbl-hor': '🕒 Time:', 'lbl-com': '📝 Comments (Optional):',
                 'lbl-tel-ph': 'Your mobile number', 'lbl-nom-ph': 'Ex. John Doe', 'lbl-com-ph': 'Ex. I want a specific fade...',
@@ -937,6 +819,31 @@
         async function procesarCita(evento) {
             evento.preventDefault(); 
             if(!db) return;
+
+            // --- 1. EL CADENERO: Validaciones Anti-Bot ---
+            const nombreCrudo = document.getElementById('nombre').value.trim();
+            const telefonoCrudo = document.getElementById('telefono').value.trim();
+
+            const regexTelefono = /^[0-9]{10,15}$/;
+            if (!regexTelefono.test(telefonoCrudo)) {
+                mostrarMensaje(idiomaActual === 'es' ? 'Ingresa un número válido (solo 10 a 15 números).' : 'Enter a valid phone number (10-15 digits).');
+                return; 
+            }
+
+            const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]{3,50}$/;
+            if (!regexNombre.test(nombreCrudo)) {
+                mostrarMensaje(idiomaActual === 'es' ? 'El nombre contiene caracteres no permitidos.' : 'Invalid characters in name.');
+                return; 
+            }
+
+            const ultimaCita = localStorage.getItem('ultima_cita_tiempo');
+            const ahora = Date.now();
+            if (ultimaCita && (ahora - ultimaCita < 300000)) { // 5 minutos de bloqueo local
+                mostrarMensaje(idiomaActual === 'es' ? 'Por favor espera unos minutos antes de agendar otra cita.' : 'Please wait a few minutes before booking again.');
+                return;
+            }
+
+            // --- 2. Bloqueo de Interfaz ---
             const btn = document.getElementById('btn-submit-cita'); 
             btn.innerText = "..."; 
             btn.disabled = true;
@@ -946,7 +853,7 @@
             const barberoSelect = document.getElementById('barbero').value;
             
             try {
-                // Doble validación anti-choques (Fracción de segundo)
+                // --- 3. Doble validación anti-choques ---
                 const checkSnap = await db.collection("citas")
                     .where("fecha", "==", fechaSelect)
                     .where("hora", "==", horaSelect)
@@ -961,12 +868,15 @@
                     return; 
                 }
 
+                // --- 4. Preparación de datos y Guardado ---
+                localStorage.setItem('ultima_cita_tiempo', ahora.toString()); // Guardamos el ticket anti-spam
+
                 const selectServicio = document.getElementById('servicioSelect');
                 const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
 
                 const cita = {
-                    nombre: document.getElementById('nombre').value.trim(),
-                    telefono: document.getElementById('telefono').value.trim(),
+                    nombre: nombreCrudo,
+                    telefono: telefonoCrudo,
                     barbero: barberoSelect,
                     fecha: fechaSelect,
                     hora: horaSelect,
@@ -978,6 +888,7 @@
                 
                 await db.collection("citas").add(cita);
                 
+                // --- 5. Mostrar Éxito en UI ---
                 document.getElementById('formCita').style.display = 'none';
                 const pExito = document.getElementById('pantalla-exito'); pExito.style.display = 'block';
                 pExito.dataset.fecha = cita.fecha; pExito.dataset.hora = cita.hora;
@@ -986,12 +897,11 @@
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
 
-                // Configurar enlace de WhatsApp
                 const telefonoBarberia = "52322XXXXXXX"; 
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
                 document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
-                // Llamada a Telegram
+                // --- 6. Notificación Inmediata al Administrador ---
                 enviarNotificacionTelegram(cita);
 
             } catch (error) {
@@ -1255,12 +1165,12 @@
         function cancelarEdicionGaleria() { document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = textosUI[idiomaActual]['btn-guardar-img']; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
 
         function toggleEdicionVisual(forzarApagado = false) {
-        estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
-        const eT = document.querySelectorAll('h1, p.intro-p, .edit-txt'); 
-        const eI = document.querySelectorAll('.logo-img, .edit-img');
-        
-        if (estadoApp.modoEdicion) {
-            btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
+            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
+            const eT = document.querySelectorAll('h1, p.intro-p, .edit-txt'); 
+            const eI = document.querySelectorAll('.logo-img, .edit-img');
+            
+            if (estadoApp.modoEdicion) {
+                btn.innerText = 'Deshabilitar Edición Visual'; btn.style.background = '#d32f2f'; mostrarMensaje('Edición ACTIVADA.');
                 eT.forEach(el => { el.contentEditable = "true"; el.classList.add('editando'); });
                 eI.forEach(el => { el.classList.add('editando-img'); el.addEventListener('click', manejadorEdicionImagen); });
             } else {
