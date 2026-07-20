@@ -625,7 +625,14 @@
             document.querySelectorAll('.reveal').forEach(el => { el.classList.remove('visible'); observador.observe(el); });
         }
 
-        function navegar(idPagina) {
+        //        function navegar(idPagina) {
+            // 🚨 VALIDACIÓN DE SEGURIDAD: Bloquear acceso forzado al panel admin
+            if (idPagina === 'admin' && !estadoApp.usuarioActual) {
+                mostrarMensaje(idiomaActual === 'es' ? 'Acceso denegado. Inicia sesión primero.' : 'Access denied. Please log in.');
+                abrirLogin(); // Le abre la ventana de login en la cara
+                return; // Detiene el código, no le muestra la sección
+            }
+
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
             window.scrollTo(0, 0); setTimeout(activarAnimacionesScroll, 50);
@@ -914,29 +921,29 @@
         }
 
         async function enviarNotificacionTelegram(cita) {
-            const TELEGRAM_BOT_TOKEN = '8824032039:AAFXI4ChtVbyqFASAQYxyp72LaTUgH1gEKY'; 
-            const TELEGRAM_CHAT_ID = '8821682993'; 
+                // --- LLAMADA A LA AVISO DE TELEGRAM ---
+                enviarNotificacionTelegram(cita);
 
-            const notas = cita.comentarios ? cita.comentarios : 'Ninguna';
-            const mensajeTelegram = `🚨 *¡Nueva Cita Agendada!* 🚨\n\n` +
-                                     `👤 *Cliente:* ${cita.nombre}\n` +
-                                     `📞 *Teléfono:* ${cita.telefono}\n` +
-                                     `💈 *Servicio:* ${cita.servicio} (${cita.precio})\n` +
-                                     `👨‍🔧 *Barbero:* ${cita.barbero}\n` +
-                                     `📅 *Fecha:* ${cita.fecha}\n` +
-                                     `🕒 *Hora:* ${cita.hora}\n` +
-                                     `📝 *Notas:* ${notas}`;
+            }).finally(() => { btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false; });
+        }
 
-            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-
+        // FUNCIÓN AUTOMÁTICA DE TELEGRAM (MODO SERVIDOR SEGURO)
+        async function enviarNotificacionTelegram(cita) {
             try {
-                await fetch(url, {
+                // Le avisamos al archivo oculto de Netlify
+                const respuesta = await fetch('/.netlify/functions/notificar', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ chat_id: TELEGRAM_CHAT_ID, text: mensajeTelegram, parse_mode: 'Markdown' })
+                    body: JSON.stringify({ cita: cita })
                 });
+                
+                if (respuesta.ok) {
+                    console.log('Notificación enviada mediante Servidor Seguro.');
+                } else {
+                    console.error('El servidor seguro falló.');
+                }
             } catch (error) {
-                console.error('Error al enviar a Telegram:', error);
+                console.error('Error de conexión:', error);
             }
         }
 
