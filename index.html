@@ -625,12 +625,12 @@
             document.querySelectorAll('.reveal').forEach(el => { el.classList.remove('visible'); observador.observe(el); });
         }
 
-        //        function navegar(idPagina) {
+        function navegar(idPagina) {
             // 🚨 VALIDACIÓN DE SEGURIDAD: Bloquear acceso forzado al panel admin
             if (idPagina === 'admin' && !estadoApp.usuarioActual) {
                 mostrarMensaje(idiomaActual === 'es' ? 'Acceso denegado. Inicia sesión primero.' : 'Access denied. Please log in.');
-                abrirLogin(); // Le abre la ventana de login en la cara
-                return; // Detiene el código, no le muestra la sección
+                abrirLogin(); 
+                return; 
             }
 
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
@@ -908,7 +908,7 @@
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
                 document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
-                // --- 6. Notificación Inmediata al Administrador ---
+                // --- 6. Notificación Inmediata al Administrador (Backend de Netlify) ---
                 enviarNotificacionTelegram(cita);
 
             } catch (error) {
@@ -918,13 +918,6 @@
                 btn.innerText = textosUI[idiomaActual]['btn-conf']; 
                 btn.disabled = false;
             }
-        }
-
-        async function enviarNotificacionTelegram(cita) {
-                // --- LLAMADA A LA AVISO DE TELEGRAM ---
-                enviarNotificacionTelegram(cita);
-
-            }).finally(() => { btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false; });
         }
 
         // FUNCIÓN AUTOMÁTICA DE TELEGRAM (MODO SERVIDOR SEGURO)
