@@ -35,21 +35,30 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 100vh;
+            height: 120vh; /* Más alto para permitir el desplazamiento */
             z-index: -1;
             opacity: 0.05; 
             background: repeating-linear-gradient(-45deg, #d32f2f, #d32f2f 40px, transparent 40px, transparent 80px, #1976d2 80px, #1976d2 120px, transparent 120px, transparent 160px);
             background-size: 226px 226px;
+            will-change: transform; /* Aceleración por hardware */
         }
 
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        
-        .cascada { animation: revelarCascada 0.6s ease-out forwards; opacity: 0; }
-        @keyframes revelarCascada {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .reveal { 
+            opacity: 0; 
+            transform: translateY(50px); 
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
+            will-change: opacity, transform;
         }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Efecto de cascada para elementos internos (tarjetas, fotos) */
+        .stagger-item { 
+            opacity: 0; 
+            transform: translateY(30px) scale(0.95); 
+            transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); 
+        }
+        .reveal.visible .stagger-item { opacity: 1; transform: translateY(0) scale(1); }
+        
         @keyframes deslizarAbajo {
             from { transform: translateY(-100%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
@@ -66,8 +75,8 @@
         .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
         .img-membresia-promo:hover { transform: scale(1.02); }
         .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
-        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; }
+        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); }
         .tarjeta-membresia.pro { border-color: #d4af37; }
         .tarjeta-membresia h4 { font-size: 26px; color: #d4af37; margin-bottom: 25px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; letter-spacing: 1px;}
         .tarjeta-membresia ul { list-style: none; margin-bottom: 30px; }
@@ -131,8 +140,8 @@
         .servicios-contenedor { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
         .servicios-contenedor h2 { text-align: center; color: var(--verde-cactus); font-size: 32px; margin-bottom: 40px; }
         .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .tarjeta-servicio { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s; }
-        .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); }
+        .tarjeta-servicio { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
         .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
         .precio-servicio { display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento); font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3); }
@@ -140,7 +149,7 @@
         .form-citas { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left; }
         .grupo-form { margin-bottom: 20px; }
         .grupo-form label { display: block; margin-bottom: 8px; color: var(--verde-cactus); font-weight: bold; font-size: 14px; }
-        .grupo-form input, .grupo-form select, .grupo-form textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s; }
+        .grupo-form input, .grupo-form select, .grupo-form textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s, border-color 0.3s; }
         .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus { border-color: var(--azul-acento); }
 
         .lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
@@ -174,7 +183,8 @@
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-login { background: var(--texto-claro); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
         .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
-        .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; }
+        .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; transition: opacity 0.3s; }
+        .btn-cerrar-modal:hover { opacity: 0.8; }
         
         .editando { border: 2px dashed var(--azul-acento) !important; padding: 5px; background: rgba(74, 144, 226, 0.1); }
         .editando-img { border: 3px dashed #ea4335 !important; cursor: pointer !important; position: relative; }
@@ -190,6 +200,7 @@
 </head>
 <body>
 
+    <!-- Fondo de rallas separado para animación fluida por hardware -->
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
@@ -206,21 +217,21 @@
 
     <section id="inicio" class="pagina activa">
         <div class="intro reveal">
-            <h1 class="edit-txt" data-i18n="intro-h1">Tu estilo, nuestra pasión</h1>
-            <p class="intro-p edit-txt" data-i18n="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
-            <button class="btn-cita" onclick="navegar('citas')" data-i18n="btn-intro">Programar cita</button>
+            <h1 class="edit-txt stagger-item" data-i18n="intro-h1">Tu estilo, nuestra pasión</h1>
+            <p class="intro-p edit-txt stagger-item" data-i18n="intro-p">Bienvenido a la experiencia Cactus. Somos expertos en cuidar tu imagen y llevar tu estilo al siguiente nivel.</p>
+            <button class="btn-cita stagger-item" onclick="navegar('citas')" data-i18n="btn-intro">Programar cita</button>
         </div>
 
         <div class="galeria-contenedor reveal">
-            <h2 class="edit-txt" data-i18n="galeria-h2">Nuestros Trabajos</h2>
+            <h2 class="edit-txt stagger-item" data-i18n="galeria-h2">Nuestros Trabajos</h2>
             <div class="galeria" id="contenedor-galeria-publico">
                 <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando galería...</p>
             </div>
         </div>
 
         <div class="ubicacion-contenedor reveal">
-            <h2 class="edit-txt" data-i18n="ubicacion-h2">Visítanos</h2>
-            <div class="tarjeta-ubicacion">
+            <h2 class="edit-txt stagger-item" data-i18n="ubicacion-h2">Visítanos</h2>
+            <div class="tarjeta-ubicacion stagger-item">
                 <h3 class="edit-txt">📍 Barbería Cactus</h3>
                 <p class="edit-txt">Lomas del Coapinole, 48290<br>Puerto Vallarta, Jal.</p>
                 <a href="https://maps.app.goo.gl/GoeGQLvrFcUtGKBD6" target="_blank" class="btn-cita btn-mapa" data-i18n="btn-mapa">Abrir en Google Maps</a>
@@ -229,21 +240,21 @@
     </section>
 
     <section id="servicios" class="servicios-contenedor pagina">
-        <h2 class="reveal edit-txt" data-i18n="servicios-h2">Nuestros Servicios</h2>
-        <div class="grid-servicios" id="contenedor-servicios-publico">
+        <h2 class="reveal edit-txt stagger-item" data-i18n="servicios-h2">Nuestros Servicios</h2>
+        <div class="grid-servicios reveal" id="contenedor-servicios-publico">
             <p style="text-align:center; width:100%; color: var(--verde-cactus);">Cargando servicios...</p>
         </div>
 
         <div class="membresias-contenedor reveal">
-            <div class="membresias-header">
+            <div class="membresias-header stagger-item">
                 <h3 class="edit-txt" data-i18n="mem-h3">Membresías Cactus Community</h3>
                 <p class="edit-txt" data-i18n="mem-p">Tu círculo exclusivo de estilo</p>
             </div>
             
-            <img src="https://placehold.co/800x400/1A251E/d4af37?text=Membresias+Cactus+Community" alt="Membresías Promo" class="img-membresia-promo edit-img">
+            <img src="https://placehold.co/800x400/1A251E/d4af37?text=Membresias+Cactus+Community" alt="Membresías Promo" class="img-membresia-promo edit-img stagger-item">
 
             <div class="grid-membresias">
-                <div class="tarjeta-membresia">
+                <div class="tarjeta-membresia stagger-item">
                     <h4 class="edit-txt">CACTUS LITE</h4>
                     <ul>
                         <li>✂️ <span class="edit-txt">Cortes Ilimitados (Clásico o Desvanecido)</span></li>
@@ -254,7 +265,7 @@
                     <div class="badge-proximamente" data-i18n="mem-prox">PRÓXIMAMENTE</div>
                 </div>
 
-                <div class="tarjeta-membresia pro">
+                <div class="tarjeta-membresia pro stagger-item">
                     <h4 class="edit-txt">CACTUS PRO</h4>
                     <ul>
                         <li>✂️ <span class="edit-txt">Cortes Ilimitados</span></li>
@@ -270,10 +281,10 @@
     </section>
 
     <section id="citas" class="galeria-contenedor pagina">
-        <h2 class="reveal edit-txt" data-i18n="citas-h2">Reserva tu Espacio</h2>
-        <p class="reveal edit-txt" style="margin-bottom: 30px;" data-i18n="citas-p">Completa el formulario para agendar tu próxima visita.</p>
+        <h2 class="reveal edit-txt stagger-item" data-i18n="citas-h2">Reserva tu Espacio</h2>
+        <p class="reveal edit-txt stagger-item" style="margin-bottom: 30px;" data-i18n="citas-p">Completa el formulario para agendar tu próxima visita.</p>
         
-        <div class="form-citas reveal">
+        <div class="form-citas reveal stagger-item">
             <form id="formCita" onsubmit="procesarCita(event)">
                 <div class="grupo-form">
                     <label for="telefono" data-i18n="lbl-tel">📞 Teléfono (Celular):</label>
@@ -323,9 +334,9 @@
     </section>
 
     <section id="mis-citas" class="galeria-contenedor pagina">
-        <h2 class="reveal edit-txt" data-i18n="nav-mis-citas">Historial de Citas</h2>
-        <p class="reveal edit-txt" style="margin-bottom: 30px;" data-i18n="hist-p">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
-        <div class="form-citas reveal" style="text-align: center;">
+        <h2 class="reveal edit-txt stagger-item" data-i18n="nav-mis-citas">Historial de Citas</h2>
+        <p class="reveal edit-txt stagger-item" style="margin-bottom: 30px;" data-i18n="hist-p">Ingresa tu número de celular para ver tus citas programadas y pasadas.</p>
+        <div class="form-citas reveal stagger-item" style="text-align: center;">
             <div class="grupo-form">
                 <input type="tel" id="telefono-buscar" data-i18n-ph="lbl-tel-ph" placeholder="Tu número de celular..." style="text-align: center; margin-bottom: 15px;">
                 <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="mostrarMisCitas()" data-i18n="btn-buscar">🔍 Buscar Citas</button>
@@ -345,6 +356,12 @@
                     <a onclick="cambiarTabAdmin('tab-servicios')" id="menu-tab-servicios" data-i18n="menu-servicios">💈 Gestionar Servicios</a>
                     <a onclick="cambiarTabAdmin('tab-galeria')" id="menu-tab-galeria" data-i18n="menu-galeria">📷 Gestionar Galería</a>
                     <a onclick="cambiarTabAdmin('tab-web')" id="menu-tab-web" data-i18n="menu-web">🌐 Editor Web</a>
+                    
+                    <div id="controles-notificaciones" style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.2);">
+                        <button id="btn-activar-notif" onclick="activarNotificaciones()" class="btn-cita" style="width: 100%; font-size: 12px; padding: 10px; background: #4A90E2; box-shadow: none;">Activar Alertas 🔔</button>
+                        <button id="btn-desactivar-notif" onclick="desactivarNotificaciones()" class="btn-cita" style="width: 100%; font-size: 12px; padding: 10px; background: #ea4335; box-shadow: none; display: none;">Desactivar Alertas 🔕</button>
+                    </div>
+
                     <a onclick="cerrarSesion()" style="margin-top: 25px; color: #ffcccc;" data-i18n="menu-salir">🚪 Cerrar Sesión</a>
                 </div>
             </div>
@@ -490,29 +507,36 @@
 
     <div id="notificacion"></div>
 
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-storage-compat.js"></script>
+    <script type="module">
+        // Importamos Firebase Modular (V9+)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, where, onSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+        import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
-    <script>
+        // ==========================================
+        // 1. CONFIGURACIÓN FIREBASE Y ESTADO GLOBAL
+        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBBVbW-DrxmA1xr-SVivwJseD1u0VKUqSk",
             authDomain: "cactus-barberia.firebaseapp.com",
             projectId: "cactus-barberia",
             storageBucket: "cactus-barberia.firebasestorage.app",
             messagingSenderId: "502779012185",
-            appId: "1:502779012185:web:483b1375f0e6a8291f7d48"
+            appId: "1:502779012185:web:483b1375f0e6a8291f7d48",
+            measurementId: "G-8WRS9859T4"
         };
 
-        let app = null; let db = null; let auth = null; let storage = null;
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const storage = getStorage(app);
+        let messaging = null; 
+        try { messaging = getMessaging(app); } catch(e) { console.warn("Messaging no soportado en este entorno"); }
 
-        try {
-            app = firebase.initializeApp(firebaseConfig);
-            db = firebase.firestore();
-            auth = firebase.auth();
-            storage = firebase.storage();
-        } catch(error) { console.error("Error al inicializar Firebase:", error); }
+        // Hacer variables globales para que HTML onclicks funcionen
+        window.db = db; window.auth = auth; window.storage = storage;
 
         const estadoApp = { usuarioActual: null, barberos: [], servicios: [], galeria: [], citas: [], modoEdicion: false };
         const USUARIOS_ROLES = {
@@ -522,8 +546,8 @@
         };
 
         let elementoImagenActual = null; let datosYaCargados = false; 
-
         let idiomaActual = 'es';
+
         const textosUI = {
             'es': {
                 'nav-inicio': 'Inicio', 'nav-servicios': 'Servicios', 'nav-citas': 'Agendar Cita', 'nav-mis-citas': '★ Mis Citas',
@@ -593,7 +617,7 @@
             }
         };
 
-        function toggleIdioma() {
+        window.toggleIdioma = function() {
             idiomaActual = idiomaActual === 'es' ? 'en' : 'es';
             document.getElementById('texto-btn-idioma').innerText = idiomaActual === 'es' ? 'EN' : 'ES';
             const txt = textosUI[idiomaActual];
@@ -618,140 +642,179 @@
             }
         }
 
-        function activarAnimacionesScroll() {
-            const observador = new IntersectionObserver((entradas) => {
-                entradas.forEach(entrada => { if (entrada.isIntersecting) entrada.target.classList.add('visible'); });
-            }, { threshold: 0.1 });
-            document.querySelectorAll('.reveal').forEach(el => { el.classList.remove('visible'); observador.observe(el); });
+        // --- SISTEMA DE ANIMACIÓN FLUIDA EN CASCADA (SCROLL) ---
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const scrollObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Inyectar delay a los hijos para que caigan en cascada
+                    const staggers = entry.target.querySelectorAll('.stagger-item');
+                    staggers.forEach((el, index) => {
+                        el.style.transitionDelay = `${index * 100}ms`;
+                    });
+                    observer.unobserve(entry.target); // Solo animar una vez para mejor rendimiento
+                }
+            });
+        }, observerOptions);
+
+        window.activarAnimacionesScroll = function() {
+            document.querySelectorAll('.reveal').forEach(el => { 
+                el.classList.remove('visible'); 
+                scrollObserver.observe(el); 
+            });
         }
 
-        function navegar(idPagina) {
-            // 🚨 VALIDACIÓN DE SEGURIDAD: Bloquear acceso forzado al panel admin
+        // --- OPTIMIZACIÓN DEL FONDO ANIMADO A 60 FPS ---
+        let scrollTicking = false;
+        window.addEventListener('scroll', () => {
+            if (!scrollTicking) {
+                window.requestAnimationFrame(() => {
+                    const fondo = document.getElementById('fondoAnimado');
+                    if (fondo) {
+                        // Translate3d es acelerado por hardware, no causa "layout thrashing"
+                        fondo.style.transform = `translate3d(0, -${window.scrollY * 0.15}px, 0)`;
+                    }
+                    scrollTicking = false;
+                });
+                scrollTicking = true;
+            }
+        });
+
+        window.navegar = function(idPagina) {
             if (idPagina === 'admin' && !estadoApp.usuarioActual) {
                 mostrarMensaje(idiomaActual === 'es' ? 'Acceso denegado. Inicia sesión primero.' : 'Access denied. Please log in.');
                 abrirLogin(); 
                 return; 
             }
-
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
-            window.scrollTo(0, 0); setTimeout(activarAnimacionesScroll, 50);
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+            setTimeout(activarAnimacionesScroll, 100); // Reactivar observadores en nueva página
         }
 
         let timeoutNotificacion;
-        function mostrarMensaje(texto) {
+        window.mostrarMensaje = function(texto) {
             const noti = document.getElementById('notificacion');
             noti.innerText = texto; noti.classList.add('mostrar');
             clearTimeout(timeoutNotificacion);
             timeoutNotificacion = setTimeout(() => noti.classList.remove('mostrar'), 3000);
         }
 
-        window.addEventListener('scroll', () => { document.getElementById('fondoAnimado').style.backgroundPosition = `0px ${window.scrollY * 0.8}px`; });
-        function abrirLightbox(url) { if (!estadoApp.modoEdicion) { document.getElementById('lightbox-img').src = url; document.getElementById('lightbox').classList.add('mostrar'); } }
-        function cerrarLightbox() { document.getElementById('lightbox').classList.remove('mostrar'); }
-
-        async function subirArchivoFirebase(archivo, carpeta) {
-            const nombreUnico = Date.now() + '_' + archivo.name;
-            const ref = storage.ref().child(carpeta + '/' + nombreUnico);
-            const snapshot = await ref.put(archivo); return await snapshot.ref.getDownloadURL();
-        }
+        window.abrirLightbox = function(url) { if (!estadoApp.modoEdicion) { document.getElementById('lightbox-img').src = url; document.getElementById('lightbox').classList.add('mostrar'); } }
+        window.cerrarLightbox = function() { document.getElementById('lightbox').classList.remove('mostrar'); }
 
         function iniciarEscuchaConfiguracion() {
-            if(!db) return;
-            db.collection("configuracion").doc("general").onSnapshot((doc) => {
-                if (doc.exists && doc.data().logoUrl) { const logoEl = document.getElementById('logo-principal'); if (logoEl) logoEl.src = doc.data().logoUrl; }
+            const configRef = doc(db, "configuracion", "general");
+            onSnapshot(configRef, (documento) => {
+                if (documento.exists() && documento.data().logoUrl) { 
+                    const logoEl = document.getElementById('logo-principal'); 
+                    if (logoEl) logoEl.src = documento.data().logoUrl; 
+                }
             });
         }
         
         function iniciarEscuchaBarberos() {
-            if(!db) return;
-            db.collection("barberos").onSnapshot((snapshot) => {
+            onSnapshot(collection(db, "barberos"), (snapshot) => {
                 estadoApp.barberos = [];
-                snapshot.forEach(doc => { 
-                    const data = doc.data();
-                    estadoApp.barberos.push({ 
-                        id: doc.id, 
-                        nombre: data.nombre,
-                        inicio: data.inicio || 10, 
-                        fin: data.fin || 19 
-                    }); 
+                snapshot.forEach(docSnap => { 
+                    const data = docSnap.data();
+                    estadoApp.barberos.push({ id: docSnap.id, nombre: data.nombre, inicio: data.inicio || 10, fin: data.fin || 19 }); 
                 });
                 renderizarListaBarberos(); 
             });
         }
 
         function iniciarEscuchaServicios() {
-            if(!db) return;
-            db.collection("servicios").onSnapshot((snapshot) => {
+            onSnapshot(collection(db, "servicios"), (snapshot) => {
                 estadoApp.servicios = [];
-                snapshot.forEach(doc => { estadoApp.servicios.push({ id: doc.id, ...doc.data() }); });
-                renderizarServiciosPublicos(); if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
+                snapshot.forEach(docSnap => { estadoApp.servicios.push({ id: docSnap.id, ...docSnap.data() }); });
+                renderizarServiciosPublicos(); 
+                if(estadoApp.usuarioActual) renderizarTablaServiciosAdmin();
             });
         }
 
         function iniciarEscuchaGaleria() {
-            if(!db) return;
-            db.collection("galeria").onSnapshot((snapshot) => {
+            onSnapshot(collection(db, "galeria"), (snapshot) => {
                 estadoApp.galeria = [];
-                snapshot.forEach(doc => { estadoApp.galeria.push({ id: doc.id, ...doc.data() }); });
-                renderizarGaleriaPublica(); if(estadoApp.usuarioActual) renderizarGaleriaAdmin();
+                snapshot.forEach(docSnap => { estadoApp.galeria.push({ id: docSnap.id, ...docSnap.data() }); });
+                renderizarGaleriaPublica(); 
+                if(estadoApp.usuarioActual) renderizarGaleriaAdmin();
             });
         }
 
         function iniciarEscuchaCitas() {
-            if(!db) return;
-            db.collection("citas").onSnapshot((snap) => {
+            onSnapshot(collection(db, "citas"), (snapshot) => {
                 estadoApp.citas = [];
-                snap.forEach(doc => { estadoApp.citas.push({ id: doc.id, ...doc.data() }); });
-                estadoApp.citas.sort((a, b) => (b.fechaCreacion?.toMillis() || 0) - (a.fechaCreacion?.toMillis() || 0));
+                snapshot.forEach(docSnap => { estadoApp.citas.push({ id: docSnap.id, ...docSnap.data() }); });
+                estadoApp.citas.sort((a, b) => {
+                    const timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
+                    const timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
+                    return timeB - timeA;
+                });
                 if(estadoApp.usuarioActual) renderizarTablaCitas();
             });
         }
 
-        function renderizarServiciosPublicos() {
+        window.renderizarServiciosPublicos = function() {
             const grid = document.getElementById('contenedor-servicios-publico');
             const selectCitas = document.getElementById('servicioSelect');
             if(!grid || !selectCitas) return;
             grid.innerHTML = ''; 
+            
             const textoCargando = idiomaActual === 'es' ? 'Selecciona un servicio...' : 'Select a service...';
             selectCitas.innerHTML = `<option value="" disabled selected>${textoCargando}</option>`;
             
-            estadoApp.servicios.forEach((s, index) => {
+            estadoApp.servicios.forEach((s) => {
                 const nombreMostrar = (idiomaActual === 'en' && s.nombre_en) ? s.nombre_en : s.nombre;
                 const descMostrar = (idiomaActual === 'en' && s.desc_en) ? s.desc_en : s.desc;
 
+                // Añadimos stagger-item para la animación en cascada
                 grid.innerHTML += `
-                    <div class="tarjeta-servicio cascada" style="animation-delay: ${index * 100}ms">
+                    <div class="tarjeta-servicio stagger-item">
                         <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${nombreMostrar}</h3>
                         <p class="${estadoApp.modoEdicion ? 'editando' : ''}">${descMostrar}</p>
                         <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
                     </div>`;
                 
-                const opt = document.createElement('option'); opt.value = s.nombre; opt.setAttribute('data-precio', s.precio);
-                opt.textContent = `${nombreMostrar} - ${s.precio}`; selectCitas.appendChild(opt);
+                const opt = document.createElement('option'); 
+                opt.value = s.nombre; 
+                opt.setAttribute('data-precio', s.precio);
+                opt.textContent = `${nombreMostrar} - ${s.precio}`; 
+                selectCitas.appendChild(opt);
             });
-            if(estadoApp.modoEdicion) { grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); }
-            setTimeout(activarAnimacionesScroll, 100);
+            
+            if(estadoApp.modoEdicion) { 
+                grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); 
+            }
+            // Forzar actualización del observer
+            setTimeout(activarAnimacionesScroll, 50);
         }
 
-        function renderizarGaleriaPublica() {
-            const grid = document.getElementById('contenedor-galeria-publico'); grid.innerHTML = '';
-            estadoApp.galeria.forEach((img, index) => { grid.innerHTML += `<div class="foto-galeria cascada ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}'); animation-delay: ${index * 100}ms" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`; });
-            setTimeout(activarAnimacionesScroll, 100);
+        window.renderizarGaleriaPublica = function() {
+            const grid = document.getElementById('contenedor-galeria-publico'); 
+            grid.innerHTML = '';
+            estadoApp.galeria.forEach((img) => { 
+                grid.innerHTML += `<div class="foto-galeria stagger-item ${estadoApp.modoEdicion ? 'editando-img' : ''}" style="background-image: url('${img.url}');" onclick="estadoApp.modoEdicion ? manejadorEdicionImagen(event) : abrirLightbox('${img.url}')"></div>`; 
+            });
+            setTimeout(activarAnimacionesScroll, 50);
         }
 
-        async function buscarClienteFrecuente() {
+        window.buscarClienteFrecuente = async function() {
             const tel = document.getElementById('telefono').value.trim();
-            if(tel.length < 7 || !db) return; 
+            if(tel.length < 7) return; 
             try {
-                const snapshot = await db.collection("citas").where("telefono", "==", tel).limit(1).get();
+                const q = query(collection(db, "citas"), where("telefono", "==", tel));
+                const snapshot = await getDocs(q);
                 if(!snapshot.empty) {
-                    const cita = snapshot.docs[0].data(); const inputNombre = document.getElementById('nombre');
-                    inputNombre.value = cita.nombre; inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
+                    const cita = snapshot.docs[0].data(); 
+                    const inputNombre = document.getElementById('nombre');
+                    inputNombre.value = cita.nombre; 
+                    inputNombre.style.backgroundColor = "rgba(74, 144, 226, 0.1)";
                     setTimeout(() => inputNombre.style.backgroundColor = "var(--fondo)", 2000);
                     mostrarMensaje(idiomaActual === 'es' ? `¡Qué gusto verte de nuevo, ${cita.nombre}!` : `Great to see you again, ${cita.nombre}!`);
                 }
-            } catch(error) { console.error(error); }
+            } catch(error) { console.error("Error buscando cliente:", error); }
         }
 
         function formatearHoraStr(horaInt) {
@@ -760,10 +823,9 @@
             return `${h}:00 ${ampm}`;
         }
 
-        async function cargarHorarios() {
+        window.cargarHorarios = async function() {
             const fecha = document.getElementById('fecha').value; 
-            const selectBarbero = document.getElementById('barbero');
-            const nombreBarbero = selectBarbero.value;
+            const nombreBarbero = document.getElementById('barbero').value;
             const selectHora = document.getElementById('hora');
             
             if (!fecha || !nombreBarbero) return;
@@ -779,13 +841,11 @@
             const horaFin = barberoSeleccionado.fin || 19;
             
             try {
-                const snapshot = await db.collection("citas")
-                    .where("fecha", "==", fecha)
-                    .where("barbero", "==", nombreBarbero)
-                    .get();
-
+                const q = query(collection(db, "citas"), where("fecha", "==", fecha), where("barbero", "==", nombreBarbero));
+                const snapshot = await getDocs(q);
+                
                 const horasOcupadas = [];
-                snapshot.forEach(doc => { horasOcupadas.push(doc.data().hora); });
+                snapshot.forEach(docSnap => horasOcupadas.push(docSnap.data().hora));
 
                 selectHora.innerHTML = '<option value="" disabled selected>Selecciona una hora</option>';
                 
@@ -811,23 +871,27 @@
 
         function generarEnlaceCalendario(cita) {
             const fechaL = cita.fecha.replace(/-/g, '');
-            let [hours, minutes] = cita.hora.split(' ')[0].split(':'); let mod = cita.hora.split(' ')[1];
-            if (hours === '12') hours = '00'; if (mod === 'PM') hours = (parseInt(hours, 10) + 12).toString();
-            const hInicio = hours.padStart(2, '0') + minutes + '00'; const hFin = (parseInt(hours, 10) + 1).toString().padStart(2, '0') + minutes + '00';
+            let [hours, minutes] = cita.hora.split(' ')[0].split(':'); 
+            let mod = cita.hora.split(' ')[1];
+            if (hours === '12') hours = '00'; 
+            if (mod === 'PM') hours = (parseInt(hours, 10) + 12).toString();
+            
+            const hInicio = hours.padStart(2, '0') + minutes + '00'; 
+            const hFin = (parseInt(hours, 10) + 1).toString().padStart(2, '0') + minutes + '00';
             const det = encodeURIComponent(`Cita confirmada\nBarbero: ${cita.barbero}\nServicio: ${cita.servicio}\nPrecio: ${cita.precio || 'N/A'}`);
+            
             return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Corte Barbería Cactus')}&dates=${fechaL}T${hInicio}/${fechaL}T${hFin}&details=${det}&location=${encodeURIComponent('Barbería Cactus, Puerto Vallarta')}`;
         }
 
-        function reiniciarFormularioCita() {
-            document.getElementById('formCita').reset(); document.getElementById('hora').innerHTML = '<option value="" disabled selected>Selecciona Fecha y Barbero</option>';
-            document.getElementById('pantalla-exito').style.display = 'none'; document.getElementById('formCita').style.display = 'block';
+        window.reiniciarFormularioCita = function() {
+            document.getElementById('formCita').reset(); 
+            document.getElementById('hora').innerHTML = '<option value="" disabled selected>Selecciona Fecha y Barbero</option>';
+            document.getElementById('pantalla-exito').style.display = 'none'; 
+            document.getElementById('formCita').style.display = 'block';
         }
 
-        async function procesarCita(evento) {
+        window.procesarCita = async function(evento) {
             evento.preventDefault(); 
-            if(!db) return;
-
-            // --- 1. EL CADENERO: Validaciones Anti-Bot ---
             const nombreCrudo = document.getElementById('nombre').value.trim();
             const telefonoCrudo = document.getElementById('telefono').value.trim();
 
@@ -837,46 +901,33 @@
                 return; 
             }
 
-            const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s.]{3,50}$/;
-            if (!regexNombre.test(nombreCrudo)) {
-                mostrarMensaje(idiomaActual === 'es' ? 'El nombre contiene caracteres no permitidos.' : 'Invalid characters in name.');
-                return; 
-            }
-
             const ultimaCita = localStorage.getItem('ultima_cita_tiempo');
             const ahora = Date.now();
-            if (ultimaCita && (ahora - ultimaCita < 300000)) { // 5 minutos de bloqueo local
+            if (ultimaCita && (ahora - ultimaCita < 300000)) { 
                 mostrarMensaje(idiomaActual === 'es' ? 'Por favor espera unos minutos antes de agendar otra cita.' : 'Please wait a few minutes before booking again.');
                 return;
             }
 
-            // --- 2. Bloqueo de Interfaz ---
             const btn = document.getElementById('btn-submit-cita'); 
-            btn.innerText = "..."; 
-            btn.disabled = true;
+            btn.innerText = "..."; btn.disabled = true;
             
             const fechaSelect = document.getElementById('fecha').value;
             const horaSelect = document.getElementById('hora').value;
             const barberoSelect = document.getElementById('barbero').value;
             
             try {
-                // --- 3. Doble validación anti-choques ---
-                const checkSnap = await db.collection("citas")
-                    .where("fecha", "==", fechaSelect)
-                    .where("hora", "==", horaSelect)
-                    .where("barbero", "==", barberoSelect)
-                    .get();
+                // Verificar choque de horarios final
+                const qCheck = query(collection(db, "citas"), where("fecha", "==", fechaSelect), where("hora", "==", horaSelect), where("barbero", "==", barberoSelect));
+                const checkSnap = await getDocs(qCheck);
 
                 if (!checkSnap.empty) {
                     mostrarMensaje(idiomaActual === 'es' ? "¡Uy! Alguien acaba de ganar ese horario. Elige otro." : "Time slot just taken. Please choose another.");
                     await cargarHorarios(); 
-                    btn.innerText = textosUI[idiomaActual]['btn-conf']; 
-                    btn.disabled = false;
+                    btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false;
                     return; 
                 }
 
-                // --- 4. Preparación de datos y Guardado ---
-                localStorage.setItem('ultima_cita_tiempo', ahora.toString()); // Guardamos el ticket anti-spam
+                localStorage.setItem('ultima_cita_tiempo', ahora.toString()); 
 
                 const selectServicio = document.getElementById('servicioSelect');
                 const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
@@ -890,14 +941,14 @@
                     servicio: selectServicio.value,
                     precio: precioSeleccionado, 
                     comentarios: document.getElementById('comentarios').value,
-                    fechaCreacion: firebase.firestore.FieldValue.serverTimestamp()
+                    fechaCreacion: serverTimestamp()
                 };
                 
-                await db.collection("citas").add(cita);
+                await addDoc(collection(db, "citas"), cita);
                 
-                // --- 5. Mostrar Éxito en UI ---
                 document.getElementById('formCita').style.display = 'none';
-                const pExito = document.getElementById('pantalla-exito'); pExito.style.display = 'block';
+                const pExito = document.getElementById('pantalla-exito'); 
+                pExito.style.display = 'block';
                 pExito.dataset.fecha = cita.fecha; pExito.dataset.hora = cita.hora;
                 
                 const txt = textosUI[idiomaActual];
@@ -908,57 +959,43 @@
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
                 document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
-                // --- 6. Notificación Inmediata al Administrador (Backend de Netlify) ---
-                enviarNotificacionTelegram(cita);
+                // --- BOT DE TELEGRAM CONGELADO POR AHORA ---
+                // enviarNotificacionTelegram(cita);
 
             } catch (error) {
                 console.error("Error al agendar:", error);
                 mostrarMensaje("Error de conexión. Intenta de nuevo.");
             } finally {
-                btn.innerText = textosUI[idiomaActual]['btn-conf']; 
-                btn.disabled = false;
+                btn.innerText = textosUI[idiomaActual]['btn-conf']; btn.disabled = false;
             }
         }
 
-        // FUNCIÓN AUTOMÁTICA DE TELEGRAM (MODO SERVIDOR SEGURO)
-        async function enviarNotificacionTelegram(cita) {
-            try {
-                // Le avisamos al archivo oculto de Netlify
-                const respuesta = await fetch('/.netlify/functions/notificar', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cita: cita })
-                });
-                
-                if (respuesta.ok) {
-                    console.log('Notificación enviada mediante Servidor Seguro.');
-                } else {
-                    console.error('El servidor seguro falló.');
-                }
-            } catch (error) {
-                console.error('Error de conexión:', error);
-            }
-        }
-
-        async function mostrarMisCitas() {
+        window.mostrarMisCitas = async function() {
             const tel = document.getElementById('telefono-buscar').value.trim();
             const contenedor = document.getElementById('contenedor-mis-citas');
             contenedor.innerHTML = '<p style="text-align:center; color: var(--verde-cactus);">...</p>';
 
-            if (!tel || !db) { mostrarMensaje("Ingresa tu número."); contenedor.innerHTML = ''; return; }
+            if (!tel) { mostrarMensaje("Ingresa tu número."); contenedor.innerHTML = ''; return; }
             try {
-                const snapshot = await db.collection("citas").where("telefono", "==", tel).get();
+                const q = query(collection(db, "citas"), where("telefono", "==", tel));
+                const snapshot = await getDocs(q);
                 contenedor.innerHTML = '';
-                if (snapshot.empty) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f; font-weight: bold;">Sin citas.</p>'; return; }
+                
+                if (snapshot.empty) { 
+                    contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f; font-weight: bold;">Sin citas.</p>'; 
+                    return; 
+                }
 
-                let misCitas = []; snapshot.forEach(doc => misCitas.push({id: doc.id, ...doc.data()}));
+                let misCitas = []; 
+                snapshot.forEach(docSnap => misCitas.push({id: docSnap.id, ...docSnap.data()}));
                 misCitas.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
-                misCitas.forEach(cita => {
+                misCitas.forEach((cita, index) => {
                     const esPasada = new Date(`${cita.fecha}T00:00:00`) < new Date(new Date().setHours(0,0,0,0));
                     const estadoColor = esPasada ? 'var(--verde-olivo)' : 'var(--azul-acento)';
+                    // Animamos las tarjetas del historial
                     contenedor.innerHTML += `
-                        <div style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px;">
+                        <div class="stagger-item" style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px; animation: aparecer 0.5s ease forwards; animation-delay: ${index * 100}ms; opacity: 0;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
                                 <strong style="font-size: 16px;">${cita.fecha} <br> ${cita.hora}</strong>
                                 <span style="background: ${estadoColor}20; color: ${estadoColor}; padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;">${esPasada ? 'Ok' : 'Next'}</span>
@@ -971,62 +1008,123 @@
             } catch(error) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error.</p>'; }
         }
 
-        async function limpiarCitasAntiguas() {
-            if (!db) return;
-            const haceDosSemanas = new Date(); haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
-            const fechaLimite = haceDosSemanas.toISOString().split('T')[0];
+        window.activarNotificaciones = async function() {
+            if(!messaging) { mostrarMensaje('Navegador sin soporte de notificaciones.'); return; }
             try {
-                const snapshot = await db.collection("citas").where("fecha", "<", fechaLimite).get();
-                let borradas = 0; snapshot.forEach(doc => { db.collection("citas").doc(doc.id).delete(); borradas++; });
-            } catch (error) { console.error("Error al limpiar:", error); }
-        }
-
-        if(auth) {
-            auth.onAuthStateChanged((user) => {
-                if(!datosYaCargados) { iniciarEscuchaConfiguracion(); iniciarEscuchaBarberos(); iniciarEscuchaCitas(); iniciarEscuchaServicios(); iniciarEscuchaGaleria(); datosYaCargados = true; }
-                const btnNav = document.getElementById('btn-nav-admin');
-                if (user) {
-                    estadoApp.usuarioActual = USUARIOS_ROLES[user.email.toLowerCase()] || { nombre: 'Colaborador', rol: 'barbero' };
-                    btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`; btnNav.style.backgroundColor = 'var(--azul-acento)';
-                    configurarPanelAdmin();
+                const permiso = await Notification.requestPermission();
+                if (permiso === 'granted') {
+                    const tokenDispositivo = await getToken(messaging, { 
+                        vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
+                    });
+                    if (tokenDispositivo) {
+                        console.log('Token FCM Generado:', tokenDispositivo);
+                        alert('¡Notificaciones Push activadas con éxito!');
+                        document.getElementById('btn-activar-notif').style.display = 'none';
+                        document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
+                    }
                 } else {
-                    estadoApp.usuarioActual = null; btnNav.innerText = 'Panel (Admin)'; btnNav.style.backgroundColor = 'transparent';
-                    if (estadoApp.modoEdicion) toggleEdicionVisual(true);
+                    alert('Se necesitan permisos del navegador.');
                 }
+            } catch (error) { console.error('Error Push:', error); }
+        };
+
+        window.desactivarNotificaciones = async function() {
+            if(!messaging) return;
+            try {
+                const borrado = await deleteToken(messaging);
+                if (borrado) {
+                    alert('Notificaciones desactivadas.');
+                    document.getElementById('btn-desactivar-notif').style.display = 'none';
+                    document.getElementById('btn-activar-notif').style.display = 'inline-block';
+                }
+            } catch (error) { console.error('Error al desactivar Push:', error); }
+        };
+
+        if(messaging) {
+            onMessage(messaging, (payload) => {
+                alert(`💈 Cactus Barbería: ${payload.notification?.title} \n${payload.notification?.body}`);
             });
         }
 
-        function abrirLogin() { estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex'; }
-        function cerrarLogin() { document.getElementById('modalLogin').style.display = 'none'; }
-        function procesarLogin(e) {
-            e.preventDefault(); const btn = document.getElementById('btn-login'); btn.innerText = "..."; btn.disabled = true;
-            auth.signInWithEmailAndPassword(document.getElementById('login-user').value.trim(), document.getElementById('login-pass').value)
-                .then(() => { cerrarLogin(); navegar('admin'); document.getElementById('login-user').value = ''; document.getElementById('login-pass').value = ''; })
-                .catch(() => mostrarMensaje('Error de acceso.')).finally(() => { btn.innerText = "Entrar"; btn.disabled = false; });
+        async function limpiarCitasAntiguas() {
+            const haceDosSemanas = new Date(); haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
+            const fechaLimite = haceDosSemanas.toISOString().split('T')[0];
+            try {
+                const q = query(collection(db, "citas"), where("fecha", "<", fechaLimite));
+                const snapshot = await getDocs(q);
+                snapshot.forEach(docSnap => deleteDoc(doc(db, "citas", docSnap.id)));
+            } catch (error) { console.error("Error al limpiar:", error); }
         }
-        function cerrarSesion() { if(auth) auth.signOut().then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
+
+        onAuthStateChanged(auth, (user) => {
+            if(!datosYaCargados) { 
+                iniciarEscuchaConfiguracion(); 
+                iniciarEscuchaBarberos(); 
+                iniciarEscuchaCitas(); 
+                iniciarEscuchaServicios(); 
+                iniciarEscuchaGaleria(); 
+                datosYaCargados = true; 
+            }
+            const btnNav = document.getElementById('btn-nav-admin');
+            if (user) {
+                estadoApp.usuarioActual = USUARIOS_ROLES[user.email.toLowerCase()] || { nombre: 'Colaborador', rol: 'barbero' };
+                btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`; 
+                btnNav.style.backgroundColor = 'var(--azul-acento)';
+                configurarPanelAdmin();
+            } else {
+                estadoApp.usuarioActual = null; 
+                btnNav.innerText = 'Panel (Admin)'; 
+                btnNav.style.backgroundColor = 'transparent';
+                if (estadoApp.modoEdicion) toggleEdicionVisual(true);
+            }
+        });
+
+        window.abrirLogin = function() { estadoApp.usuarioActual ? navegar('admin') : document.getElementById('modalLogin').style.display = 'flex'; }
+        window.cerrarLogin = function() { document.getElementById('modalLogin').style.display = 'none'; }
+        
+        window.procesarLogin = function(e) {
+            e.preventDefault(); 
+            const btn = document.getElementById('btn-login'); btn.innerText = "..."; btn.disabled = true;
+            signInWithEmailAndPassword(auth, document.getElementById('login-user').value.trim(), document.getElementById('login-pass').value)
+                .then(() => { 
+                    cerrarLogin(); navegar('admin'); 
+                    document.getElementById('login-user').value = ''; 
+                    document.getElementById('login-pass').value = ''; 
+                })
+                .catch(() => mostrarMensaje('Error de acceso.'))
+                .finally(() => { btn.innerText = "Entrar"; btn.disabled = false; });
+        }
+        
+        window.cerrarSesion = function() { signOut(auth).then(() => { navegar('inicio'); mostrarMensaje('Sesión cerrada'); }); }
 
         function configurarPanelAdmin() {
             limpiarCitasAntiguas();
             const rol = estadoApp.usuarioActual.rol;
             const txt = textosUI[idiomaActual];
             document.getElementById('admin-usuario-info').innerText = `${txt['admin-rol']} ${rol.toUpperCase()}`;
+            
             ['barberos', 'servicios', 'galeria'].forEach(t => document.getElementById(`menu-tab-${t}`).style.display = (rol === 'admin' || rol === 'superadmin') ? 'block' : 'none');
             document.getElementById('menu-tab-web').style.display = (rol === 'superadmin') ? 'block' : 'none';
             
-            cambiarTabAdmin('tab-citas'); renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
+            cambiarTabAdmin('tab-citas'); 
+            renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
         }
 
-        function cambiarTabAdmin(idTab) {
-            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-galeria', 'tab-web'].forEach(id => { document.getElementById(id).style.display = 'none'; document.getElementById('menu-' + id).classList.remove('activo'); });
-            document.getElementById(idTab).style.display = 'block'; document.getElementById('menu-' + idTab).classList.add('activo');
+        window.cambiarTabAdmin = function(idTab) {
+            ['tab-citas', 'tab-barberos', 'tab-servicios', 'tab-galeria', 'tab-web'].forEach(id => { 
+                document.getElementById(id).style.display = 'none'; 
+                document.getElementById('menu-' + id).classList.remove('activo'); 
+            });
+            document.getElementById(idTab).style.display = 'block'; 
+            document.getElementById('menu-' + idTab).classList.add('activo');
         }
 
-        function renderizarTablaCitas() {
+        window.renderizarTablaCitas = function() {
             const tbody = document.querySelector('#tabla-citas tbody'); tbody.innerHTML = '';
             if(!estadoApp.usuarioActual) return;
             const txt = textosUI[idiomaActual];
             let citas = estadoApp.usuarioActual.rol === 'barbero' ? estadoApp.citas.filter(c => c.barbero.toUpperCase() === estadoApp.usuarioActual.nombre) : estadoApp.citas;
+            
             if (citas.length === 0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">${txt['txt-sin-citas']}</td></tr>`; return; }
 
             citas.forEach(cita => {
@@ -1043,12 +1141,16 @@
                 tbody.appendChild(tr);
             });
         }
-        function eliminarCitaId(id) { if(db && confirm('¿Borrar esta cita?')) db.collection("citas").doc(id).delete(); }
+        
+        window.eliminarCitaId = function(id) { if(confirm('¿Borrar esta cita?')) deleteDoc(doc(db, "citas", id)); }
 
-        function renderizarListaBarberos() {
-            const ul = document.getElementById('lista-barberos'); const selectCitas = document.getElementById('barbero');
+        window.renderizarListaBarberos = function() {
+            const ul = document.getElementById('lista-barberos'); 
+            const selectCitas = document.getElementById('barbero');
             const txt = textosUI[idiomaActual];
-            if(ul) ul.innerHTML = ''; selectCitas.innerHTML = estadoApp.barberos.length === 0 ? `<option value="" disabled selected>${txt['opt-sin-barb']}</option>` : `<option value="" disabled selected>${txt['opt-sel-barb']}</option>`;
+            
+            if(ul) ul.innerHTML = ''; 
+            selectCitas.innerHTML = estadoApp.barberos.length === 0 ? `<option value="" disabled selected>${txt['opt-sin-barb']}</option>` : `<option value="" disabled selected>${txt['opt-sel-barb']}</option>`;
             
             estadoApp.barberos.forEach(b => {
                 if(ul) { 
@@ -1069,33 +1171,32 @@
             });
         }
 
-        function guardarBarbero() {
+        window.guardarBarbero = async function() {
             const id = document.getElementById('editando-barbero-id').value;
             const nom = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
             const inicio = parseInt(document.getElementById('nuevo-barbero-inicio').value);
             const fin = parseInt(document.getElementById('nuevo-barbero-fin').value);
 
-            if (nom && db) {
+            if (nom) {
                 if(inicio >= fin) {
                     mostrarMensaje(idiomaActual === 'es' ? "La hora de inicio debe ser antes del fin." : "Start time must be earlier.");
                     return;
                 }
-                
                 const datos = { nombre: nom, inicio: inicio, fin: fin };
-                
-                if (id) {
-                    db.collection("barberos").doc(id).update(datos).then(() => {
-                        cancelarEdicionBarbero(); mostrarMensaje(idiomaActual === 'es' ? "Actualizado." : "Updated.");
-                    });
-                } else {
-                    db.collection("barberos").add(datos).then(() => {
-                        cancelarEdicionBarbero(); mostrarMensaje(idiomaActual === 'es' ? "Agregado." : "Added.");
-                    });
-                }
+                try {
+                    if (id) {
+                        await updateDoc(doc(db, "barberos", id), datos);
+                        mostrarMensaje(idiomaActual === 'es' ? "Actualizado." : "Updated.");
+                    } else {
+                        await addDoc(collection(db, "barberos"), datos);
+                        mostrarMensaje(idiomaActual === 'es' ? "Agregado." : "Added.");
+                    }
+                    cancelarEdicionBarbero();
+                } catch(e) { console.error(e); }
             }
         }
 
-        function prepararEdicionBarbero(id, nom, inicio, fin) {
+        window.prepararEdicionBarbero = function(id, nom, inicio, fin) {
             document.getElementById('editando-barbero-id').value = id;
             document.getElementById('nuevo-barbero').value = nom;
             document.getElementById('nuevo-barbero-inicio').value = inicio;
@@ -1105,7 +1206,7 @@
             document.getElementById('nuevo-barbero').scrollIntoView({ behavior: 'smooth' });
         }
 
-        function cancelarEdicionBarbero() {
+        window.cancelarEdicionBarbero = function() {
             document.getElementById('editando-barbero-id').value = '';
             document.getElementById('nuevo-barbero').value = '';
             document.getElementById('nuevo-barbero-inicio').value = '10';
@@ -1114,9 +1215,16 @@
             document.getElementById('btn-cancelar-edicion-barbero').style.display = 'none';
         }
 
-        function eliminarBarbero(id) { if(db && confirm("¿Eliminar barbero?")) db.collection("barberos").doc(id).delete(); }
+        window.eliminarBarbero = function(id) { if(confirm("¿Eliminar barbero?")) deleteDoc(doc(db, "barberos", id)); }
 
-        function renderizarTablaServiciosAdmin() {
+        async function subirArchivoFirebase(archivo, carpeta) {
+            const nombreUnico = Date.now() + '_' + archivo.name;
+            const refArchivo = ref(storage, carpeta + '/' + nombreUnico);
+            await uploadBytes(refArchivo, archivo); 
+            return await getDownloadURL(refArchivo);
+        }
+
+        window.renderizarTablaServiciosAdmin = function() {
             const tbody = document.querySelector('#tabla-servicios tbody'); if(!tbody) return; tbody.innerHTML = '';
             const txt = textosUI[idiomaActual];
             if (estadoApp.servicios.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">${txt['txt-sin-serv']}</td></tr>`; return; }
@@ -1126,7 +1234,8 @@
                 tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong><br><small style="color:#888;">${s.nombre_en || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td></tr>`;
             });
         }
-        function guardarServicio() {
+
+        window.guardarServicio = async function() {
             const id = document.getElementById('editando-servicio-id').value; 
             const datos = { 
                 nombre: document.getElementById('nuevo-servicio-nombre').value.trim(), 
@@ -1135,37 +1244,70 @@
                 desc: document.getElementById('nuevo-servicio-desc').value.trim(),
                 desc_en: document.getElementById('nuevo-servicio-desc-en').value.trim()
             };
-            if (datos.nombre && datos.precio && datos.desc && db) { id ? db.collection("servicios").doc(id).update(datos).then(cancelarEdicionServicio) : db.collection("servicios").add(datos).then(cancelarEdicionServicio); }
+            if (datos.nombre && datos.precio && datos.desc) { 
+                try {
+                    id ? await updateDoc(doc(db, "servicios", id), datos) : await addDoc(collection(db, "servicios"), datos);
+                    cancelarEdicionServicio();
+                } catch(e) { console.error(e); }
+            }
         }
-        function prepararEdicionServicio(id, nom, pre, des, nomEn, desEn) {
+
+        window.prepararEdicionServicio = function(id, nom, pre, des, nomEn, desEn) {
             document.getElementById('editando-servicio-id').value = id; document.getElementById('nuevo-servicio-nombre').value = nom; 
             document.getElementById('nuevo-servicio-nombre-en').value = nomEn || ''; document.getElementById('nuevo-servicio-precio').value = pre; 
             document.getElementById('nuevo-servicio-desc').value = des; document.getElementById('nuevo-servicio-desc-en').value = desEn || '';
             document.getElementById('btn-add-servicio').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; 
             document.getElementById('btn-cancelar-edicion').style.display = 'block'; document.getElementById('titulo-form-servicio').scrollIntoView({ behavior: 'smooth' });
         }
-        function cancelarEdicionServicio() {
+
+        window.cancelarEdicionServicio = function() {
             ['editando-servicio-id', 'nuevo-servicio-nombre', 'nuevo-servicio-nombre-en', 'nuevo-servicio-precio', 'nuevo-servicio-desc', 'nuevo-servicio-desc-en'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('btn-add-servicio').innerText = textosUI[idiomaActual]['btn-guardar-serv']; document.getElementById('btn-cancelar-edicion').style.display = 'none';
         }
-        function eliminarServicio(id) { if(db && confirm("¿Eliminar?")) db.collection("servicios").doc(id).delete(); }
 
-        function renderizarGaleriaAdmin() {
+        window.eliminarServicio = function(id) { if(confirm("¿Eliminar?")) deleteDoc(doc(db, "servicios", id)); }
+
+        window.renderizarGaleriaAdmin = function() {
             const c = document.getElementById('contenedor-galeria-admin'); if(!c) return; c.innerHTML = '';
             const txt = textosUI[idiomaActual];
-            estadoApp.galeria.forEach(img => { c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="if(db && confirm('¿Eliminar?')) db.collection('galeria').doc('${img.id}').delete()" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div></div>`; });
+            estadoApp.galeria.forEach(img => { 
+                c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="if(confirm('¿Eliminar?')) deleteDoc(doc(db, 'galeria', '${img.id}'))" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div></div>`; 
+            });
         }
-        async function guardarImagenGaleria() {
-            const id = document.getElementById('editando-galeria-id').value; const file = document.getElementById('nueva-galeria-archivo').files[0]; let url = document.getElementById('nueva-galeria-url').value.trim();
-            const btn = document.getElementById('btn-add-galeria'); btn.disabled = true;
-            try { if(file) url = await subirArchivoFirebase(file, 'galeria'); if(url) { id ? await db.collection("galeria").doc(id).update({url}) : await db.collection("galeria").add({url}); cancelarEdicionGaleria(); } } 
-            catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
-        }
-        function prepararEdicionGaleria(id, url) { document.getElementById('editando-galeria-id').value = id; document.getElementById('nueva-galeria-url').value = url; document.getElementById('btn-add-galeria').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; }
-        function cancelarEdicionGaleria() { document.getElementById('editando-galeria-id').value = ''; document.getElementById('nueva-galeria-url').value = ''; document.getElementById('nueva-galeria-archivo').value = ''; document.getElementById('btn-add-galeria').innerText = textosUI[idiomaActual]['btn-guardar-img']; document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; }
 
-        function toggleEdicionVisual(forzarApagado = false) {
-            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; const btn = document.getElementById('btn-toggle-edicion');
+        window.guardarImagenGaleria = async function() {
+            const id = document.getElementById('editando-galeria-id').value; 
+            const file = document.getElementById('nueva-galeria-archivo').files[0]; 
+            let url = document.getElementById('nueva-galeria-url').value.trim();
+            
+            const btn = document.getElementById('btn-add-galeria'); btn.disabled = true;
+            try { 
+                if(file) url = await subirArchivoFirebase(file, 'galeria'); 
+                if(url) { 
+                    id ? await updateDoc(doc(db, "galeria", id), {url}) : await addDoc(collection(db, "galeria"), {url}); 
+                    cancelarEdicionGaleria(); 
+                } 
+            } catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
+        }
+
+        window.prepararEdicionGaleria = function(id, url) { 
+            document.getElementById('editando-galeria-id').value = id; 
+            document.getElementById('nueva-galeria-url').value = url; 
+            document.getElementById('btn-add-galeria').innerText = idiomaActual === 'es' ? 'Actualizar' : 'Update'; 
+            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'block'; 
+        }
+
+        window.cancelarEdicionGaleria = function() { 
+            document.getElementById('editando-galeria-id').value = ''; 
+            document.getElementById('nueva-galeria-url').value = ''; 
+            document.getElementById('nueva-galeria-archivo').value = ''; 
+            document.getElementById('btn-add-galeria').innerText = textosUI[idiomaActual]['btn-guardar-img']; 
+            document.getElementById('btn-cancelar-edicion-galeria').style.display = 'none'; 
+        }
+
+        window.toggleEdicionVisual = function(forzarApagado = false) {
+            estadoApp.modoEdicion = forzarApagado ? false : !estadoApp.modoEdicion; 
+            const btn = document.getElementById('btn-toggle-edicion');
             const eT = document.querySelectorAll('h1, p.intro-p, .edit-txt'); 
             const eI = document.querySelectorAll('.logo-img, .edit-img');
             
@@ -1179,29 +1321,44 @@
                 eI.forEach(el => { el.classList.remove('editando-img'); el.removeEventListener('click', manejadorEdicionImagen); });
             }
         }
-        function manejadorEdicionImagen(e) {
+
+        window.manejadorEdicionImagen = function(e) {
             if (!estadoApp.modoEdicion) return; e.preventDefault(); e.stopPropagation(); elementoImagenActual = e.currentTarget;
             document.getElementById('input-url-imagen').value = elementoImagenActual.tagName === 'IMG' ? elementoImagenActual.src : elementoImagenActual.style.backgroundImage.replace(/^url\(["']?/, '').replace(/["']?\)$/, '');
             document.getElementById('modalEdicionImagen').style.display = 'flex';
         }
-        function cerrarModalImagen() { document.getElementById('modalEdicionImagen').style.display = 'none'; document.getElementById('input-archivo-imagen').value = ''; document.getElementById('input-url-imagen').value = ''; elementoImagenActual = null; }
         
-        async function guardarNuevaImagen() {
-            const file = document.getElementById('input-archivo-imagen').files[0]; let url = document.getElementById('input-url-imagen').value.trim(); const btn = document.getElementById('btn-guardar-imagen-visual'); btn.disabled = true;
+        window.cerrarModalImagen = function() { 
+            document.getElementById('modalEdicionImagen').style.display = 'none'; 
+            document.getElementById('input-archivo-imagen').value = ''; 
+            document.getElementById('input-url-imagen').value = ''; 
+            elementoImagenActual = null; 
+        }
+        
+        window.guardarNuevaImagen = async function() {
+            const file = document.getElementById('input-archivo-imagen').files[0]; 
+            let url = document.getElementById('input-url-imagen').value.trim(); 
+            const btn = document.getElementById('btn-guardar-imagen-visual'); btn.disabled = true;
             try {
                 if (file) url = await subirArchivoFirebase(file, 'web_assets');
                 if (url && elementoImagenActual) {
-                    if (elementoImagenActual.tagName === 'IMG') { elementoImagenActual.src = url; if(elementoImagenActual.id === 'logo-principal' && db) await db.collection("configuracion").doc("general").set({ logoUrl: url }, { merge: true }); } 
-                    else { elementoImagenActual.style.backgroundImage = `url('${url}')`; }
+                    if (elementoImagenActual.tagName === 'IMG') { 
+                        elementoImagenActual.src = url; 
+                        if(elementoImagenActual.id === 'logo-principal') {
+                            await updateDoc(doc(db, "configuracion", "general"), { logoUrl: url }); 
+                        } 
+                    } else { 
+                        elementoImagenActual.style.backgroundImage = `url('${url}')`; 
+                    }
                     cerrarModalImagen(); mostrarMensaje('Actualizada');
                 }
             } catch (e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
         }
 
-        window.onload = () => { 
+        window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
             activarAnimacionesScroll();
-        }
+        });
     </script>
 </body>
 </html>
