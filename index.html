@@ -32,41 +32,34 @@
 
         .fondo-barbero {
             position: fixed;
-            top: 0;
+            top: -20vh; /* Margen extra para scroll */
             left: 0;
             width: 100vw;
-            height: 120vh; /* Más alto para permitir el desplazamiento */
+            height: 140vh; 
             z-index: -1;
             opacity: 0.05; 
             background: repeating-linear-gradient(-45deg, #d32f2f, #d32f2f 40px, transparent 40px, transparent 80px, #1976d2 80px, #1976d2 120px, transparent 120px, transparent 160px);
             background-size: 226px 226px;
-            will-change: transform; /* Aceleración por hardware */
+            will-change: transform; /* Obliga al navegador a usar GPU */
         }
 
         .reveal { 
             opacity: 0; 
-            transform: translateY(50px); 
+            transform: translateY(40px); 
             transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1); 
             will-change: opacity, transform;
         }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* Efecto de cascada para elementos internos (tarjetas, fotos) */
         .stagger-item { 
             opacity: 0; 
-            transform: translateY(30px) scale(0.95); 
+            transform: translateY(20px) scale(0.95); 
             transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1); 
         }
         .reveal.visible .stagger-item { opacity: 1; transform: translateY(0) scale(1); }
         
-        @keyframes deslizarAbajo {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes deslizarAbajo { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         .membresias-contenedor { margin-top: 80px; text-align: center; border-top: 2px dashed rgba(78, 110, 93, 0.3); padding-top: 50px; }
         .membresias-header { margin-bottom: 40px; }
@@ -75,6 +68,7 @@
         .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
         .img-membresia-promo:hover { transform: scale(1.02); }
         .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
+        
         .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); }
         .tarjeta-membresia.pro { border-color: #d4af37; }
@@ -86,22 +80,7 @@
         .badge-proximamente { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid #d4af37; font-weight: bold; text-align: center; padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; cursor: not-allowed; }
         .tarjeta-membresia.pro::before { content: 'MÁS POPULAR'; position: absolute; top: 25px; right: -35px; background: #d4af37; color: #000; font-size: 11px; font-weight: bold; padding: 6px 40px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
 
-        header {
-            background: linear-gradient(to bottom, #3A5346, var(--verde-cactus));
-            padding: 20px;
-            display: flex;
-            flex-direction: column; 
-            justify-content: center;
-            align-items: center;
-            gap: 15px; 
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            animation: deslizarAbajo 0.8s ease-out;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            border-bottom: 3px solid var(--verde-olivo);
-        }
-
+        header { background: linear-gradient(to bottom, #3A5346, var(--verde-cactus)); padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; position: sticky; top: 0; z-index: 100; animation: deslizarAbajo 0.8s ease-out; box-shadow: 0 8px 25px rgba(0,0,0,0.2); border-bottom: 3px solid var(--verde-olivo); }
         .logo-img { height: 80px; width: auto; border-radius: 8px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); transition: transform 0.3s ease; }
         .logo-img:hover { transform: scale(1.05); }
 
@@ -140,11 +119,11 @@
         .servicios-contenedor { padding: 50px 20px; max-width: 1200px; margin: 0 auto; }
         .servicios-contenedor h2 { text-align: center; color: var(--verde-cactus); font-size: 32px; margin-bottom: 40px; }
         .grid-servicios { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-        .tarjeta-servicio { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+        .tarjeta-servicio { background: #fff; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid var(--verde-olivo); transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; justify-content: space-between;}
         .tarjeta-servicio:hover { transform: translateY(-5px); border-left-color: var(--azul-acento); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .tarjeta-servicio h3 { color: var(--texto-oscuro); margin-bottom: 10px; font-size: 20px; }
-        .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; }
-        .precio-servicio { display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento); font-weight: bold; padding: 6px 14px; border-radius: 8px; margin-top: 15px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3); }
+        .tarjeta-servicio p { color: #555; font-size: 14px; line-height: 1.5; margin-bottom: 15px;}
+        .precio-servicio { display: inline-block; background-color: rgba(74, 144, 226, 0.15); color: var(--azul-acento); font-weight: bold; padding: 6px 14px; border-radius: 8px; font-size: 15px; border: 1px solid rgba(74, 144, 226, 0.3); align-self: flex-start;}
 
         .form-citas { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left; }
         .grupo-form { margin-bottom: 20px; }
@@ -159,7 +138,7 @@
         .lightbox-cerrar { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; user-select: none; transition: color 0.3s; }
         .lightbox-cerrar:hover { color: #ea4335; }
 
-        #notificacion { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background-color: var(--texto-oscuro); color: var(--texto-claro); padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: bottom 0.4s ease-out; z-index: 1000; font-size: 14px; text-align: center; min-width: 300px; }
+        #notificacion { position: fixed; bottom: -100px; left: 50%; transform: translateX(-50%); background-color: var(--texto-oscuro); color: var(--texto-claro); padding: 15px 25px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: bottom 0.4s ease-out; z-index: 3000; font-size: 14px; text-align: center; min-width: 300px; font-weight: bold; }
         #notificacion.mostrar { bottom: 30px; }
 
         .admin-layout { display: flex; min-height: 80vh; background: #fff; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); margin: 20px; overflow: hidden; flex-wrap: wrap; }
@@ -176,11 +155,11 @@
 
         .btn-accion { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 12px; color: white; transition: opacity 0.3s; }
         .btn-accion:hover { opacity: 0.8; }
-        .btn-calendario { background: #ea4335; text-decoration: none; }
-        .btn-eliminar { background: #d32f2f; }
+        .btn-calendario { background: #ea4335; text-decoration: none; display: inline-block; margin-bottom: 4px;}
+        .btn-eliminar { background: #d32f2f; display: inline-block;}
         .btn-editar-web { background: var(--azul-acento); font-size: 16px; padding: 15px; }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-login { background: var(--texto-claro); padding: 30px; border-radius: 15px; width: 90%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); text-align: center; }
         .modal-login h2 { color: var(--verde-cactus); margin-bottom: 20px; }
         .btn-cerrar-modal { background: #ccc; color: #333; border: none; padding: 10px 20px; border-radius: 8px; margin-top: 10px; cursor: pointer; transition: opacity 0.3s; }
@@ -425,7 +404,7 @@
                             <input type="hidden" id="editando-servicio-id" value="">
                             <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Corte Premium)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                             <input type="text" id="nuevo-servicio-nombre-en" placeholder="Nombre en Inglés (Ej. Premium Haircut)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f0f7ff;">
-                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. 300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                             <textarea id="nuevo-servicio-desc" placeholder="Descripción breve en Español..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
                             <textarea id="nuevo-servicio-desc-en" placeholder="Descripción breve en Inglés..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f0f7ff; resize: vertical;"></textarea>
                         </div>
@@ -500,6 +479,18 @@
         </div>
     </div>
 
+    <!-- Modal Custom de Confirmación (Reemplazo de confirm()) -->
+    <div class="modal-overlay" id="modalConfirm">
+        <div class="modal-login" style="max-width: 350px;">
+            <h2 style="color: #d32f2f; margin-bottom: 10px;">¿Estás seguro?</h2>
+            <p id="confirm-msg" style="margin-bottom: 20px; font-size: 15px;"></p>
+            <div style="display: flex; gap: 10px;">
+                <button id="btn-confirm-yes" class="btn-cita" style="flex: 1; background: #d32f2f; box-shadow: none;">Sí</button>
+                <button class="btn-cerrar-modal" style="flex: 1; margin-top: 0;" onclick="document.getElementById('modalConfirm').style.display='none'">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <div class="lightbox-overlay" id="lightbox" onclick="cerrarLightbox()">
         <span class="lightbox-cerrar" onclick="cerrarLightbox()">&times;</span>
         <img src="" alt="Imagen ampliada" class="lightbox-img" id="lightbox-img">
@@ -508,16 +499,12 @@
     <div id="notificacion"></div>
 
     <script type="module">
-        // Importamos Firebase Modular (V9+)
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, query, where, onSnapshot, doc, updateDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
         import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
-        // ==========================================
-        // 1. CONFIGURACIÓN FIREBASE Y ESTADO GLOBAL
-        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBBVbW-DrxmA1xr-SVivwJseD1u0VKUqSk",
             authDomain: "cactus-barberia.firebaseapp.com",
@@ -535,7 +522,6 @@
         let messaging = null; 
         try { messaging = getMessaging(app); } catch(e) { console.warn("Messaging no soportado en este entorno"); }
 
-        // Hacer variables globales para que HTML onclicks funcionen
         window.db = db; window.auth = auth; window.storage = storage;
 
         const estadoApp = { usuarioActual: null, barberos: [], servicios: [], galeria: [], citas: [], modoEdicion: false };
@@ -545,7 +531,7 @@
             'super@cactus.com': { nombre: 'SUPER', rol: 'superadmin' }
         };
 
-        let elementoImagenActual = null; let datosYaCargados = false; 
+        let elementoImagenActual = null; 
         let idiomaActual = 'es';
 
         const textosUI = {
@@ -642,18 +628,34 @@
             }
         }
 
-        // --- SISTEMA DE ANIMACIÓN FLUIDA EN CASCADA (SCROLL) ---
+        let timeoutNotificacion;
+        window.mostrarMensaje = function(texto) {
+            const noti = document.getElementById('notificacion');
+            noti.innerText = texto; noti.classList.add('mostrar');
+            clearTimeout(timeoutNotificacion);
+            timeoutNotificacion = setTimeout(() => noti.classList.remove('mostrar'), 3500);
+        }
+
+        window.solicitarConfirmacion = function(mensaje, accion) {
+            document.getElementById('confirm-msg').innerText = mensaje;
+            document.getElementById('modalConfirm').style.display = 'flex';
+            document.getElementById('btn-confirm-yes').onclick = function() {
+                document.getElementById('modalConfirm').style.display = 'none';
+                accion();
+            };
+        }
+
         const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
         const scrollObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Inyectar delay a los hijos para que caigan en cascada
+                    // Efecto cascada: Inyectamos delay secuencial
                     const staggers = entry.target.querySelectorAll('.stagger-item');
                     staggers.forEach((el, index) => {
-                        el.style.transitionDelay = `${index * 100}ms`;
+                        el.style.transitionDelay = `${index * 120}ms`;
                     });
-                    observer.unobserve(entry.target); // Solo animar una vez para mejor rendimiento
+                    observer.unobserve(entry.target); 
                 }
             });
         }, observerOptions);
@@ -665,14 +667,12 @@
             });
         }
 
-        // --- OPTIMIZACIÓN DEL FONDO ANIMADO A 60 FPS ---
         let scrollTicking = false;
         window.addEventListener('scroll', () => {
             if (!scrollTicking) {
                 window.requestAnimationFrame(() => {
                     const fondo = document.getElementById('fondoAnimado');
                     if (fondo) {
-                        // Translate3d es acelerado por hardware, no causa "layout thrashing"
                         fondo.style.transform = `translate3d(0, -${window.scrollY * 0.15}px, 0)`;
                     }
                     scrollTicking = false;
@@ -683,22 +683,14 @@
 
         window.navegar = function(idPagina) {
             if (idPagina === 'admin' && !estadoApp.usuarioActual) {
-                mostrarMensaje(idiomaActual === 'es' ? 'Acceso denegado. Inicia sesión primero.' : 'Access denied. Please log in.');
+                mostrarMensaje(idiomaActual === 'es' ? 'Acceso denegado. Inicia sesión.' : 'Access denied. Please log in.');
                 abrirLogin(); 
                 return; 
             }
             document.querySelectorAll('.pagina').forEach(pag => pag.classList.remove('activa'));
             document.getElementById(idPagina).classList.add('activa');
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
-            setTimeout(activarAnimacionesScroll, 100); // Reactivar observadores en nueva página
-        }
-
-        let timeoutNotificacion;
-        window.mostrarMensaje = function(texto) {
-            const noti = document.getElementById('notificacion');
-            noti.innerText = texto; noti.classList.add('mostrar');
-            clearTimeout(timeoutNotificacion);
-            timeoutNotificacion = setTimeout(() => noti.classList.remove('mostrar'), 3000);
+            setTimeout(activarAnimacionesScroll, 100); 
         }
 
         window.abrirLightbox = function(url) { if (!estadoApp.modoEdicion) { document.getElementById('lightbox-img').src = url; document.getElementById('lightbox').classList.add('mostrar'); } }
@@ -768,26 +760,32 @@
             estadoApp.servicios.forEach((s) => {
                 const nombreMostrar = (idiomaActual === 'en' && s.nombre_en) ? s.nombre_en : s.nombre;
                 const descMostrar = (idiomaActual === 'en' && s.desc_en) ? s.desc_en : s.desc;
+                
+                // Formateo para evitar el doble dólar ($$50 MXN)
+                let precioLimpio = s.precio ? s.precio.toString().trim() : '';
+                precioLimpio = precioLimpio.replace(/^\$+/, ''); // Quitamos todos los $ extra al inicio
+                const precioFinal = precioLimpio ? `$${precioLimpio}` : 'Por cotizar';
 
-                // Añadimos stagger-item para la animación en cascada
+                // Si no hay descripción, inyectamos un div invisible para mantener la tarjeta alineada
+                const descHTML = descMostrar ? `<p class="${estadoApp.modoEdicion ? 'editando' : ''}" style="min-height: 40px;">${descMostrar}</p>` : `<div style="min-height: 40px;"></div>`;
+
                 grid.innerHTML += `
                     <div class="tarjeta-servicio stagger-item">
                         <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${nombreMostrar}</h3>
-                        <p class="${estadoApp.modoEdicion ? 'editando' : ''}">${descMostrar}</p>
-                        <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${s.precio}</div>
+                        ${descHTML}
+                        <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${precioFinal}</div>
                     </div>`;
                 
                 const opt = document.createElement('option'); 
                 opt.value = s.nombre; 
-                opt.setAttribute('data-precio', s.precio);
-                opt.textContent = `${nombreMostrar} - ${s.precio}`; 
+                opt.setAttribute('data-precio', precioFinal);
+                opt.textContent = `${nombreMostrar} - ${precioFinal}`; 
                 selectCitas.appendChild(opt);
             });
             
             if(estadoApp.modoEdicion) { 
                 grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); 
             }
-            // Forzar actualización del observer
             setTimeout(activarAnimacionesScroll, 50);
         }
 
@@ -819,7 +817,7 @@
 
         function formatearHoraStr(horaInt) {
             const ampm = horaInt >= 12 ? 'PM' : 'AM';
-            const h = horaInt > 12 ? horaInt - 12 : horaInt;
+            const h = horaInt > 12 ? horaInt - 12 : (horaInt === 0 ? 12 : horaInt);
             return `${h}:00 ${ampm}`;
         }
 
@@ -873,8 +871,9 @@
             const fechaL = cita.fecha.replace(/-/g, '');
             let [hours, minutes] = cita.hora.split(' ')[0].split(':'); 
             let mod = cita.hora.split(' ')[1];
-            if (hours === '12') hours = '00'; 
-            if (mod === 'PM') hours = (parseInt(hours, 10) + 12).toString();
+            if (hours === '12' && mod === 'AM') hours = '00';
+            else if (hours === '12' && mod === 'PM') hours = '12';
+            else if (mod === 'PM') hours = (parseInt(hours, 10) + 12).toString();
             
             const hInicio = hours.padStart(2, '0') + minutes + '00'; 
             const hFin = (parseInt(hours, 10) + 1).toString().padStart(2, '0') + minutes + '00';
@@ -903,8 +902,8 @@
 
             const ultimaCita = localStorage.getItem('ultima_cita_tiempo');
             const ahora = Date.now();
-            if (ultimaCita && (ahora - ultimaCita < 300000)) { 
-                mostrarMensaje(idiomaActual === 'es' ? 'Por favor espera unos minutos antes de agendar otra cita.' : 'Please wait a few minutes before booking again.');
+            if (ultimaCita && (ahora - ultimaCita < 120000)) { // 2 minutos de enfriamiento
+                mostrarMensaje(idiomaActual === 'es' ? 'Espera unos minutos antes de agendar otra cita.' : 'Please wait a few minutes before booking again.');
                 return;
             }
 
@@ -916,7 +915,7 @@
             const barberoSelect = document.getElementById('barbero').value;
             
             try {
-                // Verificar choque de horarios final
+                // Doble chequeo final de disponibilidad para evitar choques simultáneos
                 const qCheck = query(collection(db, "citas"), where("fecha", "==", fechaSelect), where("hora", "==", horaSelect), where("barbero", "==", barberoSelect));
                 const checkSnap = await getDocs(qCheck);
 
@@ -959,7 +958,7 @@
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
                 document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
-                // --- BOT DE TELEGRAM CONGELADO POR AHORA ---
+                // --- BOT DE TELEGRAM CONGELADO ---
                 // enviarNotificacionTelegram(cita);
 
             } catch (error) {
@@ -993,7 +992,7 @@
                 misCitas.forEach((cita, index) => {
                     const esPasada = new Date(`${cita.fecha}T00:00:00`) < new Date(new Date().setHours(0,0,0,0));
                     const estadoColor = esPasada ? 'var(--verde-olivo)' : 'var(--azul-acento)';
-                    // Animamos las tarjetas del historial
+                    
                     contenedor.innerHTML += `
                         <div class="stagger-item" style="background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px; animation: aparecer 0.5s ease forwards; animation-delay: ${index * 100}ms; opacity: 0;">
                             <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
@@ -1018,12 +1017,12 @@
                     });
                     if (tokenDispositivo) {
                         console.log('Token FCM Generado:', tokenDispositivo);
-                        alert('¡Notificaciones Push activadas con éxito!');
+                        mostrarMensaje('¡Notificaciones Push activadas con éxito!');
                         document.getElementById('btn-activar-notif').style.display = 'none';
                         document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
                     }
                 } else {
-                    alert('Se necesitan permisos del navegador.');
+                    mostrarMensaje('Se necesitan permisos del navegador.');
                 }
             } catch (error) { console.error('Error Push:', error); }
         };
@@ -1033,16 +1032,35 @@
             try {
                 const borrado = await deleteToken(messaging);
                 if (borrado) {
-                    alert('Notificaciones desactivadas.');
+                    mostrarMensaje('Notificaciones desactivadas.');
                     document.getElementById('btn-desactivar-notif').style.display = 'none';
                     document.getElementById('btn-activar-notif').style.display = 'inline-block';
                 }
             } catch (error) { console.error('Error al desactivar Push:', error); }
         };
 
+        window.verificarEstadoNotificaciones = async function() {
+            if (!messaging) return;
+            // Revisamos si el navegador ya tiene el permiso otorgado de antes
+            if (Notification.permission === 'granted') {
+                try {
+                    const token = await getToken(messaging, { 
+                        vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
+                    });
+                    // Si encontramos el token, ajustamos los botones en automático
+                    if (token) {
+                        document.getElementById('btn-activar-notif').style.display = 'none';
+                        document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
+                    }
+                } catch (error) {
+                    console.log('No hay token activo de notificaciones.');
+                }
+            }
+        };
+
         if(messaging) {
             onMessage(messaging, (payload) => {
-                alert(`💈 Cactus Barbería: ${payload.notification?.title} \n${payload.notification?.body}`);
+                mostrarMensaje(`💈 Cactus Barbería: ${payload.notification?.title} \n${payload.notification?.body}`);
             });
         }
 
@@ -1057,16 +1075,11 @@
         }
 
         onAuthStateChanged(auth, (user) => {
-            if(!datosYaCargados) { 
-                iniciarEscuchaConfiguracion(); 
-                iniciarEscuchaBarberos(); 
-                iniciarEscuchaCitas(); 
-                iniciarEscuchaServicios(); 
-                iniciarEscuchaGaleria(); 
-                datosYaCargados = true; 
-            }
             const btnNav = document.getElementById('btn-nav-admin');
             if (user) {
+                // Solo cargamos citas privadas si el admin está logueado
+                iniciarEscuchaCitas();
+
                 estadoApp.usuarioActual = USUARIOS_ROLES[user.email.toLowerCase()] || { nombre: 'Colaborador', rol: 'barbero' };
                 btnNav.innerText = `Panel (${estadoApp.usuarioActual.nombre})`; 
                 btnNav.style.backgroundColor = 'var(--azul-acento)';
@@ -1091,7 +1104,7 @@
                     document.getElementById('login-user').value = ''; 
                     document.getElementById('login-pass').value = ''; 
                 })
-                .catch(() => mostrarMensaje('Error de acceso.'))
+                .catch(() => mostrarMensaje('Credenciales incorrectas.'))
                 .finally(() => { btn.innerText = "Entrar"; btn.disabled = false; });
         }
         
@@ -1108,6 +1121,9 @@
             
             cambiarTabAdmin('tab-citas'); 
             renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
+            
+            // Ejecutamos la verificación silenciosa al abrir el panel
+            verificarEstadoNotificaciones();
         }
 
         window.cambiarTabAdmin = function(idTab) {
@@ -1142,7 +1158,9 @@
             });
         }
         
-        window.eliminarCitaId = function(id) { if(confirm('¿Borrar esta cita?')) deleteDoc(doc(db, "citas", id)); }
+        window.eliminarCitaId = function(id) {
+            solicitarConfirmacion('¿Deseas borrar esta cita de la agenda?', () => { deleteDoc(doc(db, "citas", id)); });
+        }
 
         window.renderizarListaBarberos = function() {
             const ul = document.getElementById('lista-barberos'); 
@@ -1215,7 +1233,9 @@
             document.getElementById('btn-cancelar-edicion-barbero').style.display = 'none';
         }
 
-        window.eliminarBarbero = function(id) { if(confirm("¿Eliminar barbero?")) deleteDoc(doc(db, "barberos", id)); }
+        window.eliminarBarbero = function(id) { 
+            solicitarConfirmacion("¿Eliminar este barbero definitivamente?", () => { deleteDoc(doc(db, "barberos", id)); });
+        }
 
         async function subirArchivoFirebase(archivo, carpeta) {
             const nombreUnico = Date.now() + '_' + archivo.name;
@@ -1231,7 +1251,11 @@
             estadoApp.servicios.forEach(s => {
                 const nE = s.nombre.replace(/'/g, "\\'"); const pE = s.precio.replace(/'/g, "\\'"); const dE = s.desc.replace(/'/g, "\\'");
                 const nEn = (s.nombre_en || '').replace(/'/g, "\\'"); const dEn = (s.desc_en || '').replace(/'/g, "\\'");
-                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong><br><small style="color:#888;">${s.nombre_en || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${s.precio}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td></tr>`;
+                
+                let pLimpio = s.precio.replace(/^\$+/, '');
+                const pFinal = pLimpio ? `$${pLimpio}` : 'N/A';
+
+                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong><br><small style="color:#888;">${s.nombre_en || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${pFinal}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td></tr>`;
             });
         }
 
@@ -1244,11 +1268,13 @@
                 desc: document.getElementById('nuevo-servicio-desc').value.trim(),
                 desc_en: document.getElementById('nuevo-servicio-desc-en').value.trim()
             };
-            if (datos.nombre && datos.precio && datos.desc) { 
+            if (datos.nombre && datos.precio) { 
                 try {
                     id ? await updateDoc(doc(db, "servicios", id), datos) : await addDoc(collection(db, "servicios"), datos);
                     cancelarEdicionServicio();
                 } catch(e) { console.error(e); }
+            } else {
+                mostrarMensaje('Nombre y precio son obligatorios.');
             }
         }
 
@@ -1265,14 +1291,20 @@
             document.getElementById('btn-add-servicio').innerText = textosUI[idiomaActual]['btn-guardar-serv']; document.getElementById('btn-cancelar-edicion').style.display = 'none';
         }
 
-        window.eliminarServicio = function(id) { if(confirm("¿Eliminar?")) deleteDoc(doc(db, "servicios", id)); }
+        window.eliminarServicio = function(id) { 
+            solicitarConfirmacion("¿Eliminar este servicio del catálogo?", () => { deleteDoc(doc(db, "servicios", id)); });
+        }
 
         window.renderizarGaleriaAdmin = function() {
             const c = document.getElementById('contenedor-galeria-admin'); if(!c) return; c.innerHTML = '';
             const txt = textosUI[idiomaActual];
             estadoApp.galeria.forEach(img => { 
-                c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="if(confirm('¿Eliminar?')) deleteDoc(doc(db, 'galeria', '${img.id}'))" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div></div>`; 
+                c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="eliminarImagen('${img.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div></div>`; 
             });
+        }
+
+        window.eliminarImagen = function(id) {
+            solicitarConfirmacion("¿Eliminar esta imagen de la galería?", () => { deleteDoc(doc(db, "galeria", id)); });
         }
 
         window.guardarImagenGaleria = async function() {
@@ -1287,7 +1319,7 @@
                     id ? await updateDoc(doc(db, "galeria", id), {url}) : await addDoc(collection(db, "galeria"), {url}); 
                     cancelarEdicionGaleria(); 
                 } 
-            } catch(e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
+            } catch(e) { mostrarMensaje('Error al guardar imagen.'); } finally { btn.disabled = false; }
         }
 
         window.prepararEdicionGaleria = function(id, url) { 
@@ -1350,13 +1382,20 @@
                     } else { 
                         elementoImagenActual.style.backgroundImage = `url('${url}')`; 
                     }
-                    cerrarModalImagen(); mostrarMensaje('Actualizada');
+                    cerrarModalImagen(); mostrarMensaje('Imagen actualizada.');
                 }
-            } catch (e) { mostrarMensaje('Error.'); } finally { btn.disabled = false; }
+            } catch (e) { mostrarMensaje('Error al cambiar imagen.'); } finally { btn.disabled = false; }
         }
 
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
+            
+            // Disparamos la carga de datos PÚBLICOS independientemente de si eres admin o no
+            iniciarEscuchaConfiguracion();
+            iniciarEscuchaBarberos();
+            iniciarEscuchaServicios();
+            iniciarEscuchaGaleria();
+
             activarAnimacionesScroll();
         });
     </script>
