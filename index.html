@@ -954,7 +954,7 @@
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
 
-                const telefonoBarberia = "52322XXXXXXX"; 
+                const telefonoBarberia = "523223228960"; 
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
                 document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
