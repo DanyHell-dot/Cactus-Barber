@@ -403,7 +403,7 @@
                             <input type="hidden" id="editando-servicio-id" value="">
                             <input type="text" id="nuevo-servicio-nombre" placeholder="Nombre (Ej. Corte Premium)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                             <input type="text" id="nuevo-servicio-nombre-en" placeholder="Nombre en Inglés (Ej. Premium Haircut)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f0f7ff;">
-                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. 300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
+                            <input type="text" id="nuevo-servicio-precio" placeholder="Precio (Ej. $300 MXN)" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px;">
                             <textarea id="nuevo-servicio-desc" placeholder="Descripción breve en Español..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; resize: vertical;"></textarea>
                             <textarea id="nuevo-servicio-desc-en" placeholder="Descripción breve en Inglés..." rows="2" style="padding: 10px; border: 1px solid #ccc; border-radius: 8px; background-color: #f0f7ff; resize: vertical;"></textarea>
                         </div>
@@ -478,7 +478,6 @@
         </div>
     </div>
 
-    <!-- Reemplazo Custom del 'confirm()' nativo -->
     <div class="modal-overlay" id="modalConfirm">
         <div class="modal-login" style="max-width: 350px;">
             <h2 style="color: #d32f2f; margin-bottom: 10px;">¿Estás seguro?</h2>
@@ -504,7 +503,6 @@
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
         import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
-        // Tu configuración real de Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyBBVbW-DrxmA1xr-SVivwJseD1u0VKUqSk",
             authDomain: "cactus-barberia.firebaseapp.com",
@@ -532,7 +530,7 @@
         };
 
         let elementoImagenActual = null; 
-        let datosYaCargados = false; 
+        let datosYaCargados = false;
         let idiomaActual = 'es';
         let cargaInicialCitas = true; // Candado para notificaciones de inicio
 
@@ -652,8 +650,11 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    // Efecto cascada: Inyectamos delay secuencial
                     const staggers = entry.target.querySelectorAll('.stagger-item');
-                    staggers.forEach((el, index) => { el.style.transitionDelay = `${index * 100}ms`; });
+                    staggers.forEach((el, index) => {
+                        el.style.transitionDelay = `${index * 120}ms`;
+                    });
                     observer.unobserve(entry.target); 
                 }
             });
@@ -661,7 +662,8 @@
 
         window.activarAnimacionesScroll = function() {
             document.querySelectorAll('.reveal').forEach(el => { 
-                el.classList.remove('visible'); scrollObserver.observe(el); 
+                el.classList.remove('visible'); 
+                scrollObserver.observe(el); 
             });
         }
 
@@ -670,7 +672,9 @@
             if (!scrollTicking) {
                 window.requestAnimationFrame(() => {
                     const fondo = document.getElementById('fondoAnimado');
-                    if (fondo) fondo.style.transform = `translate3d(0, -${window.scrollY * 0.15}px, 0)`;
+                    if (fondo) {
+                        fondo.style.transform = `translate3d(0, -${window.scrollY * 0.15}px, 0)`;
+                    }
                     scrollTicking = false;
                 });
                 scrollTicking = true;
@@ -779,13 +783,11 @@
                 const nombreMostrar = (idiomaActual === 'en' && s.nombre_en) ? s.nombre_en : s.nombre;
                 const descMostrar = (idiomaActual === 'en' && s.desc_en) ? s.desc_en : s.desc;
                 
-                // Limpieza del doble signo de dólar
                 let precioLimpio = s.precio ? s.precio.toString().trim() : '';
-                precioLimpio = precioLimpio.replace(/^\$+/, ''); 
+                precioLimpio = precioLimpio.replace(/^\$+/, '');
                 const precioFinal = precioLimpio ? `$${precioLimpio}` : 'Por cotizar';
 
-                // Mantener el espacio si no hay descripción
-                const descHTML = descMostrar ? `<p class="${estadoApp.modoEdicion ? 'editando' : ''}">${descMostrar}</p>` : `<div style="flex-grow: 1; min-height: 40px;"></div>`;
+                const descHTML = descMostrar ? `<p class="${estadoApp.modoEdicion ? 'editando' : ''}" style="min-height: 40px;">${descMostrar}</p>` : `<div style="min-height: 40px;"></div>`;
 
                 grid.innerHTML += `
                     <div class="tarjeta-servicio stagger-item">
@@ -971,7 +973,7 @@
                 document.getElementById('texto-exito').innerHTML = `${txt['txt-ex-1']} <strong>${cita.fecha}</strong> ${txt['txt-ex-2']} <strong>${cita.hora}</strong>.<br><br>📍 Lomas del Coapinole, Pto. Vallarta.`;
                 document.getElementById('btn-add-calendar').href = generarEnlaceCalendario(cita);
 
-                const telefonoBarberia = "52322XXXXXXX"; 
+                const telefonoBarberia = "523223228960"; 
                 const mensajeCliente = `¡Hola! Acabo de agendar una cita en la plataforma. 💈%0A%0A👤 *Nombre:* ${cita.nombre}%0A📅 *Fecha:* ${cita.fecha}%0A🕒 *Hora:* ${cita.hora}%0A👨‍🔧 *Barbero:* ${cita.barbero}%0A✂️ *Servicio:* ${cita.servicio}%0A%0A¡Nos vemos pronto!`;
                 document.getElementById('btn-whatsapp-confirm').href = `https://wa.me/${telefonoBarberia}?text=${mensajeCliente}`;
 
@@ -1021,19 +1023,6 @@
             } catch(error) { contenedor.innerHTML = '<p style="text-align:center; color: #d32f2f;">Error.</p>'; }
         }
 
-        window.verificarEstadoNotificaciones = async function() {
-            if (!messaging) return;
-            if (Notification.permission === 'granted') {
-                try {
-                    const token = await getToken(messaging, { vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' });
-                    if (token) {
-                        document.getElementById('btn-activar-notif').style.display = 'none';
-                        document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
-                    }
-                } catch (error) { console.log('Sin token de notificaciones.'); }
-            }
-        };
-
         window.activarNotificaciones = async function() {
             if(!messaging) { mostrarMensaje('Navegador sin soporte de notificaciones.'); return; }
             try {
@@ -1043,7 +1032,8 @@
                         vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
                     });
                     if (tokenDispositivo) {
-                        mostrarMensaje('¡Notificaciones activadas!');
+                        console.log('Token FCM Generado:', tokenDispositivo);
+                        mostrarMensaje('¡Notificaciones Push activadas con éxito!');
                         document.getElementById('btn-activar-notif').style.display = 'none';
                         document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
                     }
@@ -1067,13 +1057,11 @@
 
         window.verificarEstadoNotificaciones = async function() {
             if (!messaging) return;
-            // Revisamos si el navegador ya tiene el permiso otorgado de antes
             if (Notification.permission === 'granted') {
                 try {
                     const token = await getToken(messaging, { 
                         vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
                     });
-                    // Si encontramos el token, ajustamos los botones en automático
                     if (token) {
                         document.getElementById('btn-activar-notif').style.display = 'none';
                         document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
@@ -1101,6 +1089,13 @@
         }
 
         onAuthStateChanged(auth, (user) => {
+            if(!datosYaCargados) { 
+                iniciarEscuchaConfiguracion(); 
+                iniciarEscuchaBarberos(); 
+                iniciarEscuchaServicios(); 
+                iniciarEscuchaGaleria(); 
+                datosYaCargados = true; 
+            }
             const btnNav = document.getElementById('btn-nav-admin');
             if (user) {
                 // Solo cargamos citas privadas si el admin está logueado
@@ -1130,7 +1125,7 @@
                     document.getElementById('login-user').value = ''; 
                     document.getElementById('login-pass').value = ''; 
                 })
-                .catch(() => mostrarMensaje('Error de acceso.'))
+                .catch(() => mostrarMensaje('Credenciales incorrectas.'))
                 .finally(() => { btn.innerText = "Entrar"; btn.disabled = false; });
         }
         
@@ -1185,7 +1180,7 @@
         }
         
         window.eliminarCitaId = function(id) {
-            solicitarConfirmacion('¿Borrar esta cita de la base de datos?', () => deleteDoc(doc(db, "citas", id)));
+            solicitarConfirmacion('¿Deseas borrar esta cita de la agenda?', () => { deleteDoc(doc(db, "citas", id)); });
         }
 
         window.renderizarListaBarberos = function() {
@@ -1260,7 +1255,7 @@
         }
 
         window.eliminarBarbero = function(id) { 
-            solicitarConfirmacion("¿Eliminar este barbero?", () => deleteDoc(doc(db, "barberos", id))); 
+            solicitarConfirmacion("¿Eliminar este barbero definitivamente?", () => { deleteDoc(doc(db, "barberos", id)); });
         }
 
         async function subirArchivoFirebase(archivo, carpeta) {
@@ -1278,11 +1273,10 @@
                 const nE = s.nombre.replace(/'/g, "\\'"); const pE = s.precio.replace(/'/g, "\\'"); const dE = s.desc.replace(/'/g, "\\'");
                 const nEn = (s.nombre_en || '').replace(/'/g, "\\'"); const dEn = (s.desc_en || '').replace(/'/g, "\\'");
                 
-                let precioLimpio = s.precio ? s.precio.toString().trim() : '';
-                precioLimpio = precioLimpio.replace(/^\$+/, ''); 
-                const precioFinal = precioLimpio ? `$${precioLimpio}` : 'N/A';
+                let pLimpio = s.precio.replace(/^\$+/, '');
+                const pFinal = pLimpio ? `$${pLimpio}` : 'N/A';
 
-                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong><br><small style="color:#888;">${s.nombre_en || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${precioFinal}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td></tr>`;
+                tbody.innerHTML += `<tr><td><strong>${s.nombre}</strong><br><small style="color:#888;">${s.nombre_en || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${pFinal}</span></td><td style="font-size: 13px;">${s.desc}</td><td style="display: flex; gap: 5px;"><button onclick="prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td></tr>`;
             });
         }
 
@@ -1301,7 +1295,7 @@
                     cancelarEdicionServicio();
                 } catch(e) { console.error(e); }
             } else {
-                mostrarMensaje('Nombre y precio requeridos');
+                mostrarMensaje('Nombre y precio son obligatorios.');
             }
         }
 
@@ -1319,7 +1313,7 @@
         }
 
         window.eliminarServicio = function(id) { 
-            solicitarConfirmacion("¿Eliminar servicio?", () => deleteDoc(doc(db, "servicios", id))); 
+            solicitarConfirmacion("¿Eliminar este servicio del catálogo?", () => { deleteDoc(doc(db, "servicios", id)); });
         }
 
         window.renderizarGaleriaAdmin = function() {
@@ -1329,9 +1323,9 @@
                 c.innerHTML += `<div style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;"><div class="foto-galeria" style="background-image: url('${img.url}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="prepararEdicionGaleria('${img.id}', '${img.url.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="eliminarImagen('${img.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div></div>`; 
             });
         }
-        
+
         window.eliminarImagen = function(id) {
-            solicitarConfirmacion("¿Borrar esta imagen?", () => deleteDoc(doc(db, 'galeria', id)));
+            solicitarConfirmacion("¿Eliminar esta imagen de la galería?", () => { deleteDoc(doc(db, "galeria", id)); });
         }
 
         window.guardarImagenGaleria = async function() {
@@ -1346,7 +1340,7 @@
                     id ? await updateDoc(doc(db, "galeria", id), {url}) : await addDoc(collection(db, "galeria"), {url}); 
                     cancelarEdicionGaleria(); 
                 } 
-            } catch(e) { mostrarMensaje('Error al guardar.'); } finally { btn.disabled = false; }
+            } catch(e) { mostrarMensaje('Error al guardar imagen.'); } finally { btn.disabled = false; }
         }
 
         window.prepararEdicionGaleria = function(id, url) { 
@@ -1414,54 +1408,16 @@
             } catch (e) { mostrarMensaje('Error al cambiar imagen.'); } finally { btn.disabled = false; }
         }
 
-        let cargaInicialCitas = true;
-
-        // Sobreescribimos la función para integrar la alerta Push (Opción 1)
-        function iniciarEscuchaCitas() {
-            onSnapshot(collection(db, "citas"), (snapshot) => {
-                // 1. Revisamos si hay citas NUEVAS que acaban de entrar
-                snapshot.docChanges().forEach((change) => {
-                    if (change.type === "added" && !cargaInicialCitas) {
-                        const nuevaCita = change.doc.data();
-                        
-                        // 2. Disparamos la notificación en tu pantalla
-                        if (Notification.permission === "granted") {
-                            new Notification("¡Nueva Cita Programada! 💈", {
-                                body: `${nuevaCita.nombre} agendó para el ${nuevaCita.fecha} a las ${nuevaCita.hora}.`,
-                                icon: 'https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg'
-                            });
-                            // Reproducir sonido (Opcional, asegurate de tener un audio válido)
-                            try {
-                                new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg').play();
-                            } catch(e) {}
-                        }
-                    }
-                });
-
-                // 3. Actualizamos la tabla normal
-                estadoApp.citas = [];
-                snapshot.forEach(docSnap => { estadoApp.citas.push({ id: docSnap.id, ...docSnap.data() }); });
-                
-                estadoApp.citas.sort((a, b) => {
-                    const timeA = a.fechaCreacion ? a.fechaCreacion.toMillis() : 0;
-                    const timeB = b.fechaCreacion ? b.fechaCreacion.toMillis() : 0;
-                    return timeB - timeA;
-                });
-                
-                if(estadoApp.usuarioActual) renderizarTablaCitas();
-                
-                cargaInicialCitas = false; // Terminó de cargar las viejas
-            });
-        }
-
         window.addEventListener('DOMContentLoaded', () => {
             document.getElementById('fecha').setAttribute('min', new Date().toISOString().split('T')[0]);
             
-            // Disparamos la carga de datos PÚBLICOS independientemente de si eres admin o no
-            iniciarEscuchaConfiguracion();
-            iniciarEscuchaBarberos();
-            iniciarEscuchaServicios();
-            iniciarEscuchaGaleria();
+            if(!datosYaCargados) {
+                iniciarEscuchaConfiguracion();
+                iniciarEscuchaBarberos();
+                iniciarEscuchaServicios();
+                iniciarEscuchaGaleria();
+                datosYaCargados = true;
+            }
 
             activarAnimacionesScroll();
         });
