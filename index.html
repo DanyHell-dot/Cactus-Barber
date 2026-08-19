@@ -779,6 +779,19 @@
             const textoCargando = idiomaActual === 'es' ? 'Selecciona un servicio...' : 'Select a service...';
             selectCitas.innerHTML = `<option value="" disabled selected>${textoCargando}</option>`;
             
+            // --- NUEVA TARJETA: GEMINI AI ---
+            const tituloAi = idiomaActual === 'es' ? '🤖 Asesor de Estilo IA' : '🤖 AI Style Advisor';
+            const descAi = idiomaActual === 'es' ? '¿No sabes qué corte te queda mejor? Platica con nuestro asistente virtual inteligente y descubre tu estilo ideal.' : 'Not sure which cut suits you best? Chat with our smart virtual assistant to discover your ideal style.';
+            const btnAi = idiomaActual === 'es' ? 'Consultar ahora ↗' : 'Ask now ↗';
+
+            grid.innerHTML += `
+                <div class="tarjeta-servicio stagger-item ai-card" style="border-left-color: #d4af37; background: linear-gradient(145deg, #1A251E, #2c3e34); color: white;">
+                    <h3 style="color: #d4af37;">${tituloAi}</h3>
+                    <p style="color: #eee; min-height: 40px; flex-grow: 1;">${descAi}</p>
+                    <a href="https://gemini.google.com/gem/1LkG5uIE1oN6_TNkXbRDdQ9cX8g8M46Uz?usp=sharing" target="_blank" class="precio-servicio" style="background-color: rgba(212, 175, 55, 0.15); color: #d4af37; border-color: rgba(212, 175, 55, 0.3); text-decoration: none; cursor: pointer; text-align: center; align-self: flex-start;">${btnAi}</a>
+                </div>`;
+            // ---------------------------------
+
             estadoApp.servicios.forEach((s) => {
                 const nombreMostrar = (idiomaActual === 'en' && s.nombre_en) ? s.nombre_en : s.nombre;
                 const descMostrar = (idiomaActual === 'en' && s.desc_en) ? s.desc_en : s.desc;
@@ -804,7 +817,8 @@
             });
             
             if(estadoApp.modoEdicion) { 
-                grid.querySelectorAll('h3, p, .precio-servicio').forEach(el => el.contentEditable = "true"); 
+                // Evitamos que la tarjeta de la IA se marque como editable
+                grid.querySelectorAll('.tarjeta-servicio:not(.ai-card) h3, .tarjeta-servicio:not(.ai-card) p, .tarjeta-servicio:not(.ai-card) .precio-servicio').forEach(el => el.contentEditable = "true"); 
             }
             setTimeout(activarAnimacionesScroll, 50);
         }
