@@ -367,26 +367,13 @@
                     <h2 style="color: var(--verde-cactus);" data-i18n="tit-barberos">Nuestros Barberos</h2>
                     <div style="background: var(--fondo); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
                         <input type="hidden" id="editando-barbero-id" value="">
-                        <input type="text" id="nuevo-barbero" data-i18n-ph="ph-barbero" placeholder="Nombre del barbero" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 10px;">
+                        <input type="text" id="nuevo-barbero" data-i18n-ph="ph-barbero" placeholder="Nombre del barbero" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 15px;">
                         
-                        <div style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;">
-                            <div style="flex: 1; min-width: 120px;">
-                                <label style="font-size: 12px; color: var(--verde-cactus); font-weight: bold;">Hora Inicio:</label>
-                                <select id="nuevo-barbero-inicio" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
-                                    <option value="7">7:00 AM</option><option value="8">8:00 AM</option><option value="9">9:00 AM</option><option value="10" selected>10:00 AM</option>
-                                    <option value="11">11:00 AM</option><option value="12">12:00 PM</option><option value="13">1:00 PM</option>
-                                    <option value="14">2:00 PM</option><option value="15">3:00 PM</option>
-                                </select>
-                            </div>
-                            <div style="flex: 1; min-width: 120px;">
-                                <label style="font-size: 12px; color: var(--verde-cactus); font-weight: bold;">Hora Fin:</label>
-                                <select id="nuevo-barbero-fin" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc;">
-                                    <option value="14">2:00 PM</option><option value="15">3:00 PM</option><option value="16">4:00 PM</option>
-                                    <option value="17">5:00 PM</option><option value="18">6:00 PM</option><option value="19" selected>7:00 PM</option>
-                                    <option value="20">8:00 PM</option><option value="21">9:00 PM</option><option value="22">10:00 PM</option>
-                                </select>
-                            </div>
+                        <label style="font-size: 14px; font-weight: bold; color: var(--verde-cactus); display: block; margin-bottom: 10px;">Horarios por Día:</label>
+                        <div id="dias-horario-container" style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 15px;">
+                            <!-- JS inyectará la tabla de 7 días aquí -->
                         </div>
+
                         <div style="display: flex; gap: 10px;">
                             <button id="btn-add-barbero" onclick="guardarBarbero()" class="btn-cita" style="padding: 10px 20px; font-size: 14px; flex: 1;" data-i18n="btn-añadir">Guardar Barbero</button>
                             <button id="btn-cancelar-edicion-barbero" onclick="cancelarEdicionBarbero()" class="btn-cerrar-modal" style="display: none; padding: 10px 20px; font-size: 14px; margin-top: 0;" data-i18n="btn-cancelar">Cancelar</button>
@@ -532,7 +519,7 @@
         let elementoImagenActual = null; 
         let datosYaCargados = false;
         let idiomaActual = 'es';
-        let cargaInicialCitas = true; // Candado para notificaciones de inicio
+        let cargaInicialCitas = true; 
 
         const textosUI = {
             'es': {
@@ -650,7 +637,6 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Efecto cascada: Inyectamos delay secuencial
                     const staggers = entry.target.querySelectorAll('.stagger-item');
                     staggers.forEach((el, index) => {
                         el.style.transitionDelay = `${index * 120}ms`;
@@ -711,7 +697,13 @@
                 estadoApp.barberos = [];
                 snapshot.forEach(docSnap => { 
                     const data = docSnap.data();
-                    estadoApp.barberos.push({ id: docSnap.id, nombre: data.nombre, inicio: data.inicio || 10, fin: data.fin || 19 }); 
+                    estadoApp.barberos.push({ 
+                        id: docSnap.id, 
+                        nombre: data.nombre, 
+                        inicio: data.inicio || 10, 
+                        fin: data.fin || 19,
+                        horario: data.horario || null 
+                    }); 
                 });
                 renderizarListaBarberos(); 
             });
@@ -737,24 +729,20 @@
 
         function iniciarEscuchaCitas() {
             onSnapshot(collection(db, "citas"), (snapshot) => {
-                // 1. Revisamos si hay citas NUEVAS que acaban de entrar
                 snapshot.docChanges().forEach((change) => {
                     if (change.type === "added" && !cargaInicialCitas) {
                         const nuevaCita = change.doc.data();
                         
-                        // 2. Disparamos la notificación en tu pantalla
                         if (Notification.permission === "granted") {
                             new Notification("¡Nueva Cita Programada! 💈", {
                                 body: `${nuevaCita.nombre} agendó para el ${nuevaCita.fecha} a las ${nuevaCita.hora}.`,
                                 icon: 'https://i.postimg.cc/Hkw5wMMp/Whats-App-Image-2026-07-09-at-5-33-15-PM.jpg'
                             });
-                            // Intentar reproducir sonido de alerta
                             try { const audio = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg'); audio.play(); } catch(e) {}
                         }
                     }
                 });
 
-                // 3. Actualizamos la tabla normal
                 estadoApp.citas = [];
                 snapshot.forEach(docSnap => { estadoApp.citas.push({ id: docSnap.id, ...docSnap.data() }); });
                 
@@ -766,7 +754,7 @@
                 
                 if(estadoApp.usuarioActual) renderizarTablaCitas();
                 
-                cargaInicialCitas = false; // Terminó de cargar las viejas
+                cargaInicialCitas = false; 
             });
         }
 
@@ -817,7 +805,6 @@
             });
             
             if(estadoApp.modoEdicion) { 
-                // Evitamos que la tarjeta de la IA se marque como editable
                 grid.querySelectorAll('.tarjeta-servicio:not(.ai-card) h3, .tarjeta-servicio:not(.ai-card) p, .tarjeta-servicio:not(.ai-card) .precio-servicio').forEach(el => el.contentEditable = "true"); 
             }
             setTimeout(activarAnimacionesScroll, 50);
@@ -856,11 +843,11 @@
         }
 
         window.cargarHorarios = async function() {
-            const fecha = document.getElementById('fecha').value; 
+            const fechaStr = document.getElementById('fecha').value; 
             const nombreBarbero = document.getElementById('barbero').value;
             const selectHora = document.getElementById('hora');
             
-            if (!fecha || !nombreBarbero) return;
+            if (!fechaStr || !nombreBarbero) return;
             selectHora.innerHTML = '<option value="" disabled selected>Consultando disponibilidad...</option>';
 
             const barberoSeleccionado = estadoApp.barberos.find(b => b.nombre === nombreBarbero);
@@ -869,11 +856,34 @@
                 return;
             }
 
-            const horaInicio = barberoSeleccionado.inicio || 10;
-            const horaFin = barberoSeleccionado.fin || 19;
+            // Calculamos qué día de la semana es (0=Domingo, 1=Lunes...)
+            const [year, month, day] = fechaStr.split('-');
+            const fechaObj = new Date(year, month - 1, day);
+            const diaSemana = fechaObj.getDay(); 
+
+            let horaInicio = 10;
+            let horaFin = 19;
+            let diaActivo = true;
+
+            // Revisamos el horario personalizado de ese día
+            if (barberoSeleccionado.horario && barberoSeleccionado.horario[diaSemana.toString()]) {
+                diaActivo = barberoSeleccionado.horario[diaSemana.toString()].activo;
+                horaInicio = barberoSeleccionado.horario[diaSemana.toString()].inicio;
+                horaFin = barberoSeleccionado.horario[diaSemana.toString()].fin;
+            } else {
+                // Compatibilidad con registros viejos
+                horaInicio = barberoSeleccionado.inicio || 10;
+                horaFin = barberoSeleccionado.fin || 19;
+                diaActivo = (diaSemana !== 0); // Asume que domingo cerraban
+            }
+
+            if (!diaActivo) {
+                selectHora.innerHTML = '<option value="" disabled selected>El barbero no labora este día</option>';
+                return;
+            }
             
             try {
-                const q = query(collection(db, "citas"), where("fecha", "==", fecha), where("barbero", "==", nombreBarbero));
+                const q = query(collection(db, "citas"), where("fecha", "==", fechaStr), where("barbero", "==", nombreBarbero));
                 const snapshot = await getDocs(q);
                 
                 const horasOcupadas = [];
@@ -1112,7 +1122,6 @@
             }
             const btnNav = document.getElementById('btn-nav-admin');
             if (user) {
-                // Solo cargamos citas privadas si el admin está logueado
                 iniciarEscuchaCitas();
 
                 estadoApp.usuarioActual = USUARIOS_ROLES[user.email.toLowerCase()] || { nombre: 'Colaborador', rol: 'barbero' };
@@ -1157,7 +1166,6 @@
             cambiarTabAdmin('tab-citas'); 
             renderizarTablaCitas(); renderizarListaBarberos(); renderizarTablaServiciosAdmin(); renderizarGaleriaAdmin();
             
-            // Ejecutamos la verificación silenciosa al abrir el panel
             verificarEstadoNotificaciones();
         }
 
@@ -1212,10 +1220,10 @@
                         <li style="background: #fff; padding:15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); display:flex; justify-content:space-between; align-items: center;">
                             <div>
                                 <strong style="color: var(--verde-cactus); font-size: 16px;">${b.nombre}</strong><br>
-                                <small style="color: #666;">🕒 ${formatearHoraStr(b.inicio)} a ${formatearHoraStr(b.fin)}</small>
+                                <small style="color: #666;">🕒 ${b.horario ? 'Horario Personalizado Asignado' : (formatearHoraStr(b.inicio) + ' a ' + formatearHoraStr(b.fin))}</small>
                             </div> 
                             <div style="display: flex; gap: 5px;">
-                                <button onclick="prepararEdicionBarbero('${b.id}', '${nomE}', ${b.inicio}, ${b.fin})" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button>
+                                <button onclick="prepararEdicionBarbero('${b.id}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button>
                                 <button onclick="eliminarBarbero('${b.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button>
                             </div>
                         </li>`; 
@@ -1224,18 +1232,67 @@
             });
         }
 
+        const diasSemanaNombres = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        window.generarUIHorarios = function() {
+            const container = document.getElementById('dias-horario-container');
+            if(!container) return;
+            container.innerHTML = '';
+            let opciones = '';
+            for(let i=7; i<=22; i++) {
+                const ampm = i>=12 ? 'PM' : 'AM';
+                const h = i>12 ? i-12 : (i===0?12:i);
+                opciones += `<option value="${i}">${h}:00 ${ampm}</option>`;
+            }
+            
+            diasSemanaNombres.forEach((dia, index) => {
+                container.innerHTML += `
+                    <div style="display: flex; align-items: center; gap: 10px; background: #fff; padding: 10px; border-radius: 8px; border: 1px solid #ddd; flex-wrap: wrap;">
+                        <label style="width: 100px; display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: bold; cursor: pointer; color: var(--verde-cactus);">
+                            <input type="checkbox" id="dia-activo-${index}" onchange="toggleDia(${index})" checked>
+                            ${dia}
+                        </label>
+                        <div style="display: flex; align-items: center; gap: 5px;">
+                            <select id="dia-inicio-${index}" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px;">${opciones}</select>
+                            <span style="font-size: 12px; color: #666;">a</span>
+                            <select id="dia-fin-${index}" style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px;">${opciones}</select>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Valores por defecto: Domingo apagado, los demas de 10 a 7
+            document.getElementById('dia-activo-0').checked = false;
+            for(let i=0; i<7; i++) {
+                document.getElementById(`dia-inicio-${i}`).value = '10';
+                document.getElementById(`dia-fin-${i}`).value = '19';
+                toggleDia(i);
+            }
+        }
+
+        window.toggleDia = function(idx) {
+            const activo = document.getElementById(`dia-activo-${idx}`).checked;
+            document.getElementById(`dia-inicio-${idx}`).disabled = !activo;
+            document.getElementById(`dia-fin-${idx}`).disabled = !activo;
+        }
+
         window.guardarBarbero = async function() {
             const id = document.getElementById('editando-barbero-id').value;
             const nom = document.getElementById('nuevo-barbero').value.trim().toUpperCase();
-            const inicio = parseInt(document.getElementById('nuevo-barbero-inicio').value);
-            const fin = parseInt(document.getElementById('nuevo-barbero-fin').value);
 
             if (nom) {
-                if(inicio >= fin) {
-                    mostrarMensaje(idiomaActual === 'es' ? "La hora de inicio debe ser antes del fin." : "Start time must be earlier.");
-                    return;
+                let horario = {};
+                for(let i=0; i<7; i++) {
+                    const activo = document.getElementById(`dia-activo-${i}`).checked;
+                    const inicio = parseInt(document.getElementById(`dia-inicio-${i}`).value);
+                    const fin = parseInt(document.getElementById(`dia-fin-${i}`).value);
+                    if(activo && inicio >= fin) {
+                        mostrarMensaje(idiomaActual === 'es' ? `El horario del ${diasSemanaNombres[i]} es inválido.` : "Invalid hours selected.");
+                        return;
+                    }
+                    horario[i.toString()] = { activo, inicio, fin };
                 }
-                const datos = { nombre: nom, inicio: inicio, fin: fin };
+
+                const datos = { nombre: nom, horario: horario };
                 try {
                     if (id) {
                         await updateDoc(doc(db, "barberos", id), datos);
@@ -1249,11 +1306,33 @@
             }
         }
 
-        window.prepararEdicionBarbero = function(id, nom, inicio, fin) {
+        window.prepararEdicionBarbero = function(id) {
+            const barbero = estadoApp.barberos.find(b => b.id === id);
+            if(!barbero) return;
+
             document.getElementById('editando-barbero-id').value = id;
-            document.getElementById('nuevo-barbero').value = nom;
-            document.getElementById('nuevo-barbero-inicio').value = inicio;
-            document.getElementById('nuevo-barbero-fin').value = fin;
+            document.getElementById('nuevo-barbero').value = barbero.nombre;
+            
+            if (barbero.horario) {
+                for(let i=0; i<7; i++) {
+                    const h = barbero.horario[i.toString()];
+                    if (h) {
+                        document.getElementById(`dia-activo-${i}`).checked = h.activo;
+                        document.getElementById(`dia-inicio-${i}`).value = h.inicio || 10;
+                        document.getElementById(`dia-fin-${i}`).value = h.fin || 19;
+                        toggleDia(i);
+                    }
+                }
+            } else {
+                // Compatibilidad de registros viejos
+                for(let i=0; i<7; i++) {
+                    document.getElementById(`dia-activo-${i}`).checked = (i !== 0);
+                    document.getElementById(`dia-inicio-${i}`).value = barbero.inicio || 10;
+                    document.getElementById(`dia-fin-${i}`).value = barbero.fin || 19;
+                    toggleDia(i);
+                }
+            }
+
             document.getElementById('btn-add-barbero').innerText = idiomaActual === 'es' ? 'Actualizar Barbero' : 'Update Barber';
             document.getElementById('btn-cancelar-edicion-barbero').style.display = 'block';
             document.getElementById('nuevo-barbero').scrollIntoView({ behavior: 'smooth' });
@@ -1262,8 +1341,16 @@
         window.cancelarEdicionBarbero = function() {
             document.getElementById('editando-barbero-id').value = '';
             document.getElementById('nuevo-barbero').value = '';
-            document.getElementById('nuevo-barbero-inicio').value = '10';
-            document.getElementById('nuevo-barbero-fin').value = '19';
+            
+            document.getElementById('dia-activo-0').checked = false;
+            toggleDia(0);
+            for(let i=1; i<7; i++) {
+                document.getElementById(`dia-activo-${i}`).checked = true;
+                document.getElementById(`dia-inicio-${i}`).value = '10';
+                document.getElementById(`dia-fin-${i}`).value = '19';
+                toggleDia(i);
+            }
+
             document.getElementById('btn-add-barbero').innerText = textosUI[idiomaActual]['btn-añadir'];
             document.getElementById('btn-cancelar-edicion-barbero').style.display = 'none';
         }
@@ -1432,6 +1519,8 @@
                 iniciarEscuchaGaleria();
                 datosYaCargados = true;
             }
+
+            generarUIHorarios(); // Construye los horarios del panel de barberos
 
             activarAnimacionesScroll();
         });
