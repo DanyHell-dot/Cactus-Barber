@@ -108,6 +108,7 @@
         .foto-galeria { background-color: #ddd; height: 200px; border-radius: 12px; background-size: cover; background-position: center; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: pointer; }
         .foto-galeria:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
 
+        /* Estilos Reseñas */
         .resenas-contenedor { padding: 50px 20px; max-width: 1000px; margin: 0 auto; text-align: center; }
         .resenas-contenedor h2 { color: var(--verde-cactus); font-size: 28px; margin-bottom: 10px; }
         .grid-resenas { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-top: 30px; }
@@ -216,6 +217,7 @@
             </div>
         </div>
 
+        <!-- Nueva Sección de Reseñas -->
         <div class="resenas-contenedor reveal">
             <h2 class="edit-txt stagger-item" data-i18n="resenas-h2">Lo que dicen de nosotros</h2>
             <p style="color: #555; margin-bottom: 20px;" class="stagger-item" data-i18n="resenas-p">Las experiencias de nuestros clientes definen nuestra calidad.</p>
@@ -225,7 +227,7 @@
             </div>
 
             <div id="caja-dejar-resena" class="stagger-item">
-                <!-- Se inyecta dinámicamente si es usuario o invitado -->
+                <!-- Se inyecta dinámicamente -->
             </div>
         </div>
 
@@ -298,6 +300,7 @@
                     <label for="telefono" data-i18n="lbl-tel">📞 Teléfono (Celular):</label>
                     <input type="tel" id="telefono" required data-i18n-ph="lbl-tel-ph" placeholder="Tu número de celular" onblur="buscarClienteFrecuente()">
                 </div>
+                <!-- Campo de email para el Modo Híbrido -->
                 <div class="grupo-form">
                     <label for="email">✉️ Correo Electrónico:</label>
                     <input type="email" id="email" required placeholder="tu@correo.com" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$">
@@ -337,6 +340,7 @@
                 <a id="btn-whatsapp-confirm" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #25D366; color: white; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);">💬 Confirmar por WhatsApp</a>
                 <a id="btn-add-calendar" href="#" target="_blank" class="btn-cita" style="width: 100%; margin-bottom: 15px; background-color: #4285F4; box-shadow: 0 4px 15px rgba(66, 133, 244, 0.4);" data-i18n="btn-cal">📅 Agregar a Google Calendar</a>
                 
+                <!-- Modo Híbrido: Upsell de Registro -->
                 <div id="caja-upsell-registro" style="display:none; background: rgba(74, 144, 226, 0.1); border: 1px solid rgba(74, 144, 226, 0.3); padding: 20px; border-radius: 12px; margin-top: 20px; margin-bottom: 20px;">
                     <h4 style="color: var(--azul-acento); margin-bottom: 10px;">¡Agiliza tu próxima reserva!</h4>
                     <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Crea tu cuenta ahora con un solo clic. Ya tenemos tus datos, solo ingresa una contraseña.</p>
@@ -586,6 +590,7 @@
 
         console.info("🔒 SEGURIDAD: La validación de roles en frontend es visual. Asegúrate de configurar las Reglas de Seguridad en Firestore para proteger la lectura/escritura de datos de forma estricta.");
 
+        // Función global de sanitización para prevenir XSS
         const escapeHTML = (str) => {
             if (!str) return '';
             return String(str).replace(/[&<>'"]/g, tag => ({
@@ -626,7 +631,8 @@
                 
                 'ph-barbero': 'Nombre del barbero', 'txt-sin-citas': 'No hay citas programadas.',
                 'txt-sin-serv': 'No hay servicios registrados.',
-                'opt-sin-barb': 'Cargando barberos...', 'opt-sel-barb': 'Cargando barberos...'
+                'opt-sin-barb': 'Cargando barberos...', 'opt-sel-barb': 'Cargando barberos...',
+                'btn-agendar-srv': 'Agendar'
             },
             'en': {
                 'nav-inicio': 'Home', 'nav-servicios': 'Services', 'nav-citas': 'Book Now', 'nav-mis-citas': '★ My Bookings',
@@ -660,7 +666,8 @@
                 
                 'ph-barbero': 'Barber Name', 'txt-sin-citas': 'No scheduled bookings.',
                 'txt-sin-serv': 'No registered services.',
-                'opt-sin-barb': 'Loading barbers...', 'opt-sel-barb': 'Loading barbers...'
+                'opt-sin-barb': 'Loading barbers...', 'opt-sel-barb': 'Loading barbers...',
+                'btn-agendar-srv': 'Book'
             }
         };
 
@@ -758,6 +765,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' }); 
             setTimeout(activarAnimacionesScroll, 100); 
 
+            // Rellenado silencioso de Mis Citas para clientes logueados
             if(idPagina === 'mis-citas' && estadoApp.usuarioActual && estadoApp.usuarioActual.rol === 'cliente') {
                 document.getElementById('telefono-buscar').value = estadoApp.dataPerfil?.telefono || '';
                 mostrarMisCitas();
@@ -879,13 +887,16 @@
                         dateStr = escapeHTML(date.toLocaleDateString());
                     }
 
+                    // Privacidad: Solo primer nombre
+                    const primerNombre = res.nombre ? escapeHTML(res.nombre.trim().split(' ')[0]) : 'Cliente';
+
                     contenedor.innerHTML += `
                         <div class="tarjeta-resena stagger-item">
                             ${btnBorrar}
                             <div style="font-size: 20px; margin-bottom: 10px;">${cactiHTML}</div>
                             <p style="font-style: italic; color: #555; margin-bottom: 15px;">"${escapeHTML(res.comentario)}"</p>
                             <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #eee; padding-top: 10px;">
-                                <strong style="color: var(--verde-cactus); font-size: 14px;">- ${escapeHTML(res.nombre)}</strong>
+                                <strong style="color: var(--verde-cactus); font-size: 14px;">- ${primerNombre}</strong>
                                 <small style="color: #999; font-size: 12px;">${dateStr}</small>
                             </div>
                         </div>
@@ -957,7 +968,7 @@
             
             try {
                 await addDoc(collection(db, "resenas"), {
-                    user_id: auth.currentUser.uid,
+                    user_id: estadoApp.usuarioActual.uid,
                     nombre: estadoApp.usuarioActual.nombre || 'Cliente',
                     comentario: escapeHTML(comentario),
                     calificacion: calificacionSeleccionada,
@@ -967,8 +978,12 @@
                 document.getElementById('texto-resena').value = '';
                 setCactus(5);
             } catch(err) {
-                console.error(err);
-                mostrarMensaje('Error al enviar la reseña.');
+                console.error("Detalle del error:", err);
+                if(err.code === 'permission-denied') {
+                    mostrarMensaje('Error: Firebase bloqueó el guardado (Permisos).');
+                } else {
+                    mostrarMensaje('Error: ' + err.message);
+                }
             } finally {
                 btn.disabled = false; btn.innerText = "Enviar Reseña";
             }
@@ -1008,12 +1023,16 @@
                 const precioFinal = precioLimpio ? `$${precioLimpio}` : 'Por cotizar';
 
                 const descHTML = descMostrar ? `<p class="${estadoApp.modoEdicion ? 'editando' : ''}" style="min-height: 40px;">${descMostrar}</p>` : `<div style="min-height: 40px;"></div>`;
+                const btnAgendarTxt = textosUI[idiomaActual]['btn-agendar-srv'];
 
                 grid.innerHTML += `
                     <div class="tarjeta-servicio stagger-item">
                         <h3 class="${estadoApp.modoEdicion ? 'editando' : ''}">${nombreMostrar}</h3>
                         ${descHTML}
-                        <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}">${precioFinal}</div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; gap: 10px;">
+                            <div class="precio-servicio ${estadoApp.modoEdicion ? 'editando' : ''}" style="margin: 0;">${precioFinal}</div>
+                            <button onclick="agendarDesdeServicio('${escapeHTML(s.nombre)}')" class="btn-cita" style="padding: 6px 15px; font-size: 13px; box-shadow: none; margin: 0; display: ${estadoApp.modoEdicion ? 'none' : 'inline-block'};" data-i18n="btn-agendar-srv">${btnAgendarTxt}</button>
+                        </div>
                     </div>`;
                 
                 const opt = document.createElement('option'); 
@@ -1027,6 +1046,23 @@
                 grid.querySelectorAll('.tarjeta-servicio:not(.ai-card) h3, .tarjeta-servicio:not(.ai-card) p, .tarjeta-servicio:not(.ai-card) .precio-servicio').forEach(el => el.contentEditable = "true"); 
             }
             setTimeout(activarAnimacionesScroll, 50);
+        }
+
+        window.agendarDesdeServicio = function(nombreServicio) {
+            navegar('citas');
+            const selectServicio = document.getElementById('servicioSelect');
+            for(let i=0; i<selectServicio.options.length; i++) {
+                if(selectServicio.options[i].value === nombreServicio) {
+                    selectServicio.selectedIndex = i;
+                    break;
+                }
+            }
+            mostrarMensaje(idiomaActual === 'es' ? 'Servicio seleccionado. Elige a tu barbero.' : 'Service selected. Choose your barber.');
+            
+            // Hacemos focus al siguiente paso para agilizar
+            setTimeout(() => {
+                document.getElementById('barbero').focus();
+            }, 600);
         }
 
         window.renderizarGaleriaPublica = function() {
@@ -1238,14 +1274,34 @@
         }
 
         function prellenarFormularioCliente() {
-            if(!estadoApp.dataPerfil) return;
-            document.getElementById('nombre').value = estadoApp.dataPerfil.nombre || '';
-            document.getElementById('telefono').value = estadoApp.dataPerfil.telefono || '';
-            document.getElementById('email').value = estadoApp.dataPerfil.email || '';
+            const user = auth.currentUser;
+            if (!user) return;
             
-            document.getElementById('nombre').disabled = true;
-            document.getElementById('telefono').disabled = true;
-            document.getElementById('email').disabled = true;
+            const inpNombre = document.getElementById('nombre');
+            const inpTel = document.getElementById('telefono');
+            const inpEmail = document.getElementById('email');
+
+            // 1. Siempre rellenar el email (porque viene del inicio de sesión)
+            if (user.email) {
+                inpEmail.value = escapeHTML(user.email);
+                inpEmail.disabled = true;
+            }
+
+            // 2. Si tiene perfil en BD, rellenar y bloquear nombre y teléfono
+            if (estadoApp.dataPerfil) {
+                if (estadoApp.dataPerfil.nombre) {
+                    inpNombre.value = escapeHTML(estadoApp.dataPerfil.nombre);
+                    inpNombre.disabled = true;
+                }
+                if (estadoApp.dataPerfil.telefono) {
+                    inpTel.value = escapeHTML(estadoApp.dataPerfil.telefono);
+                    inpTel.disabled = true;
+                }
+            } else {
+                // Si es una cuenta vieja sin perfil, desbloquear para que los llene manualmente
+                inpNombre.disabled = false;
+                inpTel.disabled = false;
+            }
         }
 
         window.mostrarMisCitas = async function() {
