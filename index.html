@@ -311,6 +311,13 @@
                         <option value="" disabled selected>Cargando servicios...</option>
                     </select>
                 </div>
+                <!-- NUEVO: Servicio Adicional -->
+                <div class="grupo-form">
+                    <label for="servicioAdicionalSelect" style="color: #708238;">➕ Servicio Adicional (Opcional):</label>
+                    <select id="servicioAdicionalSelect" style="border-color: #eee;">
+                        <option value="" selected>Ninguno (Solo 1 servicio)</option>
+                    </select>
+                </div>
                 <div class="grupo-form">
                     <label for="barbero" data-i18n="lbl-barb">👨‍🔧 Selecciona tu Barbero:</label>
                     <select id="barbero" required onchange="cargarHorarios()">
@@ -1013,11 +1020,17 @@
         window.renderizarServiciosPublicos = function() {
             const grid = document.getElementById('contenedor-servicios-publico');
             const selectCitas = document.getElementById('servicioSelect');
+            const selectAdicional = document.getElementById('servicioAdicionalSelect');
+            
             if(!grid || !selectCitas) return;
             grid.innerHTML = ''; 
             
             const textoCargando = idiomaActual === 'es' ? 'Selecciona un servicio...' : 'Select a service...';
             selectCitas.innerHTML = `<option value="" disabled selected>${textoCargando}</option>`;
+            
+            if (selectAdicional) {
+                selectAdicional.innerHTML = `<option value="" selected>Ninguno (Solo 1 servicio)</option>`;
+            }
             
             // Inyectar tarjeta VIP de Inteligencia Artificial
             const tituloAi = idiomaActual === 'es' ? '🤖 Asesor de Estilo IA' : '🤖 AI Style Advisor';
@@ -1056,7 +1069,9 @@
                 opt.value = escapeHTML(s.nombre); 
                 opt.setAttribute('data-precio', precioFinal);
                 opt.textContent = `${nombreMostrar} - ${precioFinal}`; 
-                selectCitas.appendChild(opt);
+                
+                selectCitas.appendChild(opt.cloneNode(true));
+                if (selectAdicional) selectAdicional.appendChild(opt.cloneNode(true));
             });
             
             if(estadoApp.modoEdicion) { 
@@ -1242,7 +1257,21 @@
                 }
 
                 const selectServicio = document.getElementById('servicioSelect');
-                const precioSeleccionado = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+                const selectServicioAdicional = document.getElementById('servicioAdicionalSelect');
+
+                let servicioPrincipal = selectServicio.value;
+                let precioPrincipal = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+
+                let servicioFinal = escapeHTML(servicioPrincipal);
+                let precioFinal = escapeHTML(precioPrincipal);
+
+                if (selectServicioAdicional && selectServicioAdicional.value !== "") {
+                    let servicioExtra = selectServicioAdicional.value;
+                    let precioExtra = selectServicioAdicional.options[selectServicioAdicional.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+                    
+                    servicioFinal = `${escapeHTML(servicioPrincipal)} + ${escapeHTML(servicioExtra)}`;
+                    precioFinal = `${escapeHTML(precioPrincipal)} + ${escapeHTML(precioExtra)}`;
+                }
 
                 const isCliente = estadoApp.usuarioActual && estadoApp.usuarioActual.rol === 'cliente';
                 const uid = isCliente ? auth.currentUser.uid : null;
@@ -1255,8 +1284,8 @@
                     barbero: escapeHTML(barberoSelect),
                     fecha: escapeHTML(fechaSelect),
                     hora: escapeHTML(horaSelect),
-                    servicio: escapeHTML(selectServicio.value),
-                    precio: escapeHTML(precioSeleccionado), 
+                    servicio: servicioFinal,
+                    precio: precioFinal, 
                     comentarios: escapeHTML(document.getElementById('comentarios').value),
                     fechaCreacion: serverTimestamp()
                 };
