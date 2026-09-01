@@ -232,7 +232,6 @@
     <div class="fondo-barbero" id="fondoAnimado"></div>
 
     <header>
-        <!-- Logo en Base64 seguro para WebKit -->
         <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNTAnIGhlaWdodD0nNTAnIHZpZXdCb3g9JzAgMCAxNTAgNTAnPjxyZWN0IGZpbGw9JyM0RTZFNUQnIHdpZHRoPScxNTAnIGhlaWdodD0nNTAnIHJ4PSc4Jy8+PHRleHQgZmlsbD0nI0ZGRkZGRicgZm9udC1mYW1pbHk9J3NhbnMtc2VyaWYnIGZvbnQtc2l6ZT0nMTYnIGZvbnQtd2VpZ2h0PSdib2xkJyB4PSc1MCUnIHk9JzUwJScgZG9taW5hbnQtYmFzZWxpbmU9J21pZGRsZScgdGV4dC1hbmNob3I9J21pZGRsZSc+Q0FDVFVTIFJFU0VSVkFTPC90ZXh0Pjwvc3ZnPg==" alt="Logo Cactus Barbería" class="logo-img edit-img" id="logo-principal">
         <nav aria-label="Navegación principal">
             <a onclick="window.navegar('inicio')" data-i18n="nav-inicio">Inicio</a>
@@ -623,7 +622,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, query, where, onSnapshot, doc, updateDoc, deleteDoc, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithRedirect, getRedirectResult, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
         import { getMessaging, getToken, onMessage, deleteToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
 
@@ -765,9 +764,9 @@
         window.solicitarConfirmacion = function(mensaje, accion) {
             document.getElementById('confirm-msg').textContent = mensaje;
             document.getElementById('modalConfirm').style.display = 'flex';
-            document.getElementById('btn-confirm-yes').onclick = function() {
+            document.getElementById('btn-confirm-yes').onclick = async function() {
                 document.getElementById('modalConfirm').style.display = 'none';
-                accion();
+                await accion();
             };
         }
 
@@ -1571,7 +1570,8 @@
                         fechaRegistro: serverTimestamp()
                     });
 
-                    try { await sendEmailVerification(user); } catch(verifyErr) { console.warn("No se pudo enviar el correo de validación"); }
+                    // NO ESPERAR (await) la verificación para no congelar el UI
+                    sendEmailVerification(user).catch(verifyErr => console.warn("No se pudo enviar el correo de validación"));
                     
                     window.cerrarLogin();
                     mostrarMensaje('Cuenta creada con éxito.');
@@ -1596,12 +1596,11 @@
                 await signInWithRedirect(auth, provider);
             } catch (error) {
                 console.error("Error Google Redirect Auth:", error);
-                mostrarMensaje('Error al iniciar sesión con Google.');
+                mostrarMensaje('Error: ' + error.message);
             }
         }
 
         // Capturar resultado al regresar de la redirección de Google
-        import { getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
         getRedirectResult(auth).then(async (result) => {
             if (result && result.user) {
                 const user = result.user;
@@ -1611,7 +1610,7 @@
                 if (!docSnap.exists()) {
                     await setDoc(docRef, {
                         nombre: user.displayName || 'Cliente',
-                        telefono: '',
+                        telefono: '', // Se llenará cuando haga su primera reserva
                         email: user.email,
                         rol: 'cliente',
                         fechaRegistro: serverTimestamp()
@@ -1654,7 +1653,8 @@
                     });
                 }
 
-                try { await sendEmailVerification(user); } catch(verifyErr) { console.warn("No se pudo enviar el correo de validación"); }
+                // NO ESPERAR (await) la verificación para no congelar el UI
+                sendEmailVerification(user).catch(verifyErr => console.warn("No se pudo enviar el correo de validación"));
 
                 document.getElementById('caja-upsell-registro').style.display = 'none';
                 mostrarMensaje('¡Cuenta creada! Revisa tu bandeja para verificar tu correo.');
@@ -1688,7 +1688,7 @@
         }
 
         function configurarPanelAdmin() {
-            limpiarCitasAntiguas();
+            limpiarCitasAntiguas(); // En producción, esto debería ir a Cloud Functions
             const rol = estadoApp.usuarioActual.rol;
             const txt = textosUI[idiomaActual];
             document.getElementById('admin-usuario-info').textContent = `${txt['admin-rol']} ${escapeHTML(rol.toUpperCase())}`;
@@ -2017,9 +2017,9 @@
             document.getElementById('btn-cancelar-edicion-barbero').style.display = 'none';
         }
 
-        window.eliminarBarbero = async function(id) { 
-            window.solicitarConfirmacion("¿Eliminar este barbero definitivamente?", async () => { 
-                await deleteDoc(doc(db, "barberos", id)); 
+        window.eliminarBarbero = async function(id) { 
+            window.solicitarConfirmacion("¿Eliminar este barbero definitivamente?", async () => { 
+                await deleteDoc(doc(db, "barberos", id)); 
             });
         }
 
@@ -2035,11 +2035,14 @@
             const txt = textosUI[idiomaActual];
             if (estadoApp.servicios.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">${txt['txt-sin-serv']}</td></tr>`; return; }
             estadoApp.servicios.forEach(s => {
+                const nE = s.nombre.replace(/'/g, "\\'"); const pE = s.precio.replace(/'/g, "\\'"); const dE = s.desc.replace(/'/g, "\\'");
+                const nEn = (s.nombre_en || '').replace(/'/g, "\\'"); const dEn = (s.desc_en || '').replace(/'/g, "\\'");
+                
                 let pLimpio = String(s.precio).replace(/^\$+/, '');
                 const pFinal = pLimpio ? `$${pLimpio}` : 'N/A';
 
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td><strong>${escapeHTML(s.nombre)}</strong><br><small style="color:#888;">${escapeHTML(s.nombre_en || '-')}</small></td><td><span class="precio-servicio" style="margin-top:0;">${escapeHTML(pFinal)}</span></td><td style="font-size: 13px;">${escapeHTML(s.desc)}</td><td style="display: flex; gap: 5px;"><button onclick="window.prepararEdicionServicio('${s.id}', '${escapeHTML(s.nombre).replace(/'/g, "\\'")}', '${escapeHTML(s.precio).replace(/'/g, "\\'")}', '${escapeHTML(s.desc).replace(/'/g, "\\'")}', '${escapeHTML(s.nombre_en || '').replace(/'/g, "\\'")}', '${escapeHTML(s.desc_en || '').replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="window.eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td>`;
+                tr.innerHTML = `<td><strong>${escapeHTML(s.nombre)}</strong><br><small style="color:#888;">${escapeHTML(s.nombre_en || '-')}</small></td><td><span class="precio-servicio" style="margin-top:0;">${escapeHTML(pFinal)}</span></td><td style="font-size: 13px;">${escapeHTML(s.desc)}</td><td style="display: flex; gap: 5px;"><button onclick="window.prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="window.eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -2180,6 +2183,60 @@
             } catch (e) { mostrarMensaje('Error al cambiar imagen.'); } finally { btn.disabled = false; }
         }
 
+        window.activarNotificaciones = async function() {
+            if(!messaging) { mostrarMensaje('Navegador sin soporte de notificaciones.'); return; }
+            try {
+                const permiso = await Notification.requestPermission();
+                if (permiso === 'granted') {
+                    const tokenDispositivo = await getToken(messaging, { 
+                        vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
+                    });
+                    if (tokenDispositivo) {
+                        mostrarMensaje('¡Notificaciones activadas con éxito!');
+                        document.getElementById('btn-activar-notif').style.display = 'none';
+                        document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
+                    }
+                } else {
+                    mostrarMensaje('Se necesitan permisos del navegador.');
+                }
+            } catch (error) { console.error('Error Push:', error); }
+        };
+
+        window.desactivarNotificaciones = async function() {
+            if(!messaging) return;
+            try {
+                const borrado = await deleteToken(messaging);
+                if (borrado) {
+                    mostrarMensaje('Notificaciones desactivadas.');
+                    document.getElementById('btn-desactivar-notif').style.display = 'none';
+                    document.getElementById('btn-activar-notif').style.display = 'inline-block';
+                }
+            } catch (error) { console.error('Error al desactivar Push:', error); }
+        };
+
+        window.verificarEstadoNotificaciones = async function() {
+            if (!messaging) return;
+            if (Notification.permission === 'granted') {
+                try {
+                    const token = await getToken(messaging, { 
+                        vapidKey: 'BOjXmWrDEWRitvGmds4Szz165zJLflNVZ7n3wbeBLfCD1M1B3qeGAynzeqZ-grccgL3pjjmJ_hrgjPVJStMHdzI' 
+                    });
+                    if (token) {
+                        document.getElementById('btn-activar-notif').style.display = 'none';
+                        document.getElementById('btn-desactivar-notif').style.display = 'inline-block';
+                    }
+                } catch (error) {
+                    console.log('No hay token activo.');
+                }
+            }
+        };
+
+        if(messaging) {
+            onMessage(messaging, (payload) => {
+                mostrarMensaje(`💈 Cactus Barbería: ${escapeHTML(payload.notification?.title)} \n${escapeHTML(payload.notification?.body)}`);
+            });
+        }
+
         onAuthStateChanged(auth, async (user) => {
             if(!datosYaCargados) {
                 iniciarEscuchaConfiguracion();
@@ -2192,6 +2249,7 @@
 
             const btnNav = document.getElementById('btn-nav-admin');
             const avisoSesion = document.getElementById('aviso-sesion-activa');
+            const btnCerrarCliente = document.getElementById('btn-cerrar-sesion-cliente');
 
             if (user) {
                 try {
@@ -2229,6 +2287,8 @@
                     btnNav.style.backgroundColor = 'transparent';
                     btnNav.setAttribute('onclick', "window.navegar('mis-citas')");
 
+                    if(btnCerrarCliente) btnCerrarCliente.style.display = 'inline-block';
+
                     if(avisoSesion) {
                         avisoSesion.style.display = 'block';
                         document.getElementById('texto-sesion-activa').textContent = `Agendando como: ${estadoApp.usuarioActual.nombre}`;
@@ -2244,6 +2304,8 @@
                     btnNav.style.backgroundColor = 'var(--azul-acento)';
                     btnNav.setAttribute('onclick', "window.navegar('admin')");
                     
+                    if(btnCerrarCliente) btnCerrarCliente.style.display = 'none';
+
                     if (document.getElementById('modalLogin').style.display === 'flex') {
                         window.cerrarLogin();
                         window.navegar('admin');
@@ -2258,6 +2320,7 @@
                 btnNav.style.backgroundColor = 'transparent';
                 btnNav.setAttribute('onclick', "window.abrirLogin()");
 
+                if(btnCerrarCliente) btnCerrarCliente.style.display = 'none';
                 if(avisoSesion) avisoSesion.style.display = 'none';
                 document.getElementById('nombre').disabled = false;
                 document.getElementById('telefono').disabled = false;
