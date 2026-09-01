@@ -62,6 +62,25 @@
         @keyframes deslizarAbajo { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
+        .membresias-contenedor { margin-top: 80px; text-align: center; border-top: 2px dashed rgba(78, 110, 93, 0.3); padding-top: 50px; }
+        .membresias-header { margin-bottom: 40px; }
+        .membresias-header h3 { color: #d4af37; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .membresias-header p { color: var(--texto-oscuro); font-weight: bold; font-size: 18px; }
+        .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
+        .img-membresia-promo:hover { transform: scale(1.02); }
+        .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
+        
+        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); }
+        .tarjeta-membresia.pro { border-color: #d4af37; }
+        .tarjeta-membresia h4 { font-size: 26px; color: #d4af37; margin-bottom: 25px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; letter-spacing: 1px;}
+        .tarjeta-membresia ul { list-style: none; margin-bottom: 30px; }
+        .tarjeta-membresia ul li { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.4; color: #eee; }
+        .precio-membresia { text-align: center; font-size: 36px; font-weight: bold; color: #d4af37; margin-bottom: 25px; }
+        .precio-membresia span { font-size: 14px; font-weight: normal; color: #aaa; display: block; margin-top: 5px;}
+        .badge-proximamente { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid #d4af37; font-weight: bold; text-align: center; padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; cursor: not-allowed; }
+        .tarjeta-membresia.pro::before { content: 'MÁS POPULAR'; position: absolute; top: 25px; right: -35px; background: #d4af37; color: #000; font-size: 11px; font-weight: bold; padding: 6px 40px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
+
         header { 
             background: 
                 url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M60 40c-3 0-5.5 2.5-5.5 5.5v35h11v-35c0-3-2.5-5.5-5.5-5.5zM49 58c-2.5 0-4 1.8-4 4v10h5.5v-14h-1.5zM71 52c2.5 0 4 1.8 4 4v15h-5.5v-19h1.5z'/%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3Ccircle cx='90' cy='90' r='1.5'/%3E%3Ccircle cx='20' cy='100' r='1'/%3E%3Ccircle cx='100' cy='30' r='1'/%3E%3C/g%3E%3C/svg%3E"),
@@ -124,25 +143,6 @@
         @keyframes moverFondoCactus { 0% { background-position: 0 0, 0 0; } 100% { background-position: -240px 240px, 0 0; } }
         .intro h1 { font-size: 36px; margin-bottom: 15px; }
         .intro p.intro-p { font-size: 16px; margin-bottom: 35px; opacity: 0.9; max-width: 600px; margin: 0 auto 35px auto; }
-
-        .membresias-contenedor { margin-top: 80px; text-align: center; border-top: 2px dashed rgba(78, 110, 93, 0.3); padding-top: 50px; }
-        .membresias-header { margin-bottom: 40px; }
-        .membresias-header h3 { color: #d4af37; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        .membresias-header p { color: var(--texto-oscuro); font-weight: bold; font-size: 18px; }
-        .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
-        .img-membresia-promo:hover { transform: scale(1.02); }
-        .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
-        
-        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); }
-        .tarjeta-membresia.pro { border-color: #d4af37; }
-        .tarjeta-membresia h4 { font-size: 26px; color: #d4af37; margin-bottom: 25px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; letter-spacing: 1px;}
-        .tarjeta-membresia ul { list-style: none; margin-bottom: 30px; }
-        .tarjeta-membresia ul li { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.4; color: #eee; }
-        .precio-membresia { text-align: center; font-size: 36px; font-weight: bold; color: #d4af37; margin-bottom: 25px; }
-        .precio-membresia span { font-size: 14px; font-weight: normal; color: #aaa; display: block; margin-top: 5px;}
-        .badge-proximamente { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid #d4af37; font-weight: bold; text-align: center; padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; cursor: not-allowed; }
-        .tarjeta-membresia.pro::before { content: 'MÁS POPULAR'; position: absolute; top: 25px; right: -35px; background: #d4af37; color: #000; font-size: 11px; font-weight: bold; padding: 6px 40px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
 
         .galeria-contenedor { padding: 50px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
         .galeria-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
@@ -397,7 +397,10 @@
     </section>
 
     <section id="mis-citas" class="galeria-contenedor pagina fade-transition">
-        <h2 class="reveal edit-txt stagger-item" data-i18n="nav-mis-citas">Historial de Citas</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto 20px auto; flex-wrap: wrap; gap: 10px;">
+            <h2 class="reveal edit-txt stagger-item" data-i18n="nav-mis-citas" style="margin: 0;">Historial de Citas</h2>
+            <button id="btn-cerrar-sesion-cliente" onclick="window.cerrarSesion()" class="btn-accion btn-eliminar" style="display: none; padding: 8px 16px; font-size: 13px;">🚪 Cerrar Sesión</button>
+        </div>
         
         <div id="busqueda-citas-invitado" class="form-citas reveal stagger-item" style="text-align: center;">
             <p style="margin-bottom: 30px; font-size: 15px; color: #555;" data-i18n="hist-p">Inicia sesión para ver tu historial completo, o busca usando tu número y primer nombre si agendaste como invitado.</p>
@@ -762,9 +765,9 @@
         window.solicitarConfirmacion = function(mensaje, accion) {
             document.getElementById('confirm-msg').textContent = mensaje;
             document.getElementById('modalConfirm').style.display = 'flex';
-            document.getElementById('btn-confirm-yes').onclick = async function() {
+            document.getElementById('btn-confirm-yes').onclick = function() {
                 document.getElementById('modalConfirm').style.display = 'none';
-                await accion();
+                accion();
             };
         }
 
@@ -1437,7 +1440,6 @@
                     const snapshot = await getDocs(qConsulta);
                     snapshot.forEach(docSnap => misCitas.push({id: docSnap.id, ...docSnap.data()}));
                 } else {
-                    // DOBLE VALIDACIÓN ESTRICTA
                     const tel = document.getElementById('telefono-buscar').value.trim();
                     const nom = document.getElementById('nombre-buscar').value.trim().toLowerCase();
                     
@@ -1562,7 +1564,7 @@
                     const user = userCredential.user;
                     
                     await setDoc(doc(db, "usuarios", user.uid), {
-                        nombre: nombre, // Se envía puro, se sanitiza al mostrar
+                        nombre: nombre, 
                         telefono: tel,
                         email: email,
                         rol: 'cliente',
@@ -1586,13 +1588,23 @@
             }
         }
 
+        // --- SOLUCIÓN DEFINITIVA GOOGLE AUTH: Usando Redirect para evitar popups bloqueados por iFrames/Móviles ---
         window.iniciarSesionGoogle = async function(e) {
             e.preventDefault();
             const provider = new GoogleAuthProvider();
             try {
-                const result = await signInWithPopup(auth, provider);
+                await signInWithRedirect(auth, provider);
+            } catch (error) {
+                console.error("Error Google Redirect Auth:", error);
+                mostrarMensaje('Error al iniciar sesión con Google.');
+            }
+        }
+
+        // Capturar resultado al regresar de la redirección de Google
+        import { getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        getRedirectResult(auth).then(async (result) => {
+            if (result && result.user) {
                 const user = result.user;
-                
                 const docRef = doc(db, "usuarios", user.uid);
                 const docSnap = await getDoc(docRef);
                 
@@ -1605,13 +1617,11 @@
                         fechaRegistro: serverTimestamp()
                     });
                 }
-                window.cerrarLogin();
                 mostrarMensaje('Sesión iniciada con Google.');
-            } catch (error) {
-                console.error("Error Google Auth:", error);
-                mostrarMensaje('Error al iniciar sesión con Google.');
             }
-        }
+        }).catch((error) => {
+            console.error("Error Google Redirect Result:", error);
+        });
 
         window.crearCuentaPostReserva = async function() {
             const pass = document.getElementById('pass-registro-rapido').value;
@@ -1666,21 +1676,19 @@
             }); 
         }
 
-        // --- NOTA: La función limpiarCitasAntiguas() se recomienda ejecutarla en el Backend (Cloud Functions) ---
-        // Se mantiene aquí comentada solo como referencia. 
-        /*
-        async function limpiarCitasAntiguas() {
+        function limpiarCitasAntiguas() {
             const haceDosSemanas = new Date(); haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
             const fechaLimite = haceDosSemanas.toISOString().split('T')[0];
             try {
                 const q = query(collection(db, "citas"), where("fecha", "<", fechaLimite));
-                const snapshot = await getDocs(q);
-                snapshot.forEach(docSnap => deleteDoc(doc(db, "citas", docSnap.id)));
+                getDocs(q).then(snapshot => {
+                    snapshot.forEach(docSnap => deleteDoc(doc(db, "citas", docSnap.id)));
+                });
             } catch (error) { console.error("Error al limpiar:", error); }
         }
-        */
 
         function configurarPanelAdmin() {
+            limpiarCitasAntiguas();
             const rol = estadoApp.usuarioActual.rol;
             const txt = textosUI[idiomaActual];
             document.getElementById('admin-usuario-info').textContent = `${txt['admin-rol']} ${escapeHTML(rol.toUpperCase())}`;
@@ -1720,7 +1728,6 @@
             let citasMostradas = [];
 
             if (estadoApp.usuarioActual.rol === 'barbero') {
-                // Mejora de Seguridad: El barbero solo consulta en BD sus propias citas.
                 const qBarbero = query(collection(db, "citas"), where("barbero", "==", estadoApp.usuarioActual.nombre));
                 const snapBarbero = await getDocs(qBarbero);
                 snapBarbero.forEach(d => citasMostradas.push({id: d.id, ...d.data()}));
@@ -1743,7 +1750,6 @@
             citasMostradas.forEach(cita => {
                 const tr = document.createElement('tr');
                 
-                // TD 1: Fecha y Hora
                 const td1 = document.createElement('td');
                 td1.textContent = cita.fecha + " ";
                 const strongHora = document.createElement('strong');
@@ -1751,7 +1757,6 @@
                 td1.appendChild(document.createElement('br'));
                 td1.appendChild(strongHora);
 
-                // TD 2: Cliente
                 const td2 = document.createElement('td');
                 td2.textContent = cita.nombre + " ";
                 td2.appendChild(document.createElement('br'));
@@ -1762,15 +1767,14 @@
                 td2.appendChild(document.createElement('br'));
                 const spanTipo = document.createElement('span');
                 if(cita.user_id) {
-                    spanTipo.style = "color:#d4af37; font-size:10px;";
+                    spanTipo.style.cssText = "color:#d4af37; font-size:10px;";
                     spanTipo.textContent = "★ VIP";
                 } else {
-                    spanTipo.style = "color:#888; font-size:10px;";
+                    spanTipo.style.cssText = "color:#888; font-size:10px;";
                     spanTipo.textContent = "Invitado";
                 }
                 td2.appendChild(spanTipo);
 
-                // TD 3: Servicio y Precio
                 const td3 = document.createElement('td');
                 td3.textContent = cita.servicio + " ";
                 td3.appendChild(document.createElement('br'));
@@ -1783,15 +1787,11 @@
                 smallCom.textContent = cita.comentarios || '';
                 td3.appendChild(smallCom);
 
-                // TD 4: Barbero
                 const td4 = document.createElement('td');
                 td4.textContent = cita.barbero;
 
-                // TD 5: Acciones
                 const td5 = document.createElement('td');
-                td5.style.display = "flex";
-                td5.style.gap = "5px";
-                td5.style.flexWrap = "wrap";
+                td5.style.cssText = "display: flex; gap: 5px; flex-wrap: wrap;";
                 
                 const aCal = document.createElement('a');
                 aCal.href = generarEnlaceCalendario(cita);
@@ -1974,7 +1974,7 @@
             if(!barbero) return;
 
             document.getElementById('editando-barbero-id').value = id;
-            document.getElementById('nuevo-barbero').value = escapeHTML(barbero.nombre);
+            document.getElementById('nuevo-barbero').value = barbero.nombre;
             
             if (barbero.horario) {
                 for(let i=0; i<7; i++) {
@@ -2017,9 +2017,9 @@
             document.getElementById('btn-cancelar-edicion-barbero').style.display = 'none';
         }
 
-        window.eliminarBarbero = async function(id) { 
-            window.solicitarConfirmacion("¿Eliminar este barbero definitivamente?", async () => { 
-                await deleteDoc(doc(db, "barberos", id)); 
+        window.eliminarBarbero = async function(id) { 
+            window.solicitarConfirmacion("¿Eliminar este barbero definitivamente?", async () => { 
+                await deleteDoc(doc(db, "barberos", id)); 
             });
         }
 
@@ -2033,36 +2033,13 @@
         window.renderizarTablaServiciosAdmin = function() {
             const tbody = document.querySelector('#tabla-servicios tbody'); if(!tbody) return; tbody.innerHTML = '';
             const txt = textosUI[idiomaActual];
-            if (estadoApp.servicios.length === 0) { 
-                const tr = document.createElement('tr');
-                const td = document.createElement('td');
-                td.colSpan = 4; td.style.textAlign = "center"; td.textContent = txt['txt-sin-serv'];
-                tr.appendChild(td); tbody.appendChild(tr); return; 
-            }
+            if (estadoApp.servicios.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">${txt['txt-sin-serv']}</td></tr>`; return; }
             estadoApp.servicios.forEach(s => {
-                const tr = document.createElement('tr');
-                
-                const td1 = document.createElement('td');
-                const strong = document.createElement('strong'); strong.textContent = s.nombre;
-                const small = document.createElement('small'); small.style.color = "#888"; small.textContent = s.nombre_en || '-';
-                td1.appendChild(strong); td1.appendChild(document.createElement('br')); td1.appendChild(small);
-
                 let pLimpio = String(s.precio).replace(/^\$+/, '');
                 const pFinal = pLimpio ? `$${pLimpio}` : 'N/A';
-                const td2 = document.createElement('td');
-                const spanP = document.createElement('span'); spanP.className = "precio-servicio"; spanP.style.marginTop = "0"; spanP.textContent = pFinal;
-                td2.appendChild(spanP);
 
-                const td3 = document.createElement('td'); td3.style.fontSize = "13px"; td3.textContent = s.desc;
-
-                const td4 = document.createElement('td'); td4.style.display = "flex"; td4.style.gap = "5px";
-                const btnEdit = document.createElement('button'); btnEdit.className = "btn-accion btn-calendario"; btnEdit.style.background = "var(--azul-acento)"; btnEdit.textContent = txt['btn-editar'];
-                btnEdit.onclick = () => window.prepararEdicionServicio(s.id, s.nombre, s.precio, s.desc, s.nombre_en, s.desc_en);
-                const btnDel = document.createElement('button'); btnDel.className = "btn-accion btn-eliminar"; btnDel.textContent = txt['btn-eliminar'];
-                btnDel.onclick = () => window.eliminarServicio(s.id);
-                td4.appendChild(btnEdit); td4.appendChild(btnDel);
-
-                tr.appendChild(td1); tr.appendChild(td2); tr.appendChild(td3); tr.appendChild(td4);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td><strong>${escapeHTML(s.nombre)}</strong><br><small style="color:#888;">${escapeHTML(s.nombre_en || '-')}</small></td><td><span class="precio-servicio" style="margin-top:0;">${escapeHTML(pFinal)}</span></td><td style="font-size: 13px;">${escapeHTML(s.desc)}</td><td style="display: flex; gap: 5px;"><button onclick="window.prepararEdicionServicio('${s.id}', '${escapeHTML(s.nombre).replace(/'/g, "\\'")}', '${escapeHTML(s.precio).replace(/'/g, "\\'")}', '${escapeHTML(s.desc).replace(/'/g, "\\'")}', '${escapeHTML(s.nombre_en || '').replace(/'/g, "\\'")}', '${escapeHTML(s.desc_en || '').replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="window.eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -2111,24 +2088,7 @@
             estadoApp.galeria.forEach(img => { 
                 const div = document.createElement('div');
                 div.style.cssText = "background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: flex; flex-direction: column;";
-                
-                const divImg = document.createElement('div');
-                divImg.className = "foto-galeria";
-                divImg.style.cssText = `background-image: url('${escapeHTML(img.url)}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;`;
-                
-                const divBtns = document.createElement('div');
-                divBtns.style.cssText = "padding: 15px; display: flex; gap: 8px; flex-direction: column;";
-                
-                const btnEd = document.createElement('button');
-                btnEd.className = "btn-accion btn-calendario"; btnEd.style.background = "var(--azul-acento)"; btnEd.textContent = txt['btn-editar-url'];
-                btnEd.onclick = () => window.prepararEdicionGaleria(img.id, img.url);
-                
-                const btnDel = document.createElement('button');
-                btnDel.className = "btn-accion btn-eliminar"; btnDel.textContent = txt['btn-eliminar'];
-                btnDel.onclick = () => window.eliminarImagen(img.id);
-
-                divBtns.appendChild(btnEd); divBtns.appendChild(btnDel);
-                div.appendChild(divImg); div.appendChild(divBtns);
+                div.innerHTML = `<div class="foto-galeria" style="background-image: url('${escapeHTML(img.url)}'); border-radius: 0; box-shadow: none; margin: 0; width: 100%;"></div><div style="padding: 15px; display: flex; gap: 8px; flex-direction: column;"><button onclick="window.prepararEdicionGaleria('${img.id}', '${escapeHTML(img.url).replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar-url']}</button><button onclick="window.eliminarImagen('${img.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></div>`; 
                 c.appendChild(div);
             });
         }
@@ -2148,7 +2108,7 @@
             try { 
                 if(file) url = await subirArchivoFirebase(file, 'galeria'); 
                 if(url) { 
-                    id ? await updateDoc(doc(db, "galeria", id), {url: url}) : await addDoc(collection(db, "galeria"), {url: url}); 
+                    id ? await updateDoc(doc(db, "galeria", id), {url}) : await addDoc(collection(db, "galeria"), {url}); 
                     window.cancelarEdicionGaleria(); 
                 } 
             } catch(e) { mostrarMensaje('Error al guardar imagen.'); } finally { btn.disabled = false; }
@@ -2247,7 +2207,6 @@
                             rol: estadoApp.dataPerfil.rol || 'cliente'
                         };
                     } else {
-                        // Seguridad estricta: Si el usuario existe en Auth pero NO en la colección 'usuarios'
                         estadoApp.usuarioActual = { 
                             uid: user.uid, 
                             email: user.email, 
