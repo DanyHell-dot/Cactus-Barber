@@ -1563,15 +1563,12 @@
                     const user = userCredential.user;
                     
                     await setDoc(doc(db, "usuarios", user.uid), {
-                        nombre: nombre, 
+                        nombre: nombre,
                         telefono: tel,
                         email: email,
                         rol: 'cliente',
                         fechaRegistro: serverTimestamp()
                     });
-
-                    // NO ESPERAR (await) la verificación para no congelar el UI
-                    sendEmailVerification(user).catch(verifyErr => console.warn("No se pudo enviar el correo de validación"));
                     
                     window.cerrarLogin();
                     mostrarMensaje('Cuenta creada con éxito.');
@@ -1588,39 +1585,34 @@
             }
         }
 
-        // --- SOLUCIÓN DEFINITIVA GOOGLE AUTH: Usando Redirect para evitar popups bloqueados por iFrames/Móviles ---
         window.iniciarSesionGoogle = async function(e) {
             e.preventDefault();
             const provider = new GoogleAuthProvider();
             try {
-                await signInWithRedirect(auth, provider);
-            } catch (error) {
-                console.error("Error Google Redirect Auth:", error);
-                mostrarMensaje('Error: ' + error.message);
-            }
-        }
-
-        // Capturar resultado al regresar de la redirección de Google
-        getRedirectResult(auth).then(async (result) => {
-            if (result && result.user) {
+                const result = await signInWithPopup(auth, provider);
                 const user = result.user;
+                
                 const docRef = doc(db, "usuarios", user.uid);
                 const docSnap = await getDoc(docRef);
                 
                 if (!docSnap.exists()) {
                     await setDoc(docRef, {
                         nombre: user.displayName || 'Cliente',
-                        telefono: '', // Se llenará cuando haga su primera reserva
+                        telefono: '',
                         email: user.email,
                         rol: 'cliente',
                         fechaRegistro: serverTimestamp()
                     });
                 }
+                window.cerrarLogin();
                 mostrarMensaje('Sesión iniciada con Google.');
+            } catch (error) {
+                console.error("Error Google Auth:", error);
+                if (error.code !== 'auth/popup-closed-by-user') {
+                    mostrarMensaje('Error al iniciar sesión con Google.');
+                }
             }
-        }).catch((error) => {
-            console.error("Error Google Redirect Result:", error);
-        });
+        }
 
         window.crearCuentaPostReserva = async function() {
             const pass = document.getElementById('pass-registro-rapido').value;
@@ -1653,11 +1645,8 @@
                     });
                 }
 
-                // NO ESPERAR (await) la verificación para no congelar el UI
-                sendEmailVerification(user).catch(verifyErr => console.warn("No se pudo enviar el correo de validación"));
-
                 document.getElementById('caja-upsell-registro').style.display = 'none';
-                mostrarMensaje('¡Cuenta creada! Revisa tu bandeja para verificar tu correo.');
+                mostrarMensaje('¡Cuenta creada y cita vinculada!');
 
             } catch(error) {
                 console.error(error);
