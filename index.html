@@ -62,25 +62,6 @@
         @keyframes deslizarAbajo { from { transform: translateY(-100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes aparecer { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .membresias-contenedor { margin-top: 80px; text-align: center; border-top: 2px dashed rgba(78, 110, 93, 0.3); padding-top: 50px; }
-        .membresias-header { margin-bottom: 40px; }
-        .membresias-header h3 { color: #d4af37; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        .membresias-header p { color: var(--texto-oscuro); font-weight: bold; font-size: 18px; }
-        .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
-        .img-membresia-promo:hover { transform: scale(1.02); }
-        .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
-        
-        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); }
-        .tarjeta-membresia.pro { border-color: #d4af37; }
-        .tarjeta-membresia h4 { font-size: 26px; color: #d4af37; margin-bottom: 25px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; letter-spacing: 1px;}
-        .tarjeta-membresia ul { list-style: none; margin-bottom: 30px; }
-        .tarjeta-membresia ul li { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.4; color: #eee; }
-        .precio-membresia { text-align: center; font-size: 36px; font-weight: bold; color: #d4af37; margin-bottom: 25px; }
-        .precio-membresia span { font-size: 14px; font-weight: normal; color: #aaa; display: block; margin-top: 5px;}
-        .badge-proximamente { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid #d4af37; font-weight: bold; text-align: center; padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; cursor: not-allowed; }
-        .tarjeta-membresia.pro::before { content: 'MÁS POPULAR'; position: absolute; top: 25px; right: -35px; background: #d4af37; color: #000; font-size: 11px; font-weight: bold; padding: 6px 40px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
-
         header { 
             background: 
                 url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M60 40c-3 0-5.5 2.5-5.5 5.5v35h11v-35c0-3-2.5-5.5-5.5-5.5zM49 58c-2.5 0-4 1.8-4 4v10h5.5v-14h-1.5zM71 52c2.5 0 4 1.8 4 4v15h-5.5v-19h1.5z'/%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3Ccircle cx='90' cy='90' r='1.5'/%3E%3Ccircle cx='20' cy='100' r='1'/%3E%3Ccircle cx='100' cy='30' r='1'/%3E%3C/g%3E%3C/svg%3E"),
@@ -144,6 +125,25 @@
         .intro h1 { font-size: 36px; margin-bottom: 15px; }
         .intro p.intro-p { font-size: 16px; margin-bottom: 35px; opacity: 0.9; max-width: 600px; margin: 0 auto 35px auto; }
 
+        .membresias-contenedor { margin-top: 80px; text-align: center; border-top: 2px dashed rgba(78, 110, 93, 0.3); padding-top: 50px; }
+        .membresias-header { margin-bottom: 40px; }
+        .membresias-header h3 { color: #d4af37; font-size: 32px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .membresias-header p { color: var(--texto-oscuro); font-weight: bold; font-size: 18px; }
+        .img-membresia-promo { width: 100%; max-width: 800px; height: auto; border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: transform 0.3s; }
+        .img-membresia-promo:hover { transform: scale(1.02); }
+        .grid-membresias { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto; }
+        
+        .tarjeta-membresia { background: linear-gradient(145deg, #111, #222); color: #fff; padding: 40px 30px; border-radius: 20px; border: 2px solid #444; position: relative; text-align: left; overflow: hidden; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        .tarjeta-membresia:hover { transform: translateY(-10px); border-color: #d4af37; box-shadow: 0 20px 45px rgba(212, 175, 55, 0.15); }
+        .tarjeta-membresia.pro { border-color: #d4af37; }
+        .tarjeta-membresia h4 { font-size: 26px; color: #d4af37; margin-bottom: 25px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 15px; letter-spacing: 1px;}
+        .tarjeta-membresia ul { list-style: none; margin-bottom: 30px; }
+        .tarjeta-membresia ul li { margin-bottom: 18px; display: flex; align-items: flex-start; gap: 12px; font-size: 15px; line-height: 1.4; color: #eee; }
+        .precio-membresia { text-align: center; font-size: 36px; font-weight: bold; color: #d4af37; margin-bottom: 25px; }
+        .precio-membresia span { font-size: 14px; font-weight: normal; color: #aaa; display: block; margin-top: 5px;}
+        .badge-proximamente { background: rgba(212, 175, 55, 0.1); color: #d4af37; border: 1px solid #d4af37; font-weight: bold; text-align: center; padding: 12px; border-radius: 8px; text-transform: uppercase; letter-spacing: 2px; font-size: 13px; cursor: not-allowed; }
+        .tarjeta-membresia.pro::before { content: 'MÁS POPULAR'; position: absolute; top: 25px; right: -35px; background: #d4af37; color: #000; font-size: 11px; font-weight: bold; padding: 6px 40px; transform: rotate(45deg); box-shadow: 0 2px 10px rgba(0,0,0,0.3);}
+
         .galeria-contenedor { padding: 50px 20px; text-align: center; max-width: 1000px; margin: 0 auto; }
         .galeria-contenedor h2 { color: var(--verde-cactus); margin-bottom: 30px; font-size: 28px; }
         .galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 20px; }
@@ -179,6 +179,112 @@
         .grupo-form label { display: block; margin-bottom: 8px; color: var(--verde-cactus); font-weight: bold; font-size: 14px; }
         .grupo-form input, .grupo-form select, .grupo-form textarea { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; background: var(--fondo); outline: none; transition: background-color 0.5s, border-color 0.3s; }
         .grupo-form input:focus, .grupo-form select:focus, .grupo-form textarea:focus { border-color: var(--azul-acento); }
+
+        /* Estilos del Programa de Lealtad */
+        .lealtad-contenedor {
+            background: linear-gradient(145deg, #111, #1a1a1a);
+            border-radius: 20px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+            color: #fff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+            text-align: center;
+        }
+        .lealtad-titulo {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .lealtad-subtitulo {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 25px;
+        }
+        .lealtad-pasos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .lealtad-pasos::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 4px;
+            background: #333;
+            z-index: 0;
+            transform: translateY(-50%);
+            border-radius: 2px;
+        }
+        .lealtad-barra-progreso {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            height: 4px;
+            background: #00d2ff;
+            z-index: 1;
+            transform: translateY(-50%);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+        .lealtad-paso {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #222;
+            border: 2px solid #555;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            z-index: 2;
+            position: relative;
+            font-size: 16px;
+            color: #888;
+            transition: all 0.3s ease;
+        }
+        .lealtad-paso.completado {
+            background: #00d2ff;
+            border-color: #00d2ff;
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+        .lealtad-paso.premio {
+            border-color: #00d2ff;
+            color: #00d2ff;
+        }
+        .lealtad-paso.premio.completado {
+             background: #00d2ff;
+             color: #000;
+        }
+        .lealtad-info-descuento {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .lealtad-porcentaje {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00d2ff;
+        }
+        .lealtad-texto-descuento {
+            text-align: left;
+            font-size: 13px;
+            color: #ccc;
+            line-height: 1.4;
+        }
 
         .lightbox-overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease; }
         .lightbox-overlay.mostrar { display: flex; opacity: 1; }
@@ -401,12 +507,38 @@
             <button id="btn-cerrar-sesion-cliente" onclick="window.cerrarSesion()" class="btn-accion btn-eliminar" style="display: none; padding: 8px 16px; font-size: 13px;">🚪 Cerrar Sesión</button>
         </div>
         
+        <!-- CONTENEDOR DEL PROGRAMA DE LEALTAD (Se muestra solo a clientes logueados) -->
+        <div id="contenedor-lealtad-cliente" class="reveal stagger-item" style="display: none; max-width: 500px; margin: 0 auto;">
+            <div class="lealtad-contenedor">
+                <div class="lealtad-titulo">TUS CORTES</div>
+                <div class="lealtad-subtitulo">TU ESTILO, TU HISTORIA</div>
+                
+                <div class="lealtad-pasos">
+                    <div class="lealtad-barra-progreso" id="lealtad-barra" style="width: 0%;"></div>
+                    <div class="lealtad-paso" id="paso-1">1</div>
+                    <div class="lealtad-paso" id="paso-2">2</div>
+                    <div class="lealtad-paso" id="paso-3">3</div>
+                    <div class="lealtad-paso" id="paso-4">4</div>
+                    <div class="lealtad-paso premio" id="paso-5">5</div>
+                </div>
+                <p style="font-size: 14px; color: #888; margin-bottom: 20px;"><span id="cortes-actuales-texto">0</span> / 5 CORTES</p>
+
+                <div class="lealtad-info-descuento">
+                    <div class="lealtad-porcentaje">%</div>
+                    <div class="lealtad-texto-descuento">
+                        <strong style="color: #fff; font-size: 15px; display: block; margin-bottom: 2px;">PRÓXIMO DESCUENTO 35%</strong>
+                        En tu quinto corte
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div id="busqueda-citas-invitado" class="form-citas reveal stagger-item" style="text-align: center;">
             <p style="margin-bottom: 30px; font-size: 15px; color: #555;" data-i18n="hist-p">Inicia sesión para ver tu historial completo, o busca usando tu número y primer nombre si agendaste como invitado.</p>
             <div class="grupo-form">
                 <input type="tel" id="telefono-buscar" data-i18n-ph="lbl-tel-ph" placeholder="Tu número de celular (10 dígitos)" pattern="[0-9]{10}" maxlength="10" minlength="10" style="text-align: center; margin-bottom: 15px;">
                 <input type="text" id="nombre-buscar" placeholder="Tu primer nombre (Para verificar)..." style="text-align: center; margin-bottom: 15px; width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; background: var(--fondo); outline: none;">
-                <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="window.mostrarMisCitas()" data-i18n="btn-buscar">🔍 Buscar Citas</button>
+                <button class="btn-cita" style="width: 100%; padding: 12px; font-size: 16px;" onclick="window.mostrarMisCitas(true)" data-i18n="btn-buscar">🔍 Buscar Citas</button>
             </div>
         </div>
 
@@ -1277,7 +1409,7 @@
             document.getElementById('formCita').style.display = 'block';
             
             if(estadoApp.usuarioActual && estadoApp.usuarioActual.rol === 'cliente') {
-                prellenarFormularioCliente();
+                window.prellenarFormularioCliente();
             }
         }
 
@@ -1314,15 +1446,18 @@
                 const selectServicio = document.getElementById('servicioSelect');
                 const selectAdicional = document.getElementById('servicioAdicionalSelect'); 
 
-                let servicioFinal = selectServicio.value;
-                let precioFinal = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+                let servicioPrincipal = selectServicio.value;
+                let precioPrincipal = selectServicio.options[selectServicio.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
+
+                let servicioFinal = escapeHTML(servicioPrincipal);
+                let precioFinal = escapeHTML(precioPrincipal);
 
                 if (selectAdicional && selectAdicional.value !== "") {
                     let servicioExtra = selectAdicional.value;
                     let precioExtra = selectAdicional.options[selectAdicional.selectedIndex].getAttribute('data-precio') || 'Por cotizar';
                     
-                    servicioFinal = `${servicioFinal} + ${servicioExtra}`;
-                    precioFinal = `${precioFinal} + ${precioExtra}`;
+                    servicioFinal = `${escapeHTML(servicioPrincipal)} + ${escapeHTML(servicioExtra)}`;
+                    precioFinal = `${precioFinal} + ${escapeHTML(precioExtra)}`;
                 }
 
                 const isCliente = estadoApp.usuarioActual && estadoApp.usuarioActual.rol === 'cliente';
@@ -1339,7 +1474,8 @@
                     servicio: servicioFinal,
                     precio: precioFinal, 
                     comentarios: document.getElementById('comentarios').value,
-                    fechaCreacion: serverTimestamp()
+                    fechaCreacion: serverTimestamp(),
+                    completada: false // Nueva flag de lealtad
                 };
                 
                 const docRef = await addDoc(collection(db, "citas"), cita);
@@ -1376,7 +1512,7 @@
             }
         }
 
-        function prellenarFormularioCliente() {
+        window.prellenarFormularioCliente = function() {
             const user = auth.currentUser;
             if (!user) return;
             
@@ -1404,25 +1540,70 @@
             }
         }
 
-        window.mostrarMisCitas = async function() {
-            const ahora = Date.now();
-            let bloqueadoHasta = parseInt(localStorage.getItem('bloqueoBusquedaCitas') || '0');
-            
-            if (ahora < bloqueadoHasta) {
-                mostrarMensaje('Demasiados intentos. Por seguridad, intenta más tarde.');
-                return;
-            }
+        window.actualizarUILealtad = function(misCitas) {
+            const contenedorLealtad = document.getElementById('contenedor-lealtad-cliente');
+            if(!contenedorLealtad) return;
 
-            let intentosBusqueda = parseInt(localStorage.getItem('intentosBusquedaCitas') || '0');
-            intentosBusqueda++;
-            
-            if (intentosBusqueda > 5) {
-                localStorage.setItem('bloqueoBusquedaCitas', (ahora + 15 * 60 * 1000).toString()); 
-                localStorage.setItem('intentosBusquedaCitas', '0');
-                mostrarMensaje('Búsqueda bloqueada por 15 minutos por seguridad.');
-                return;
+            if(estadoApp.usuarioActual && estadoApp.usuarioActual.rol === 'cliente') {
+                contenedorLealtad.style.display = 'block';
+                
+                const citasCompletadas = misCitas.filter(cita => cita.completada === true).length;
+                
+                const cortesActuales = citasCompletadas % 5;
+                document.getElementById('cortes-actuales-texto').textContent = cortesActuales;
+
+                let porcentajeBarra = 0;
+                if(cortesActuales > 0) {
+                    porcentajeBarra = (cortesActuales / 4) * 80; 
+                }
+                document.getElementById('lealtad-barra').style.width = `${porcentajeBarra}%`;
+
+                for(let i=1; i<=5; i++) {
+                    const pasoEl = document.getElementById(`paso-${i}`);
+                    if(pasoEl) {
+                        if(i <= cortesActuales) {
+                            pasoEl.classList.add('completado');
+                        } else {
+                            pasoEl.classList.remove('completado');
+                        }
+                    }
+                }
+                
+                if(citasCompletadas > 0 && citasCompletadas % 5 === 0) {
+                     document.getElementById('cortes-actuales-texto').textContent = "5";
+                     document.getElementById('lealtad-barra').style.width = `100%`;
+                     for(let i=1; i<=5; i++) {
+                        document.getElementById(`paso-${i}`).classList.add('completado');
+                     }
+                }
+
+            } else {
+                contenedorLealtad.style.display = 'none';
             }
-            localStorage.setItem('intentosBusquedaCitas', intentosBusqueda.toString());
+        }
+
+        window.mostrarMisCitas = async function(desdeBoton = false) {
+            if (desdeBoton === true) {
+                const ahora = Date.now();
+                let bloqueadoHasta = parseInt(localStorage.getItem('bloqueoBusquedaCitas') || '0');
+                
+                if (ahora < bloqueadoHasta) {
+                    const minRestantes = Math.ceil((bloqueadoHasta - ahora) / 60000);
+                    mostrarMensaje(`Demasiados intentos. Por seguridad, intenta en ${minRestantes} minutos.`);
+                    return;
+                }
+
+                let intentosBusqueda = parseInt(localStorage.getItem('intentosBusquedaCitas') || '0');
+                intentosBusqueda++;
+                
+                if (intentosBusqueda > 9) {
+                    localStorage.setItem('bloqueoBusquedaCitas', (ahora + 9 * 60 * 1000).toString()); 
+                    localStorage.setItem('intentosBusquedaCitas', '0');
+                    mostrarMensaje('Búsqueda bloqueada por 9 minutos por seguridad.');
+                    return;
+                }
+                localStorage.setItem('intentosBusquedaCitas', intentosBusqueda.toString());
+            }
 
             const contenedor = document.getElementById('contenedor-mis-citas');
             contenedor.innerHTML = '';
@@ -1458,6 +1639,8 @@
                         }
                     });
                 }
+                
+                window.actualizarUILealtad(misCitas);
 
                 contenedor.innerHTML = '';
                 if (misCitas.length === 0) { 
@@ -1473,24 +1656,40 @@
 
                 misCitas.forEach((cita, index) => {
                     const esPasada = new Date(`${cita.fecha}T00:00:00`) < new Date(new Date().setHours(0,0,0,0));
-                    const estadoColor = esPasada ? 'var(--verde-olivo)' : 'var(--azul-acento)';
+                    
+                    let estadoColor = 'var(--verde-olivo)';
+                    let textoBadge = esPasada ? 'Finalizada' : 'Próxima';
+                    
+                    if(cita.completada) {
+                        estadoColor = 'var(--azul-acento)';
+                        textoBadge = '✓ Completada';
+                    } else if (!esPasada) {
+                         estadoColor = '#e6b800'; 
+                    }
                     
                     const divCard = document.createElement('div');
                     divCard.className = 'stagger-item';
                     divCard.style.cssText = `background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-left: 5px solid ${estadoColor}; text-align: left; margin-bottom: 15px; animation: aparecer 0.5s ease forwards; animation-delay: ${index * 100}ms; opacity: 0;`;
 
                     const headerDiv = document.createElement('div');
-                    headerDiv.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 15px;';
+                    headerDiv.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 15px; align-items: flex-start;';
                     
+                    const titleDiv = document.createElement('div');
                     const titleStrong = document.createElement('strong');
                     titleStrong.style.fontSize = '16px';
-                    titleStrong.textContent = `${cita.fecha} | ${cita.hora}`;
+                    titleStrong.textContent = `${cita.fecha}`;
+                    const timeSpan = document.createElement('span');
+                    timeSpan.style.display = 'block';
+                    timeSpan.style.color = '#666';
+                    timeSpan.textContent = cita.hora;
+                    titleDiv.appendChild(titleStrong);
+                    titleDiv.appendChild(timeSpan);
 
                     const badgeSpan = document.createElement('span');
                     badgeSpan.style.cssText = `background: ${estadoColor}20; color: ${estadoColor}; padding: 5px 10px; border-radius: 12px; font-size: 13px; font-weight: bold;`;
-                    badgeSpan.textContent = esPasada ? 'Finalizada' : 'Próxima';
+                    badgeSpan.textContent = textoBadge;
 
-                    headerDiv.appendChild(titleStrong);
+                    headerDiv.appendChild(titleDiv);
                     headerDiv.appendChild(badgeSpan);
 
                     const pServicio = document.createElement('p');
@@ -1569,6 +1768,8 @@
                         rol: 'cliente',
                         fechaRegistro: serverTimestamp()
                     });
+
+                    sendEmailVerification(user).catch(verifyErr => console.warn("No se pudo enviar el correo de validación"));
                     
                     window.cerrarLogin();
                     mostrarMensaje('Cuenta creada con éxito.');
@@ -1589,30 +1790,33 @@
             e.preventDefault();
             const provider = new GoogleAuthProvider();
             try {
-                const result = await signInWithPopup(auth, provider);
+                await signInWithRedirect(auth, provider);
+            } catch (error) {
+                console.error("Error Google Redirect Auth:", error);
+                mostrarMensaje('Error: ' + error.message);
+            }
+        }
+
+        getRedirectResult(auth).then(async (result) => {
+            if (result && result.user) {
                 const user = result.user;
-                
                 const docRef = doc(db, "usuarios", user.uid);
                 const docSnap = await getDoc(docRef);
                 
                 if (!docSnap.exists()) {
                     await setDoc(docRef, {
                         nombre: user.displayName || 'Cliente',
-                        telefono: '',
+                        telefono: '', 
                         email: user.email,
                         rol: 'cliente',
                         fechaRegistro: serverTimestamp()
                     });
                 }
-                window.cerrarLogin();
                 mostrarMensaje('Sesión iniciada con Google.');
-            } catch (error) {
-                console.error("Error Google Auth:", error);
-                if (error.code !== 'auth/popup-closed-by-user') {
-                    mostrarMensaje('Error al iniciar sesión con Google.');
-                }
             }
-        }
+        }).catch((error) => {
+            console.error("Error Google Redirect Result:", error);
+        });
 
         window.crearCuentaPostReserva = async function() {
             const pass = document.getElementById('pass-registro-rapido').value;
@@ -1645,8 +1849,10 @@
                     });
                 }
 
+                sendEmailVerification(user).catch(verifyErr => console.warn("No se pudo enviar el correo de validación"));
+
                 document.getElementById('caja-upsell-registro').style.display = 'none';
-                mostrarMensaje('¡Cuenta creada y cita vinculada!');
+                mostrarMensaje('¡Cuenta creada! Revisa tu bandeja para verificar tu correo.');
 
             } catch(error) {
                 console.error(error);
@@ -1665,19 +1871,19 @@
             }); 
         }
 
-        function limpiarCitasAntiguas() {
-            const haceDosSemanas = new Date(); haceDosSemanas.setDate(haceDosSemanas.getDate() - 14);
-            const fechaLimite = haceDosSemanas.toISOString().split('T')[0];
+        window.marcarCitaCompletada = async function(id, estadoActual) {
             try {
-                const q = query(collection(db, "citas"), where("fecha", "<", fechaLimite));
-                getDocs(q).then(snapshot => {
-                    snapshot.forEach(docSnap => deleteDoc(doc(db, "citas", docSnap.id)));
+                await updateDoc(doc(db, "citas", id), {
+                    completada: !estadoActual
                 });
-            } catch (error) { console.error("Error al limpiar:", error); }
+                mostrarMensaje(!estadoActual ? "Cita marcada como completada." : "Cita marcada como pendiente.");
+            } catch (error) {
+                console.error("Error al actualizar estado de cita:", error);
+                mostrarMensaje("Error al actualizar la cita.");
+            }
         }
 
         function configurarPanelAdmin() {
-            limpiarCitasAntiguas(); // En producción, esto debería ir a Cloud Functions
             const rol = estadoApp.usuarioActual.rol;
             const txt = textosUI[idiomaActual];
             document.getElementById('admin-usuario-info').textContent = `${txt['admin-rol']} ${escapeHTML(rol.toUpperCase())}`;
@@ -1738,6 +1944,9 @@
 
             citasMostradas.forEach(cita => {
                 const tr = document.createElement('tr');
+                if(cita.completada) {
+                    tr.style.backgroundColor = 'rgba(74, 144, 226, 0.05)';
+                }
                 
                 const td1 = document.createElement('td');
                 td1.textContent = cita.fecha + " ";
@@ -1745,6 +1954,13 @@
                 strongHora.textContent = cita.hora;
                 td1.appendChild(document.createElement('br'));
                 td1.appendChild(strongHora);
+                
+                if(cita.completada) {
+                    const spanCheck = document.createElement('span');
+                    spanCheck.style.cssText = "display: block; margin-top: 5px; color: var(--azul-acento); font-size: 12px; font-weight: bold;";
+                    spanCheck.textContent = "✓ Completada";
+                    td1.appendChild(spanCheck);
+                }
 
                 const td2 = document.createElement('td');
                 td2.textContent = cita.nombre + " ";
@@ -1782,6 +1998,13 @@
                 const td5 = document.createElement('td');
                 td5.style.cssText = "display: flex; gap: 5px; flex-wrap: wrap;";
                 
+                const btnCompletar = document.createElement('button');
+                btnCompletar.className = "btn-accion";
+                btnCompletar.style.backgroundColor = cita.completada ? "#888" : "var(--azul-acento)";
+                btnCompletar.textContent = cita.completada ? "Desmarcar" : "✓ Validar";
+                btnCompletar.onclick = () => window.marcarCitaCompletada(cita.id, !!cita.completada);
+                td5.appendChild(btnCompletar);
+
                 const aCal = document.createElement('a');
                 aCal.href = generarEnlaceCalendario(cita);
                 aCal.target = "_blank";
@@ -1963,7 +2186,7 @@
             if(!barbero) return;
 
             document.getElementById('editando-barbero-id').value = id;
-            document.getElementById('nuevo-barbero').value = barbero.nombre;
+            document.getElementById('nuevo-barbero').value = escapeHTML(barbero.nombre);
             
             if (barbero.horario) {
                 for(let i=0; i<7; i++) {
@@ -2024,14 +2247,14 @@
             const txt = textosUI[idiomaActual];
             if (estadoApp.servicios.length === 0) { tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">${txt['txt-sin-serv']}</td></tr>`; return; }
             estadoApp.servicios.forEach(s => {
-                const nE = s.nombre.replace(/'/g, "\\'"); const pE = s.precio.replace(/'/g, "\\'"); const dE = s.desc.replace(/'/g, "\\'");
-                const nEn = (s.nombre_en || '').replace(/'/g, "\\'"); const dEn = (s.desc_en || '').replace(/'/g, "\\'");
+                const nE = escapeHTML(s.nombre); const pE = escapeHTML(s.precio); const dE = escapeHTML(s.desc);
+                const nEn = escapeHTML(s.nombre_en || ''); const dEn = escapeHTML(s.desc_en || '');
                 
                 let pLimpio = String(s.precio).replace(/^\$+/, '');
                 const pFinal = pLimpio ? `$${pLimpio}` : 'N/A';
 
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td><strong>${escapeHTML(s.nombre)}</strong><br><small style="color:#888;">${escapeHTML(s.nombre_en || '-')}</small></td><td><span class="precio-servicio" style="margin-top:0;">${escapeHTML(pFinal)}</span></td><td style="font-size: 13px;">${escapeHTML(s.desc)}</td><td style="display: flex; gap: 5px;"><button onclick="window.prepararEdicionServicio('${s.id}', '${nE}', '${pE}', '${dE}', '${nEn}', '${dEn}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="window.eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td>`;
+                tr.innerHTML = `<td><strong>${nE}</strong><br><small style="color:#888;">${nEn || '-'}</small></td><td><span class="precio-servicio" style="margin-top:0;">${escapeHTML(pFinal)}</span></td><td style="font-size: 13px;">${dE}</td><td style="display: flex; gap: 5px;"><button onclick="window.prepararEdicionServicio('${s.id}', '${nE.replace(/'/g, "\\'")}', '${pE.replace(/'/g, "\\'")}', '${dE.replace(/'/g, "\\'")}', '${nEn.replace(/'/g, "\\'")}', '${dEn.replace(/'/g, "\\'")}')" class="btn-accion btn-calendario" style="background: var(--azul-acento);">${txt['btn-editar']}</button> <button onclick="window.eliminarServicio('${s.id}')" class="btn-accion btn-eliminar">${txt['btn-eliminar']}</button></td>`;
                 tbody.appendChild(tr);
             });
         }
