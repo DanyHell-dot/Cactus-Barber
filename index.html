@@ -572,6 +572,12 @@
             <div class="admin-content">
                 <div id="tab-citas">
                     <h2 style="color: var(--verde-cactus);" data-i18n="tit-citas">Citas Programadas</h2>
+                    
+                    <div style="margin: 20px 0; display: flex; gap: 10px; border-bottom: 2px solid #eee; padding-bottom: 15px;">
+                        <button id="tab-pendientes" class="btn-cita" style="padding: 10px 20px; font-size: 14px; box-shadow: none; border-radius: 8px; margin:0;" onclick="window.setFiltroCitas('pendientes')">⏳ Nuevas / Pendientes</button>
+                        <button id="tab-historial" class="btn-admin" style="padding: 10px 20px; font-size: 14px; box-shadow: none; border-radius: 8px; margin:0; background: #eee; color: #333; border: none;" onclick="window.setFiltroCitas('completadas')">✓ Historial (Completadas)</button>
+                    </div>
+
                     <div class="table-container">
                         <table class="tabla-admin" id="tabla-citas">
                             <thead>
@@ -1912,6 +1918,31 @@
             document.getElementById('menu-' + idTab).classList.add('activo');
         }
 
+        window.filtroCitasActual = 'pendientes';
+        
+        window.setFiltroCitas = function(filtro) {
+            window.filtroCitasActual = filtro;
+            const btnP = document.getElementById('tab-pendientes');
+            const btnH = document.getElementById('tab-historial');
+            
+            if(filtro === 'pendientes') {
+                btnP.className = 'btn-cita';
+                btnP.style.background = 'linear-gradient(to bottom, #53a0f3, #4688d4)';
+                btnP.style.color = '#fff';
+                btnH.className = 'btn-admin';
+                btnH.style.background = '#eee';
+                btnH.style.color = '#333';
+            } else {
+                btnH.className = 'btn-cita';
+                btnH.style.background = 'var(--verde-cactus)';
+                btnH.style.color = '#fff';
+                btnP.className = 'btn-admin';
+                btnP.style.background = '#eee';
+                btnP.style.color = '#333';
+            }
+            window.renderizarTablaCitas();
+        }
+
         window.renderizarTablaCitas = async function() {
             const tbody = document.querySelector('#tabla-citas tbody'); 
             if(!tbody) return; 
@@ -1920,23 +1951,27 @@
             if(!estadoApp.usuarioActual) return;
             const txt = textosUI[idiomaActual];
             
-            let citasMostradas = [];
+            let citasTotales = [];
 
             if (estadoApp.usuarioActual.rol === 'barbero') {
                 const qBarbero = query(collection(db, "citas"), where("barbero", "==", estadoApp.usuarioActual.nombre));
                 const snapBarbero = await getDocs(qBarbero);
-                snapBarbero.forEach(d => citasMostradas.push({id: d.id, ...d.data()}));
-                citasMostradas.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+                snapBarbero.forEach(d => citasTotales.push({id: d.id, ...d.data()}));
+                citasTotales.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
             } else {
-                citasMostradas = estadoApp.citas;
+                citasTotales = estadoApp.citas;
             }
+
+            // APLICAR FILTRO SELECCIONADO
+            const filtro = window.filtroCitasActual || 'pendientes';
+            let citasMostradas = citasTotales.filter(c => filtro === 'pendientes' ? !c.completada : c.completada);
             
             if (citasMostradas.length === 0) { 
                 const tr = document.createElement('tr');
                 const td = document.createElement('td');
                 td.colSpan = 5;
                 td.style.textAlign = "center";
-                td.textContent = txt['txt-sin-citas'];
+                td.textContent = filtro === 'pendientes' ? 'No hay citas nuevas o pendientes.' : 'No hay historial de citas completadas.';
                 tr.appendChild(td);
                 tbody.appendChild(tr);
                 return; 
