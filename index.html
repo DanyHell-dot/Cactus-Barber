@@ -326,10 +326,19 @@
         .editando-img::before { content: "📷 Cambiar"; position: absolute; top: 5px; right: 5px; background: rgba(234, 67, 53, 0.9); color: white; padding: 4px; border-radius: 4px; font-size: 10px; z-index: 10; pointer-events: none; }
 
         @media (max-width: 768px) {
-            .admin-layout { flex-direction: column; margin: 10px; }
+            .admin-layout { flex-direction: column; margin: 10px 5px; }
             .admin-sidebar { width: 100%; padding: 15px; }
-            .admin-content { padding: 15px; min-width: 100%; }
-            .tabla-admin th, .tabla-admin td { padding: 8px; font-size: 13px; }
+            
+            /* Ajuste para que el contenedor respete los bordes del celular */
+            .admin-content { padding: 15px 10px; min-width: 0; width: 100%; max-width: 100vw; overflow-x: hidden; }
+            
+            /* Ajustes para la tabla y las fuentes en móvil */
+            .tabla-admin { min-width: 480px; }
+            .tabla-admin th, .tabla-admin td { padding: 8px 6px; font-size: 12px; }
+            
+            /* Magia: Apilar los botones de acción verticalmente para ahorrar muchísimo espacio */
+            .tabla-admin td[style*="display: flex"] { flex-direction: column !important; align-items: stretch !important; gap: 5px !important; }
+            .tabla-admin .btn-accion { width: 100%; margin: 0 !important; text-align: center; padding: 8px 5px; box-sizing: border-box; }
         }
     </style>
 </head>
