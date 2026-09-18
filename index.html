@@ -31,17 +31,20 @@
             scroll-behavior: smooth;
         }
 
+        /* FIXED: Moved keyframes up so header can use it without issues */
+        @keyframes moverFondoCactus { 0% { background-position: 0 0, 0 0; } 100% { background-position: -240px 240px, 0 0; } }
+
+        /* FIXED: Simplified animated background for better performance (Removed heavy repeating gradient & transform animation) */
         .fondo-barbero {
             position: fixed;
-            top: -20vh;
+            top: 0;
             left: 0;
             width: 100vw;
-            height: 140vh; 
+            height: 100vh; 
             z-index: -1;
-            opacity: 0.05; 
-            background: repeating-linear-gradient(-45deg, #d32f2f, #d32f2f 40px, transparent 40px, transparent 80px, #1976d2 80px, #1976d2 120px, transparent 120px, transparent 160px);
-            background-size: 226px 226px;
-            will-change: transform;
+            opacity: 0.03; 
+            background-image: radial-gradient(var(--verde-cactus) 2px, transparent 2px);
+            background-size: 30px 30px;
         }
 
         .reveal { 
@@ -198,9 +201,10 @@
             text-transform: uppercase;
             letter-spacing: 2px;
         }
+        /* FIXED: Improved contrast for a11y */
         .lealtad-subtitulo {
             font-size: 14px;
-            color: #888;
+            color: #aaa; 
             margin-bottom: 25px;
         }
         .lealtad-pasos {
@@ -247,7 +251,8 @@
             z-index: 2;
             position: relative;
             font-size: 16px;
-            color: #888;
+            /* FIXED: Improved contrast for a11y */
+            color: #ccc; 
             transition: all 0.3s ease;
         }
         .lealtad-paso.completado {
